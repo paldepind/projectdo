@@ -2,8 +2,6 @@
 
 # Makefile
 
-# JavaScript + NodeJS
-
 check_makefile() {
   if [ -e Makefile ]; then
     # We found a Makefile, let's see if it contains a test target.
@@ -19,6 +17,7 @@ run_makefile() {
   make test
 }
 
+# JavaScript + NodeJS
 
 check_nodejs() {
   if [ -e package.json ]; then
@@ -46,6 +45,19 @@ run_cargo() {
   cargo test
 }
 
+# Haskell + Stack
+
+check_stack() {
+  [ -e package.yaml -a -e stack.yaml ]
+}
+
+run_stack() {
+  echo "stack test"
+  stack test
+}
+
+# End of list of environments
+
 check_and_run() {
   if check_makefile; then
     run_makefile
@@ -55,6 +67,9 @@ check_and_run() {
     exit
   elif check_cargo; then
     run_cargo
+    exit
+  elif check_stack; then
+    run_stack
     exit
   fi
 }

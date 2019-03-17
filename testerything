@@ -1,22 +1,5 @@
 #!/bin/sh
 
-# Makefile
-
-check_makefile() {
-  if [ -e Makefile ]; then
-    # We found a Makefile, let's see if it contains a test target.
-    if grep -q '^test:' Makefile; then
-      return 0
-    fi
-  fi
-  return 1
-}
-
-run_makefile() {
-  echo "make test"
-  make test
-}
-
 # JavaScript + NodeJS
 
 check_nodejs() {
@@ -56,6 +39,34 @@ run_stack() {
   stack test
 }
 
+# Clojure + Leiningen
+
+check_lein() {
+  [ -e project.clj ]
+}
+
+run_lein() {
+  echo "lein test"
+  lein test
+}
+
+# Makefile
+
+check_makefile() {
+  if [ -e Makefile ]; then
+    # We found a Makefile, let's see if it contains a test target.
+    if grep -q '^test:' Makefile; then
+      return 0
+    fi
+  fi
+  return 1
+}
+
+run_makefile() {
+  echo "make test"
+  make test
+}
+
 # End of list of environments
 
 check_and_run() {
@@ -70,6 +81,12 @@ check_and_run() {
     exit
   elif check_stack; then
     run_stack
+    exit
+  elif check_lein; then
+    run_lein
+    exit
+  elif check_makefile; then
+    run_makefile
     exit
   fi
 }

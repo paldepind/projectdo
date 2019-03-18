@@ -39,6 +39,17 @@ run_stack() {
   stack test
 }
 
+# Maven
+
+check_maven() {
+  [ -e pom.xml ]
+}
+
+run_maven() {
+  echo "mvn test"
+  mvn test
+}
+
 # Clojure + Leiningen
 
 check_lein() {
@@ -81,6 +92,9 @@ check_and_run() {
     exit
   elif check_stack; then
     run_stack
+    exit
+  elif check_maven; then
+    run_maven
     exit
   elif check_lein; then
     run_lein

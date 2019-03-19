@@ -1,8 +1,8 @@
-# testit
+# tst
 
 A universal test command for running tests with fewer key-strokes.
 
-testit automatically finds configuration files associated with test and runs
+tst automatically finds configuration files associated with test and runs
 the appropriate command to run the tests.
 
 In a NodeJS project it runs `npm test`, in a Rust project it runs `cargo test`,

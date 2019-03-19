@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# testit – a universal test command.
+# tst – a universal test command.
 # Copyright (C) 2019-present  Simon Friis Vindum
 
 # This program is free software: you can redistribute it and/or modify

@@ -121,13 +121,13 @@ if [ -x "$(command -v git)" ]; then
   # Find the root of the git repository if we are inside one.
   TOP=$(git rev-parse --show-toplevel 2> /dev/null)
   if [ $? -ne 0 ]; then
-    # We are not in a git repository
+    echo "Not in git repo"
     TOP=$HOME
   fi
 fi
 
 nothing_found() {
-  echo "No tests found."
+  echo "No tests found :'("
   exit 1
 }
 

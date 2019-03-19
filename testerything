@@ -1,5 +1,6 @@
 #!/bin/sh
 
+VERSION="0.1.0"
 QUIET=false
 DRY_RUN=false
 
@@ -144,12 +145,36 @@ main() {
   done
 }
 
-while getopts 'dnq' c
+displayVersion() {
+  echo "$(basename "$0") version $VERSION"
+}
+
+displayHelp() {
+  echo "Usage: $(basename "$0") [options]
+Options:
+  -h, --help             Display this help.
+  -n, -d, --dry-run      Do not execute any commands with side-effects.
+  -q, --quiet            Do not print commands as they are about to be executed.
+  -v, --version          Display the version of the program (which is $VERSION)."
+}
+
+while getopts dhnqv-: c
 do
   case $c in
     d) DRY_RUN=true ;;
+    h) displayHelp; exit 0 ;;
     n) DRY_RUN=true ;;
     q) QUIET=true ;;
+    v) displayVersion; exit 0 ;;
+    -) case $OPTARG in
+         help) displayHelp; exit 0 ;;
+         dry-run) DRY_RUN=true ;;
+         quiet) QUIET=true ;;
+         version) displayVersion; exit 0 ;;
+         '' ) break ;; # "--" should terminate argument processing
+         * ) echo "Illegal option --$OPTARG" >&2; exit 1 ;;
+      esac ;;
+    \?) exit 1 ;;
   esac
 done
 

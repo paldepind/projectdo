@@ -1,35 +1,38 @@
 # tst
 
-A context-aware command that runs tests in any code project with fewer
-key-strokes.
+A single letter command that runs the tests in any code project.
+
+```sh
+any-project> t
+# runs the tests in the project (npm test, cargo test, stack test, etc.)
+```
 
 ## What
 
 tst is a small shell script for running tests in any code projects. It uses
-clever ~~state of the art A.I.~~hard coded checks to automatically detect the
+clever ~~state of the art A.I.~~ hard coded checks to automatically detect the
 appropriate test command to execute in the nearest project root relative to
 where it is executed.
 
 For instance, it detects a Rust project based on the presence of a `Cargo.toml`
 file and then runs `cargo test`. As another example, if it finds a
-`package.json` file with a `test` script it runs `npm test`. Except if a
-`yarn.lock` file is also present. Then it runs `yarn test`. If it finds a
-`Makefile` with a `test` target it runs `make test`, and so on.
+`package.json` file with a `test` script it runs `npm test`, except if a
+`yarn.lock` file is also present, then it runs `yarn test`.
 
 ## Why
 
-tst was created because the author became tired of typing test commands. By
-aliasing `tst` to `t` you can swiftly run tests in any project merely by
-pressing <kbd>t</kbd><kbd>enter</kbd>. Treat it as a key-stroke saving
-short-cut that always expands to the test command you want to write.
+By aliasing `tst` to `t` you can swiftly run tests in any project by typing
+only <kbd>t</kbd>+<kbd>enter</kbd>. Treat it as a key-stroke saving short-cut
+that always expands to the test command you want to write.
 
 ## Features
 
-* Works with many different programming languages and project configurations.
-  [See the entire list here](#supported-tools-and-languages).
 * Implemented as a portable dependency free POSIX shell script.
 * Provides helpful error messages in case tests are not available or cannot be
   run.
+* Works with many different programming languages and project configurations.
+  [See the entire list here](#supported-tools-and-languages).
+* Support for new configurations is easy to add.
 
 ## Install
 

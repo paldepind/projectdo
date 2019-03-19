@@ -16,7 +16,11 @@ check_nodejs() {
 }
 
 run_nodejs() {
-  execute "npm test"
+  if [ -e yarn.lock ]; then
+    execute "yarn test"
+  else
+    execute "npm test"
+  fi
 }
 
 # Rust + Cargo

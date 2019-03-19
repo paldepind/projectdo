@@ -1,0 +1,27 @@
+{
+  "name": "@paldepind/tst",
+  "version": "0.1.0",
+  "description": "A universal test command. For running tests with fewer key-strokes.",
+  "bin": {
+    "t": "./tst",
+    "tst": "./tst"
+  },
+  "files": [
+    "tst"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paldepind/tst.git"
+  },
+  "keywords": [
+    "test",
+    "cli",
+    "command"
+  ],
+  "author": "Simon Friis Vindum",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/paldepind/tst/issues"
+  },
+  "homepage": "https://github.com/paldepind/tst#readme"
+}

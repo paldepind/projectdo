@@ -1,5 +1,8 @@
 #!/bin/sh
 
+QUIET=false
+DRY_RUN=false
+
 # JavaScript + NodeJS
 
 check_nodejs() {
@@ -13,8 +16,7 @@ check_nodejs() {
 }
 
 run_nodejs() {
-  echo "npm test"
-  npm test
+  execute "npm test"
 }
 
 # Rust + Cargo
@@ -24,8 +26,7 @@ check_cargo() {
 }
 
 run_cargo() {
-  echo "cargo test"
-  cargo test
+  execute "cargo test"
 }
 
 # Haskell + Stack
@@ -35,8 +36,7 @@ check_stack() {
 }
 
 run_stack() {
-  echo "stack test"
-  stack test
+  execute "stack test"
 }
 
 # Maven
@@ -46,8 +46,7 @@ check_maven() {
 }
 
 run_maven() {
-  echo "mvn test"
-  mvn test
+  execute "mvn test"
 }
 
 # Clojure + Leiningen
@@ -57,8 +56,7 @@ check_lein() {
 }
 
 run_lein() {
-  echo "lein test"
-  lein test
+  execute "lein test"
 }
 
 # Makefile
@@ -74,17 +72,22 @@ check_makefile() {
 }
 
 run_makefile() {
-  echo "make test"
-  make test
+  execute "make test"
 }
 
 # End of list of environments
 
+execute() {
+  if [ $QUIET = false ]; then
+    echo $1
+  fi
+  if [ $DRY_RUN = false ]; then
+    eval $1
+  fi
+}
+
 check_and_run() {
-  if check_makefile; then
-    run_makefile
-    exit
-  elif check_nodejs; then
+  if check_nodejs; then
     run_nodejs
     exit
   elif check_cargo; then
@@ -136,5 +139,14 @@ main() {
     fi
   done
 }
+
+while getopts 'dnq' c
+do
+  case $c in
+    d) DRY_RUN=true ;;
+    n) DRY_RUN=true ;;
+    q) QUIET=true ;;
+  esac
+done
 
 main

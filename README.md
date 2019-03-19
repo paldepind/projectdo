@@ -20,7 +20,19 @@ expands to the test command you want to write.
 
 ## Install
 
-Dump the script somewhere in your path.
+### npm
+
+```
+npm install --global @paldepind/tst
+```
+
+### From source
+
+Download the script and place it somewhere in your path. For instance:
+
+```
+curl https://raw.githubusercontent.com/paldepind/tst/master/tst > ~/bin/tst
+```
 
 ## Supported tools and languages
 

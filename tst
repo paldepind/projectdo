@@ -1,5 +1,21 @@
 #!/bin/sh
 
+# tst – a universal test command.
+# Copyright (C) 2019-present  Simon Friis Vindum
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 VERSION="0.1.0"
 QUIET=false
 DRY_RUN=false
@@ -121,7 +137,7 @@ if [ -x "$(command -v git)" ]; then
   # Find the root of the git repository if we are inside one.
   TOP=$(git rev-parse --show-toplevel 2> /dev/null)
   if [ $? -ne 0 ]; then
-    echo "Not in git repo"
+    # We are not in a git repository
     TOP=$HOME
   fi
 fi

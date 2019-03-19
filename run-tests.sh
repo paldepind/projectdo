@@ -17,14 +17,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Colors
-BLACK=`tput setaf 0`
 RED=`tput setaf 1`
-GREEN=`tput setaf 2`
-YELLOW=`tput setaf 3`
-BLUE=`tput setaf 4`
-MAGENTA=`tput setaf 5`
-CYAN=`tput setaf 6`
-WHITE=`tput setaf 7`
 BOLD=`tput bold`
 RESET=`tput sgr0`
 
@@ -43,6 +36,7 @@ assert() {
     echo -n " ✓"
   else
     echo "\n    Fail"
+    ANY_ERRORS=true
   fi
 }
 
@@ -51,6 +45,7 @@ assertEqual() {
     echo -n " ✓"
   else
     echo "\n   $BOLD$RED Error:$RESET Expected \"$1\" to equal \"$2\""
+    ANY_ERRORS=true
   fi
 }
 
@@ -74,3 +69,7 @@ if describe "nodejs"; then
 fi
 
 echo ""
+
+if [ $ANY_ERRORS = true ]; then
+  exit 1
+fi

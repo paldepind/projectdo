@@ -64,7 +64,7 @@ Usage: t [options]
 Options:
   -h, --help             Display this help.
   -n, -d, --dry-run      Do not execute any commands with side-effects.
-  -q, --quiet            Do not print commands as they are about to be executed.
+  -q, --quiet            Suppress all normal output. Only errors are printed to stderr.
   -v, --version          Display the version of the program (which is 0.1.0).
 ```
 

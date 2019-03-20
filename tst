@@ -103,7 +103,11 @@ execute() {
     echo $1
   fi
   if [ $DRY_RUN = false ]; then
-    eval $1
+    if [ $QUIET = false ]; then
+      eval $1
+    else
+      eval $1 > /dev/null
+    fi
   fi
 }
 

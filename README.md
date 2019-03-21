@@ -1,10 +1,13 @@
+[![Build Status](https://travis-ci.com/paldepind/tst.svg?branch=master)](https://travis-ci.com/paldepind/tst)
+
 # tst
+
 
 A single letter command that runs the tests in any code project.
 
 ```sh
 any-project> t
-# runs the tests in the project (npm test, cargo test, stack test, etc.)
+# runs the tests in the project (by invoking npm test, cargo test, stack test, etc.)
 ```
 
 ## What
@@ -38,6 +41,8 @@ that always expands to the test command you want to write.
 
 ### npm
 
+tst can be installed from npm.
+
 ```
 npm install --global @paldepind/tst
 ```
@@ -49,15 +54,18 @@ This adds both `t` and `tst` to your path.
 Download the script and place it somewhere in your path. For instance:
 
 ```
-curl https://raw.githubusercontent.com/paldepind/tst/master/tst > ~/bin/tst
+curl https://raw.githubusercontent.com/paldepind/tst/master/tst -o ~/bin/tst
+chmod +x ~/bin/tst
 ```
+
+You will also have to add a shell alias from `tst` to `t`.
 
 ## Usage
 
-**Note**: When executed with the `-d` flag `tst` only prints information about
-what it would do without actually doing anything. It is a good idea to do a dry
-run when using `tst` in a project for the first time to verify that it does the
-right thing.
+**Note**: When executed with the `-d` flag `tst` does dry run and only prints
+information about what it would do without actually doing anything. It is a
+good idea to do a dry run when using `tst` in a project for the first time to
+verify that it does the right thing.
 
 ```
 Usage: t [options]

@@ -8,7 +8,7 @@ RESET=`tput sgr0`
 ANY_ERRORS=false
 
 describe() {
-  echo -n $BOLD$1$RESET
+  echo -n "\n$BOLD$1$RESET"
 }
 
 it() {
@@ -49,6 +49,13 @@ if describe "nodejs"; then
   if it "uses yarn file if yarn.lock is present"; then
     run_in "yarn"; assert
     assertEqual "$RUN_RESULT" "yarn test"
+  fi
+fi
+
+if describe "make"; then
+  if it "finds check target"; then
+    run_in "make-check"; assert
+    assertEqual "$RUN_RESULT" "make check"
   fi
 fi
 

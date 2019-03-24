@@ -86,14 +86,14 @@ check_makefile() {
   if [ -e Makefile ]; then
     # We found a Makefile, let's see if it contains a test target.
     if grep -q '^test:' Makefile; then
-      return 0
+      execute "make test"
+      exit
+    elif grep -q '^check:' Makefile; then
+      execute "make check"
+      exit
     fi
   fi
   return 1
-}
-
-run_makefile() {
-  execute "make test"
 }
 
 # End of list of environments
@@ -127,10 +127,8 @@ check_and_run() {
   elif check_lein; then
     run_lein
     exit
-  elif check_makefile; then
-    run_makefile
-    exit
   fi
+  check_makefile
 }
 
 # The root of the project.

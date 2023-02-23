@@ -37,7 +37,7 @@ RUN_RESULT=""
 RUN_EXIT=0
 
 run_in() {
-  RUN_RESULT=$(cd test/$1 && ../../tst -n)
+  RUN_RESULT=$(cd test/$1 && ../../t -n)
   RUN_EXIT=$?
 }
 
@@ -49,6 +49,10 @@ if describe "nodejs"; then
   if it "uses yarn file if yarn.lock is present"; then
     run_in "yarn"; assert
     assertEqual "$RUN_RESULT" "yarn test"
+  fi
+  if it "does not use npm if package.json contains no test script"; then
+    run_in "npm-without-test"; assert
+    assertEqual "$RUN_RESULT" "make test"
   fi
 fi
 

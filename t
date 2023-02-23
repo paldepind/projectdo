@@ -24,8 +24,9 @@ DRY_RUN=false
 
 check_nodejs() {
   if [ -e package.json ]; then
-    # We found a package.json file, let's see if it contains a test command.
-    if grep -q '^[[:space:]]*"test"' package.json; then
+    # We found a package.json file, let's see if it contains a test script. We
+    # use npm for this even though we might end up running the tests with yarn.
+    if npm run | grep -q '^[[:space:]]*test$'; then
       return 0
     fi
   fi

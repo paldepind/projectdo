@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "test-not": "echo \"Error: no test specified\" && exit 1",
+    "not-test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "test"
+  ],
+  "keywords": [
+    "test"
+  ]
+}

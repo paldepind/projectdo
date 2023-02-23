@@ -85,10 +85,10 @@ run_lein() {
 check_makefile() {
   if [ -e Makefile ]; then
     # We found a Makefile, let's see if it contains a test target.
-    if grep -q '^test:' Makefile; then
+    if make -n test >/dev/null 2>&1; then
       execute "make test"
       exit
-    elif grep -q '^check:' Makefile; then
+    elif make -n check >/dev/null 2>&1; then
       execute "make check"
       exit
     fi

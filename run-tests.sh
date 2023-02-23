@@ -8,16 +8,16 @@ RESET=`tput sgr0`
 ANY_ERRORS=false
 
 describe() {
-  echo -n "\n$BOLD$1$RESET"
+  printf "\n$BOLD$1$RESET"
 }
 
 it() {
-  echo -n "\n  $1"
+  printf "\n  $1"
 }
 
 assert() {
   if [ $? -eq 0 ]; then
-    echo -n " ✓"
+    printf " ✓"
   else
     echo "\n    Fail"
     ANY_ERRORS=true
@@ -26,7 +26,7 @@ assert() {
 
 assertEqual() {
   if [ "$1" = "$2" ]; then
-    echo -n " ✓"
+    printf " ✓"
   else
     echo "\n   $BOLD$RED Error:$RESET Expected \"$1\" to equal \"$2\""
     ANY_ERRORS=true

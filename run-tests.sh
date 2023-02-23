@@ -37,7 +37,7 @@ RUN_RESULT=""
 RUN_EXIT=0
 
 run_in() {
-  RUN_RESULT=$(cd test/$1 && ../../t -n)
+  RUN_RESULT=$(cd tests/$1 && ../../t -n)
   RUN_EXIT=$?
 }
 

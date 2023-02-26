@@ -74,13 +74,18 @@ Options:
 
 ## Supported tools and languages
 
-| Tool      | Language         | Detected by                                       | Command      |
-|-----------|------------------|---------------------------------------------------|--------------|
-| Cargo     | Rust             | `Cargo.toml`                                      | `cargo test` |
-| npm       | JavaScript, etc. | `package.json` with `test` script                 | `npm test`   |
-| yarn      | JavaScript, etc. | `package.json` with `test` script and `yarn.lock` | `yarn test`  |
-| Maven     | Java, etc.       | `pom.xml`                                         | `mvn test`   |
-| Leiningen | Clojure          | `project.clj`                                     | `lein test`  |
-| Stack     | Haskell          | `stack.yaml`                                      | `stack test` |
-| make      | Any              | `Makefile` with a `test` target                   | `make test`  |
+If a tool you are interested in is not supported please open and issue or a
+pull request.
+
+| Tool      | Language         | Detected by                                       | Command           |
+|-----------|------------------|---------------------------------------------------|-------------------|
+| Cargo     | Rust             | `Cargo.toml`                                      | `cargo test`      |
+| npm       | JavaScript, etc. | `package.json` with `test` script                 | `npm test`        |
+| yarn      | JavaScript, etc. | `package.json` with `test` script and `yarn.lock` | `yarn test`       |
+| Maven     | Java, etc.       | `pom.xml`                                         | `mvn test`        |
+| Leiningen | Clojure          | `project.clj`                                     | `lein test`       |
+| Stack     | Haskell          | `stack.yaml`                                      | `stack test`      |
+| make      | Any              | `Makefile` with a `test`/`check` target           | `make test/check` |
+| Mage      | Go               | `magefile.go` with a `test`/`check` target        | `mage test/check` |
+| Go        | Go               | `go.mod`                                          | `go test`         |
 

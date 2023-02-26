@@ -63,6 +63,13 @@ if describe "make"; then
   fi
 fi
 
+if describe "go"; then
+  if it "finds check target in magefile"; then
+    run_in "mage"; assert
+    assertEqual "$RUN_RESULT" "mage check"
+  fi
+fi
+
 echo ""
 
 if [ $ANY_ERRORS = true ]; then

@@ -126,6 +126,29 @@ detect_run_makefile() {
   return 1
 }
 
+# Global
+
+detect_go() {
+  [ -e go.mod ]
+}
+
+run_go() {
+  # We detect Makefiles before we detect Go, so here we know that the Go
+  # project is _not_ tested by a Makefile.
+
+  # Check if the project uses Mage. A magefile could in theory have any name,
+  # but `magefile.go` seems to be the convention.
+  if grep -q -m 1 '^func Check(' magefile.go; then
+    execute "mage check"
+    return 0
+  elif grep -q -m 1 '^func Test(' magefile.go; then
+    execute "mage test"
+    return 0
+  fi
+  execute "go test"
+  return 0
+}
+
 # End of list of tools
 
 detect_and_run() {
@@ -146,6 +169,10 @@ detect_and_run() {
     exit
   fi
   detect_run_makefile
+  if detect_go; then
+    run_go
+    exit
+  fi
 }
 
 set_project_root() {

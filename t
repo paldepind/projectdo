@@ -80,6 +80,20 @@ run_cargo() {
   execute "cargo test"
 }
 
+# CMake
+
+detect_cmake() {
+  [ -e CMakeLists.txt ]
+}
+
+run_cmake() {
+  if [ -e build ]; then
+    execute "cmake --build build --target test"
+  else
+    execute "cmake --build . --target test"
+  fi
+}
+
 # Haskell + Stack
 
 detect_stack() {
@@ -157,6 +171,9 @@ detect_and_run() {
     exit
   elif detect_cargo; then
     run_cargo
+    exit
+  elif detect_cmake; then
+    run_cmake
     exit
   elif detect_stack; then
     run_stack

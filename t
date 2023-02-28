@@ -23,6 +23,10 @@ QUIET=false
 DRY_RUN=false
 PROJECT_ROOT=""
 
+has_command() {
+  command -v "$1" >/dev/null 2>&1
+}
+
 # When running the appropriate external tool this function is used which runs
 # the given command while respecting $QUIET and $DRY_RUN.
 execute() {
@@ -53,6 +57,10 @@ execute() {
 
 detect_nodejs() {
   if [ -e package.json ]; then
+    if ! has_command "npm"; then
+      echo "Found a package.json file but 'npm' is not installed."
+      exit 1
+    fi
     # We found a package.json file, let's see if it contains a test script. We
     # use npm for this even though we might end up running the tests with yarn.
     if npm run | grep -q '^[[:space:]]*test$'; then
@@ -128,6 +136,10 @@ run_lein() {
 
 detect_run_makefile() {
   if [ -e Makefile ]; then
+    if ! has_command "make"; then
+      echo "Found a Makefile but 'make' is not installed."
+      exit 1
+    fi
     # We found a Makefile, let's see if it contains a test target.
     if make -n test >/dev/null 2>&1; then
       execute "make test"
@@ -194,7 +206,7 @@ detect_and_run() {
 
 set_project_root() {
   # Check if git exists on the system.
-  if [ -x "$(command -v git)" ]; then
+  if has_command "git"; then
     # Find the root of the git repository if we are inside one.
     PROJECT_ROOT=$(git rev-parse --show-toplevel 2> /dev/null)
     if [ $? -ne 0 ]; then

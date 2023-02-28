@@ -70,6 +70,13 @@ if describe "go"; then
   fi
 fi
 
+if describe "python"; then
+  if it "runs pytest with poetry"; then
+    run_in "poetry"; assert
+    assertEqual "$RUN_RESULT" "poetry run pytest"
+  fi
+fi
+
 echo ""
 
 if [ $ANY_ERRORS = true ]; then

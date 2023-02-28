@@ -152,7 +152,24 @@ detect_run_makefile() {
   return 1
 }
 
-# Global
+# Python
+
+detect_python() {
+  [ -e pyproject.toml ]
+}
+
+run_python() {
+  if grep -q -m 1 "^\[tool.poetry\]$" pyproject.toml; then
+    # TODO: There are other Python test frameworks, it would be nice to detect
+    # and run the right one.
+    execute "poetry run pytest"
+  else
+    echo "Found a pyproject.toml file but t is not sure how to run it."
+  fi
+  return 1
+}
+
+# Go
 
 detect_go() {
   [ -e go.mod ]
@@ -198,6 +215,10 @@ detect_and_run() {
     exit
   fi
   detect_run_makefile
+  if detect_python; then
+    run_python
+    exit
+  fi
   if detect_go; then
     run_go
     exit

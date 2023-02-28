@@ -74,12 +74,13 @@ Options:
 
 ## Supported tools and languages
 
-If a tool you are interested in is not supported please open and issue or a
-pull request.
+If a tool you are interested in is not supported please open an issue or a pull
+request.
 
 | Tool      | Language         | Detected by                                       | Command                         |
 |-----------|------------------|---------------------------------------------------|---------------------------------|
 | Cargo     | Rust             | `Cargo.toml`                                      | `cargo test`                    |
+| Python    | Poetry           | `pyproject.toml` with `[tool.poetry]`             | `poetry run pytest`             |
 | CMake     | C/C++/Obj-C      | `CMakeLists.txt`                                  | `cmake --build . --target test` |
 | npm       | JavaScript, etc. | `package.json` with `test` script                 | `npm test`                      |
 | yarn      | JavaScript, etc. | `package.json` with `test` script and `yarn.lock` | `yarn test`                     |

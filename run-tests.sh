@@ -7,6 +7,17 @@ RESET=`tput sgr0`
 
 ANY_ERRORS=false
 
+# Make sets this variable when we run it and can influence the test results.
+# Since this script is run through `make`, we need to unset it.
+unset MAKELEVEL
+
+# Get the directory of the current script, in a POSIX compatible way
+# https://stackoverflow.com/a/29835459
+script_directory=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
+
+# Set this variable to ensure top level Makefile doesn't affect the results.
+export PROJECT_ROOT="${script_directory}/tests"
+
 describe() {
   printf "\n$BOLD$1$RESET"
 }
@@ -16,10 +27,10 @@ it() {
 }
 
 assert() {
-  if [ $? -eq 0 ]; then
+  if [ $RUN_EXIT -eq 0 ]; then
     printf " ✓"
   else
-    echo "\n    Fail"
+    printf "\n    Fail\n"
     ANY_ERRORS=true
   fi
 }
@@ -28,7 +39,7 @@ assertEqual() {
   if [ "$1" = "$2" ]; then
     printf " ✓"
   else
-    echo "\n   $BOLD$RED Error:$RESET Expected \"$1\" to equal \"$2\""
+    printf "\n   $BOLD$RED Error:$RESET Expected \"$1\" to equal \"$2\"\n"
     ANY_ERRORS=true
   fi
 }

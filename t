@@ -226,7 +226,9 @@ detect_and_run() {
 }
 
 set_project_root() {
-  [ -n "${PROJECT_ROOT}" ] && return
+  if [ -n "${PROJECT_ROOT}" ]; then
+    return
+  fi
 
   # Check if git exists on the system.
   if has_command "git"; then

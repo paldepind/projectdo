@@ -163,6 +163,7 @@ run_python() {
     # TODO: There are other Python test frameworks, it would be nice to detect
     # and run the right one.
     execute "poetry run pytest"
+    exit
   else
     echo "Found a pyproject.toml file but t is not sure how to run it."
   fi

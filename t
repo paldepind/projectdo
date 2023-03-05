@@ -21,7 +21,7 @@ VERSION="0.1.0"
 # Global mutable variables.
 QUIET=false
 DRY_RUN=false
-PROJECT_ROOT=""
+PROJECT_ROOT="${PROJECT_ROOT:-}"
 
 has_command() {
   command -v "$1" >/dev/null 2>&1
@@ -226,6 +226,10 @@ detect_and_run() {
 }
 
 set_project_root() {
+  if [ -n "${PROJECT_ROOT}" ]; then
+    return
+  fi
+
   # Check if git exists on the system.
   if has_command "git"; then
     # Find the root of the git repository if we are inside one.

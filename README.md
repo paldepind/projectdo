@@ -80,7 +80,7 @@ request.
 | Tool      | Language         | Detected by                                       | Command                         |
 |-----------|------------------|---------------------------------------------------|---------------------------------|
 | Cargo     | Rust             | `Cargo.toml`                                      | `cargo test`                    |
-| Python    | Poetry           | `pyproject.toml` with `[tool.poetry]`             | `poetry run pytest`             |
+| Poetry    | Python           | `pyproject.toml` with `[tool.poetry]`             | `poetry run pytest`             |
 | CMake     | C/C++/Obj-C      | `CMakeLists.txt`                                  | `cmake --build . --target test` |
 | npm       | JavaScript, etc. | `package.json` with `test` script                 | `npm test`                      |
 | yarn      | JavaScript, etc. | `package.json` with `test` script and `yarn.lock` | `yarn test`                     |

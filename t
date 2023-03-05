@@ -134,6 +134,24 @@ run_lein() {
 
 # Makefile
 
+has_make_target() {
+    target="${1?}"
+    output=$(make -n "${target}" 2>&1)
+    exit_code=$?
+    if [ $exit_code -ne 0 ]; then
+        return $exit_code
+    fi
+
+    # If there is a file with the name of the target we're looking for but no
+    # actual target with that name, make will exit successfully with that
+    # message. We need to consider that case as a "target not found".
+    if [ "${output}" = "make: Nothing to be done for '${target}'." ]; then
+        return 1
+    fi
+
+    return 0
+}
+
 detect_run_makefile() {
   if [ -e Makefile ]; then
     if ! has_command "make"; then
@@ -141,10 +159,10 @@ detect_run_makefile() {
       exit 1
     fi
     # We found a Makefile, let's see if it contains a test target.
-    if make -n test >/dev/null 2>&1; then
+    if has_make_target "test"; then
       execute "make test"
       exit
-    elif make -n check >/dev/null 2>&1; then
+    elif has_make_target "check"; then
       execute "make check"
       exit
     fi

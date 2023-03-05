@@ -35,6 +35,15 @@ assert() {
   fi
 }
 
+assertFails() {
+  if [ $RUN_EXIT -ne 0 ]; then
+    printf " ✓"
+  else
+    printf "\n    Fail\n"
+    ANY_ERRORS=true
+  fi
+}
+
 assertEqual() {
   if [ "$1" = "$2" ]; then
     printf " ✓"
@@ -70,6 +79,14 @@ fi
 if describe "make"; then
   if it "finds check target"; then
     run_in "make-check"; assert
+    assertEqual "$RUN_RESULT" "make check"
+  fi
+  if it "ignores file named check"; then
+    run_in "make-check-with-check-file"; assertFails
+    assertEqual "$RUN_RESULT" "No tests found :'("
+  fi
+  if it "finds check target if both target and file named check"; then
+    run_in "make-check-with-check-file-and-target"; assert
     assertEqual "$RUN_RESULT" "make check"
   fi
 fi

@@ -57,26 +57,34 @@ execute() {
 # JavaScript + NodeJS
 
 detect_nodejs() {
-  if [ -e package.json ]; then
-    if ! has_command "npm"; then
-      echo "Found a package.json file but 'npm' is not installed."
-      exit 1
-    fi
-    # We found a package.json file, let's see if it contains a test script. We
-    # use npm for this even though we might end up running the tests with yarn.
-    if npm run | grep -q '^[[:space:]]*test$'; then
-      return 0
-    fi
+  if [ ! -f package.json ]; then
+    return 1
   fi
-  return 1
+  if ! has_command "npm"; then
+    echo "Found a package.json file but 'npm' is not installed."
+    exit 1
+  fi
+  return 0
 }
 
 run_nodejs() {
-  if [ -e yarn.lock ]; then
-    execute "yarn test"
-  else
-    execute "npm test"
+  local node_action=$ACTION
+  # Only the run action need translation, the others match 1-to-1
+  if [ $ACTION = "run" ]; then
+    node_action="start"
   fi
+  # We found a package.json file, let's see if it contains an appropriate
+  # script. We use npm for this even though we might end up running the action
+  # with yarn as yarn's run command behaves differently.
+  if ! npm run | grep -q "^[[:space:]]*${node_action}\$"; then
+    return 0
+  fi
+  if [ -f yarn.lock ]; then
+    execute "yarn $node_action"
+  else
+    execute "npm $node_action"
+  fi
+  exit 0
 }
 
 # Rust + Cargo
@@ -217,8 +225,8 @@ run_go() {
 detect_and_run() {
   if detect_nodejs; then
     run_nodejs
-    exit
-  elif detect_cargo; then
+  fi
+  if detect_cargo; then
     run_cargo
     exit
   elif detect_cmake; then
@@ -262,7 +270,7 @@ set_project_root() {
 }
 
 nothing_found() {
-  echo "No tests found :'("
+  echo "No way to $ACTION found :'("
   exit 1
 }
 

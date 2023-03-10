@@ -87,7 +87,15 @@ if describe "cargo"; then
 fi
 
 if describe "nodejs"; then
-  if it "uses npm if package.json with test script"; then
+  if it "can run npm build if package.json with build script"; then
+    do_build_in "npm"; assert
+    assertEqual "$RUN_RESULT" "npm build"
+  fi
+  if it "can run npm start if package.json with start script"; then
+    do_run_in "npm"; assert
+    assertEqual "$RUN_RESULT" "npm start"
+  fi
+  if it "can run npm test if package.json with test script"; then
     do_test_in "npm"; assert
     assertEqual "$RUN_RESULT" "npm test"
   fi

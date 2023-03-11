@@ -90,7 +90,7 @@ run_nodejs() {
 # Rust + Cargo
 
 detect_cargo() {
-  [ -e Cargo.toml ]
+  [ -f Cargo.toml ]
 }
 
 run_cargo() {
@@ -100,11 +100,11 @@ run_cargo() {
 # CMake
 
 detect_cmake() {
-  [ -e CMakeLists.txt ]
+  [ -f CMakeLists.txt ]
 }
 
 run_cmake() {
-  if [ -e build ]; then
+  if [ -f build ]; then
     execute "cmake --build build --target test"
   else
     execute "cmake --build . --target test"
@@ -114,7 +114,7 @@ run_cmake() {
 # Haskell + Stack
 
 detect_stack() {
-  [ -e package.yaml -a -e stack.yaml ]
+  [ -f package.yaml -a -f stack.yaml ]
 }
 
 run_stack() {
@@ -124,7 +124,7 @@ run_stack() {
 # Maven
 
 detect_maven() {
-  [ -e pom.xml ]
+  [ -f pom.xml ]
 }
 
 run_maven() {
@@ -134,7 +134,7 @@ run_maven() {
 # Clojure + Leiningen
 
 detect_lein() {
-  [ -e project.clj ]
+  [ -f project.clj ]
 }
 
 run_lein() {
@@ -162,7 +162,7 @@ has_make_target() {
 }
 
 detect_run_makefile() {
-  if [ -e Makefile ]; then
+  if [ -f Makefile ]; then
     if ! has_command "make"; then
       echo "Found a Makefile but 'make' is not installed."
       exit 1
@@ -182,7 +182,7 @@ detect_run_makefile() {
 # Python
 
 detect_python() {
-  [ -e pyproject.toml ]
+  [ -f pyproject.toml ]
 }
 
 run_python() {
@@ -200,7 +200,7 @@ run_python() {
 # Go
 
 detect_go() {
-  [ -e go.mod ]
+  [ -f go.mod ]
 }
 
 run_go() {

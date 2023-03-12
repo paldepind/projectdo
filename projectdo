@@ -45,14 +45,14 @@ execute() {
   fi
 }
 
-# Every supported tool requires two functions:
+# Every supported tool requires a function `try_tool` where `tool` is a name
+# indicating what tool the function tries to detect. The function should:
 #
-# 1/ A `detect_foo` function that returns 0 if the `foo` tool might be
-#    appropriate in the current directory.
-# 2/ A `run_foo` function that executes tests using the `foo` tool.
-#
-# Alternatively if separating detection and running is problematic then a
-# single `detect_run_foo` function is used.
+# * Return if it does not detect that the tool is appropriate.
+# * Read the variables `ACTION` and `IS_PRINT` to determine the correct action
+#   to run.
+# * When running an action is should use the `execute` function and _exit_ when
+#   it is done.
 
 # Start list of tools
 

@@ -71,6 +71,11 @@ do_test_in() {
   RUN_EXIT=$?
 }
 
+do_print_tool_in() {
+  RUN_RESULT=$(cd tests/$1 && ../../projectdo print-tool)
+  RUN_EXIT=$?
+}
+
 if describe "cargo"; then
   if it "can run build"; then
     do_build_in "cargo"; assert
@@ -83,6 +88,25 @@ if describe "cargo"; then
   if it "can run test"; then
     do_test_in "cargo"; assert
     assertEqual "$RUN_RESULT" "cargo test"
+  fi
+fi
+
+if describe "stack"; then
+  if it "can run build"; then
+    do_build_in "stack"; assert
+    assertEqual "$RUN_RESULT" "stack build"
+  fi
+  if it "can run run"; then
+    do_run_in "stack"; assert
+    assertEqual "$RUN_RESULT" "stack run"
+  fi
+  if it "can run test"; then
+    do_test_in "stack"; assert
+    assertEqual "$RUN_RESULT" "stack test"
+  fi
+  if it "can print tool"; then
+    do_print_tool_in "stack"; assert
+    assertEqual "$RUN_RESULT" "stack"
   fi
 fi
 

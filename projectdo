@@ -23,6 +23,8 @@ QUIET=false
 DRY_RUN=false
 PROJECT_ROOT="${PROJECT_ROOT:-}"
 ACTION=""
+IS_PRINT=false # True if ACTION is print-tool as this action is somewhat
+               # special.
 
 has_command() {
   command -v "$1" >/dev/null 2>&1
@@ -116,12 +118,15 @@ run_cmake() {
 
 # Haskell + Stack
 
-detect_stack() {
-  [ -f package.yaml -a -f stack.yaml ]
-}
-
-run_stack() {
-  execute "stack test"
+try_stack() {
+  if [ -f package.yaml -a -f stack.yaml ]; then
+    if $IS_PRINT; then
+      echo "stack"
+    else
+      execute "stack $ACTION"
+    fi
+    exit
+  fi
 }
 
 # Maven
@@ -232,14 +237,12 @@ detect_and_run() {
   if detect_cargo; then
     run_cargo
   fi
+  try_stack
   # The remaining options has not been updated to support actions other than
   # `test`.
   if [ $ACTION = test ]; then
     if detect_cmake; then
       run_cmake
-      exit
-    elif detect_stack; then
-      run_stack
       exit
     elif detect_maven; then
       run_maven
@@ -327,6 +330,9 @@ if [ "$1" = "test" ] ||
    [ "$1" = "build" ] ||
    [ "$1" = "print-tool" ]; then
   ACTION=$1
+  if [ "$1" = "print-tool" ]; then
+    IS_PRINT=true
+  fi
 else
   if [ -z "$1" ]; then
     echo "No action specified."

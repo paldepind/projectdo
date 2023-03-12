@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# tst – a universal test command.
+# projectdo – universal project commands.
 # Copyright (C) 2019-present  Simon Friis Vindum
 
 # This program is free software: you can redistribute it and/or modify
@@ -16,19 +16,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-VERSION="0.1.0"
+VERSION="0.2.0"
 
 # Global mutable variables.
 QUIET=false
 DRY_RUN=false
 PROJECT_ROOT="${PROJECT_ROOT:-}"
+ACTION=""
 
 has_command() {
   command -v "$1" >/dev/null 2>&1
 }
 
-# When running the appropriate external tool this function is used which runs
-# the given command while respecting $QUIET and $DRY_RUN.
+# When running the appropriate external tool this function is used which
+# evaluates the given command while respecting $QUIET and $DRY_RUN.
 execute() {
   if [ $QUIET = false ]; then
     echo $1
@@ -44,8 +45,8 @@ execute() {
 
 # Every supported tool requires two functions:
 #
-# 1/ A `detect_foo` function that returns 0 if the `foo` tool should be used to
-#   run tests.
+# 1/ A `detect_foo` function that returns 0 if the `foo` tool might be
+#    appropriate in the current directory.
 # 2/ A `run_foo` function that executes tests using the `foo` tool.
 #
 # Alternatively if separating detection and running is problematic then a
@@ -56,46 +57,55 @@ execute() {
 # JavaScript + NodeJS
 
 detect_nodejs() {
-  if [ -e package.json ]; then
-    if ! has_command "npm"; then
-      echo "Found a package.json file but 'npm' is not installed."
-      exit 1
-    fi
-    # We found a package.json file, let's see if it contains a test script. We
-    # use npm for this even though we might end up running the tests with yarn.
-    if npm run | grep -q '^[[:space:]]*test$'; then
-      return 0
-    fi
+  if [ ! -f package.json ]; then
+    return 1
   fi
-  return 1
+  if ! has_command "npm"; then
+    echo "Found a package.json file but 'npm' is not installed."
+    exit 1
+  fi
+  return 0
 }
 
 run_nodejs() {
-  if [ -e yarn.lock ]; then
-    execute "yarn test"
-  else
-    execute "npm test"
+  local node_action=$ACTION
+  # Only the run action need translation, the others match 1-to-1
+  if [ $ACTION = "run" ]; then
+    node_action="start"
   fi
+  # We found a package.json file, let's see if it contains an appropriate
+  # script. We use npm for this even though we might end up running the action
+  # with yarn as yarn's run command behaves differently.
+  if ! npm run | grep -q "^[[:space:]]*${node_action}\$"; then
+    return 0
+  fi
+  if [ -f yarn.lock ]; then
+    execute "yarn $node_action"
+  else
+    execute "npm $node_action"
+  fi
+  exit 0
 }
 
 # Rust + Cargo
 
 detect_cargo() {
-  [ -e Cargo.toml ]
+  [ -f Cargo.toml ]
 }
 
 run_cargo() {
-  execute "cargo test"
+  execute "cargo $ACTION"
+  exit
 }
 
 # CMake
 
 detect_cmake() {
-  [ -e CMakeLists.txt ]
+  [ -f CMakeLists.txt ]
 }
 
 run_cmake() {
-  if [ -e build ]; then
+  if [ -f build ]; then
     execute "cmake --build build --target test"
   else
     execute "cmake --build . --target test"
@@ -105,7 +115,7 @@ run_cmake() {
 # Haskell + Stack
 
 detect_stack() {
-  [ -e package.yaml -a -e stack.yaml ]
+  [ -f package.yaml -a -f stack.yaml ]
 }
 
 run_stack() {
@@ -115,7 +125,7 @@ run_stack() {
 # Maven
 
 detect_maven() {
-  [ -e pom.xml ]
+  [ -f pom.xml ]
 }
 
 run_maven() {
@@ -125,7 +135,7 @@ run_maven() {
 # Clojure + Leiningen
 
 detect_lein() {
-  [ -e project.clj ]
+  [ -f project.clj ]
 }
 
 run_lein() {
@@ -153,7 +163,7 @@ has_make_target() {
 }
 
 detect_run_makefile() {
-  if [ -e Makefile ]; then
+  if [ -f Makefile ]; then
     if ! has_command "make"; then
       echo "Found a Makefile but 'make' is not installed."
       exit 1
@@ -173,7 +183,7 @@ detect_run_makefile() {
 # Python
 
 detect_python() {
-  [ -e pyproject.toml ]
+  [ -f pyproject.toml ]
 }
 
 run_python() {
@@ -191,7 +201,7 @@ run_python() {
 # Go
 
 detect_go() {
-  [ -e go.mod ]
+  [ -f go.mod ]
 }
 
 run_go() {
@@ -216,31 +226,35 @@ run_go() {
 detect_and_run() {
   if detect_nodejs; then
     run_nodejs
-    exit
-  elif detect_cargo; then
+  fi
+  if detect_cargo; then
     run_cargo
-    exit
-  elif detect_cmake; then
-    run_cmake
-    exit
-  elif detect_stack; then
-    run_stack
-    exit
-  elif detect_maven; then
-    run_maven
-    exit
-  elif detect_lein; then
-    run_lein
-    exit
   fi
-  detect_run_makefile
-  if detect_python; then
-    run_python
-    exit
-  fi
-  if detect_go; then
-    run_go
-    exit
+  # The remaining options has not been updated to support actions other than
+  # `test`.
+  if [ $ACTION = test ]; then
+    if detect_cmake; then
+      run_cmake
+      exit
+    elif detect_stack; then
+      run_stack
+      exit
+    elif detect_maven; then
+      run_maven
+      exit
+    elif detect_lein; then
+      run_lein
+      exit
+    fi
+    detect_run_makefile
+    if detect_python; then
+      run_python
+      exit
+    fi
+    if detect_go; then
+      run_go
+      exit
+    fi
   fi
 }
 
@@ -261,7 +275,7 @@ set_project_root() {
 }
 
 nothing_found() {
-  echo "No tests found :'("
+  echo "No way to $ACTION found :'("
   exit 1
 }
 
@@ -270,12 +284,16 @@ display_version() {
 }
 
 display_help() {
-  echo "Usage: $(basename "$0") [options]
+  echo "Usage: $(basename "$0") [options] [action]
 Options:
   -h, --help             Display this help.
   -n, -d, --dry-run      Do not execute any commands with side-effects.
   -q, --quiet            Do not print commands as they are about to be executed.
-  -v, --version          Display the version of the program (which is $VERSION)."
+  -v, --version          Display the version of the program (which is $VERSION).
+
+Actions:
+  build, run, test       Build, run, or test the current project.
+  print-tool             Output the guessed tool for the current project."
 }
 
 # Main execution starts here
@@ -299,6 +317,26 @@ do
     \?) exit 1 ;;
   esac
 done
+
+shift $((OPTIND-1)) # Shift away the parsed option arguments
+
+if [ "$1" = "test" ] ||
+   [ "$1" = "run" ] ||
+   [ "$1" = "build" ] ||
+   [ "$1" = "print-tool" ]; then
+  ACTION=$1
+else
+  if [ -z "$1" ]; then
+    echo "No action specified."
+  else
+    echo "$1 is not a valid action."
+  fi
+  echo ""
+  echo "The valid actions are: build, run, test, print-tool"
+  echo ""
+  echo "Example: projectdo test"
+  exit 1
+fi
 
 set_project_root
 

@@ -56,51 +56,84 @@ assertEqual() {
 RUN_RESULT=""
 RUN_EXIT=0
 
-run_in() {
-  RUN_RESULT=$(cd tests/$1 && ../../t -n)
+do_build_in() {
+  RUN_RESULT=$(cd tests/$1 && ../../projectdo -n build)
   RUN_EXIT=$?
 }
 
+do_run_in() {
+  RUN_RESULT=$(cd tests/$1 && ../../projectdo -n run)
+  RUN_EXIT=$?
+}
+
+do_test_in() {
+  RUN_RESULT=$(cd tests/$1 && ../../projectdo -n test)
+  RUN_EXIT=$?
+}
+
+if describe "cargo"; then
+  if it "can run build"; then
+    do_build_in "cargo"; assert
+    assertEqual "$RUN_RESULT" "cargo build"
+  fi
+  if it "can run run"; then
+    do_run_in "cargo"; assert
+    assertEqual "$RUN_RESULT" "cargo run"
+  fi
+  if it "can run test"; then
+    do_test_in "cargo"; assert
+    assertEqual "$RUN_RESULT" "cargo test"
+  fi
+fi
+
 if describe "nodejs"; then
-  if it "uses npm if package.json with test script"; then
-    run_in "npm"; assert
+  if it "can run npm build if package.json with build script"; then
+    do_build_in "npm"; assert
+    assertEqual "$RUN_RESULT" "npm build"
+  fi
+  if it "can run npm start if package.json with start script"; then
+    do_run_in "npm"; assert
+    assertEqual "$RUN_RESULT" "npm start"
+  fi
+  if it "can run npm test if package.json with test script"; then
+    do_test_in "npm"; assert
     assertEqual "$RUN_RESULT" "npm test"
   fi
   if it "uses yarn file if yarn.lock is present"; then
-    run_in "yarn"; assert
+    do_test_in "yarn"; assert
     assertEqual "$RUN_RESULT" "yarn test"
   fi
   if it "does not use npm if package.json contains no test script"; then
-    run_in "npm-without-test"; assert
+    do_test_in "npm-without-test"; assert
     assertEqual "$RUN_RESULT" "make test"
   fi
 fi
 
 if describe "make"; then
   if it "finds check target"; then
-    run_in "make-check"; assert
+    do_test_in "make-check"; assert
     assertEqual "$RUN_RESULT" "make check"
   fi
   if it "ignores file named check"; then
-    run_in "make-check-with-check-file"; assertFails
+    do_test_in "make-check-with-check-file"; assertFails
     assertEqual "$RUN_RESULT" "No tests found :'("
   fi
   if it "finds check target if both target and file named check"; then
-    run_in "make-check-with-check-file-and-target"; assert
+    do_test_in "make-check-with-check-file-and-target"; assert
     assertEqual "$RUN_RESULT" "make check"
   fi
 fi
 
 if describe "go"; then
   if it "finds check target in magefile"; then
-    run_in "mage"; assert
+    do_test_in "mage"; assert
     assertEqual "$RUN_RESULT" "mage check"
   fi
 fi
 
 if describe "python"; then
   if it "runs pytest with poetry"; then
-    run_in "poetry"; assert
+    do_test_in "poetry"; assert
     assertEqual "$RUN_RESULT" "poetry run pytest"
   fi
 fi

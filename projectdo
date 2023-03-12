@@ -58,36 +58,37 @@ execute() {
 
 # JavaScript + NodeJS
 
-detect_nodejs() {
+try_nodejs() {
   if [ ! -f package.json ]; then
     return 1
   fi
-  if ! has_command "npm"; then
-    echo "Found a package.json file but 'npm' is not installed."
+  if [ -f yarn.lock ]; then
+    tool="yarn"
+  else
+    tool="npm"
+  fi
+  if ! has_command $tool; then
+    echo "Found a package.json file but '$tool' is not installed."
     exit 1
   fi
-  return 0
-}
-
-run_nodejs() {
+  if $IS_PRINT; then
+    echo $tool
+    exit
+  fi
   local node_action=$ACTION
-  # Only the run action need translation, the others match 1-to-1
+  # Only the "run" action need translation, the others match 1-to-1
   if [ $ACTION = "run" ]; then
     node_action="start"
   fi
-  # We found a package.json file, let's see if it contains an appropriate
-  # script. We use grep for this, the check is not 100% bulletproof, but it's
-  # very close. We could've used `npm run` to get the authorative list of the
-  # scripts in the package.json, but invoking `npm` is two orders of magnitude
-  # slower which leads to a noticeable delay.
+  # We check if the package.json file contains an appropriate script. We use
+  # grep for this. The check is not 100% bulletproof, but it's very close. We
+  # could've used `npm run` to get the authorative list of the scripts but
+  # invoking `npm` is two orders of magnitude slower which leads to a
+  # noticeable delay.
   if ! grep -q "^[[:space:]]*\"${node_action}\":" package.json; then
     return 0
   fi
-  if [ -f yarn.lock ]; then
-    execute "yarn $node_action"
-  else
-    execute "npm $node_action"
-  fi
+  execute "$tool $node_action"
   exit 0
 }
 
@@ -233,9 +234,7 @@ run_go() {
 # End of list of tools
 
 detect_and_run() {
-  if detect_nodejs; then
-    run_nodejs
-  fi
+  try_nodejs
   try_cargo
   try_stack
   # The remaining options has not been updated to support actions other than

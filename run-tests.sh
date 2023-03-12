@@ -135,6 +135,12 @@ if describe "nodejs"; then
     do_test_in "npm-without-test"; assert
     assertEqual "$RUN_RESULT" "make test"
   fi
+  if it "can print tool"; then
+    do_print_tool_in "npm"; assert
+    assertEqual "$RUN_RESULT" "npm"
+    do_print_tool_in "yarn"; assert
+    assertEqual "$RUN_RESULT" "yarn"
+  fi
 fi
 
 if describe "make"; then

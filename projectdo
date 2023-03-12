@@ -28,8 +28,8 @@ has_command() {
   command -v "$1" >/dev/null 2>&1
 }
 
-# When running the appropriate external tool this function is used which runs
-# the given command while respecting $QUIET and $DRY_RUN.
+# When running the appropriate external tool this function is used which
+# evaluates the given command while respecting $QUIET and $DRY_RUN.
 execute() {
   if [ $QUIET = false ]; then
     echo $1
@@ -45,8 +45,8 @@ execute() {
 
 # Every supported tool requires two functions:
 #
-# 1/ A `detect_foo` function that returns 0 if the `foo` tool should be used to
-#   run tests.
+# 1/ A `detect_foo` function that returns 0 if the `foo` tool might be
+#    appropriate in the current directory.
 # 2/ A `run_foo` function that executes tests using the `foo` tool.
 #
 # Alternatively if separating detection and running is problematic then a
@@ -95,6 +95,7 @@ detect_cargo() {
 
 run_cargo() {
   execute "cargo $ACTION"
+  exit
 }
 
 # CMake
@@ -228,28 +229,32 @@ detect_and_run() {
   fi
   if detect_cargo; then
     run_cargo
-    exit
-  elif detect_cmake; then
-    run_cmake
-    exit
-  elif detect_stack; then
-    run_stack
-    exit
-  elif detect_maven; then
-    run_maven
-    exit
-  elif detect_lein; then
-    run_lein
-    exit
   fi
-  detect_run_makefile
-  if detect_python; then
-    run_python
-    exit
-  fi
-  if detect_go; then
-    run_go
-    exit
+  # The remaining options has not been updated to support actions other than
+  # `test`.
+  if [ $ACTION = test ]; then
+    if detect_cmake; then
+      run_cmake
+      exit
+    elif detect_stack; then
+      run_stack
+      exit
+    elif detect_maven; then
+      run_maven
+      exit
+    elif detect_lein; then
+      run_lein
+      exit
+    fi
+    detect_run_makefile
+    if detect_python; then
+      run_python
+      exit
+    fi
+    if detect_go; then
+      run_go
+      exit
+    fi
   fi
 }
 
@@ -287,7 +292,8 @@ Options:
   -v, --version          Display the version of the program (which is $VERSION).
 
 Actions:
-  build, run, test       Build, run, or test the current project"
+  build, run, test       Build, run, or test the current project.
+  print-tool             Output the guessed tool for the current project."
 }
 
 # Main execution starts here
@@ -314,14 +320,21 @@ done
 
 shift $((OPTIND-1)) # Shift away the parsed option arguments
 
-if [ "$1" = "test" ] || [ "$1" = "run" ] || [ "$1" = "build" ]; then
+if [ "$1" = "test" ] ||
+   [ "$1" = "run" ] ||
+   [ "$1" = "build" ] ||
+   [ "$1" = "print-tool" ]; then
   ACTION=$1
 else
   if [ -z "$1" ]; then
-    echo "No action specified. The valid actions are: build, run, test"
+    echo "No action specified."
   else
-    echo "$1 is not a valid action. The valid actions are: build, run, test"
+    echo "$1 is not a valid action."
   fi
+  echo ""
+  echo "The valid actions are: build, run, test, print-tool"
+  echo ""
+  echo "Example: projectdo test"
   exit 1
 fi
 

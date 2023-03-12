@@ -89,6 +89,10 @@ if describe "cargo"; then
     do_test_in "cargo"; assert
     assertEqual "$RUN_RESULT" "cargo test"
   fi
+  if it "can print tool"; then
+    do_print_tool_in "cargo"; assert
+    assertEqual "$RUN_RESULT" "cargo"
+  fi
 fi
 
 if describe "stack"; then

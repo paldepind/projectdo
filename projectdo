@@ -93,13 +93,15 @@ run_nodejs() {
 
 # Rust + Cargo
 
-detect_cargo() {
-  [ -f Cargo.toml ]
-}
-
-run_cargo() {
-  execute "cargo $ACTION"
-  exit
+try_cargo() {
+  if [ -f Cargo.toml ]; then
+    if $IS_PRINT; then
+      echo "cargo"
+    else
+      execute "cargo $ACTION"
+    fi
+    exit
+  fi
 }
 
 # CMake
@@ -234,9 +236,7 @@ detect_and_run() {
   if detect_nodejs; then
     run_nodejs
   fi
-  if detect_cargo; then
-    run_cargo
-  fi
+  try_cargo
   try_stack
   # The remaining options has not been updated to support actions other than
   # `test`.

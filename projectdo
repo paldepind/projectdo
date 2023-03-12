@@ -74,9 +74,11 @@ run_nodejs() {
     node_action="start"
   fi
   # We found a package.json file, let's see if it contains an appropriate
-  # script. We use npm for this even though we might end up running the action
-  # with yarn as yarn's run command behaves differently.
-  if ! npm run | grep -q "^[[:space:]]*${node_action}\$"; then
+  # script. We use grep for this, the check is not 100% bulletproof, but it's
+  # very close. We could've used `npm run` to get the authorative list of the
+  # scripts in the package.json, but invoking `npm` is two orders of magnitude
+  # slower which leads to a noticeable delay.
+  if ! grep -q "^[[:space:]]*\"${node_action}\":" package.json; then
     return 0
   fi
   if [ -f yarn.lock ]; then

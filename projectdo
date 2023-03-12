@@ -270,7 +270,7 @@ set_project_root() {
   # Check if git exists on the system.
   if has_command "git"; then
     # Find the root of the git repository if we are inside one.
-    PROJECT_ROOT=$(git rev-parse --show-toplevel 2> /dev/null)
+    PROJECT_ROOT=$(git rev-parse --show-superproject-working-tree --show-toplevel 2> /dev/null | head -n 1)
     if [ $? -ne 0 ]; then
       # We are not in a git repository
       PROJECT_ROOT=$HOME

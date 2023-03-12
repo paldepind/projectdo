@@ -2,23 +2,24 @@
 
 # `projectdo`
 
-Universal build, run, and test commands that works in any project.
+Universal project commands that invoke the appropriate tool in any project.
 
-Commbined shell aliases `projectdo` makes it easier to build, run, and test
-from the command line.
+Commbined with shell aliases `projectdo` makes it easier to build, run, and
+test from the command line.
 
 ```sh
+../any-project> b
+# runs `cargo build` in a Rust project, `npm build` in a NodeJS project, etc.
+../any-project> r
+# runs `cargo run` in a Rust project, `npm start` in a NodeJS project, etc.
 ../any-project> t
-# runs `cargo test` in a Rust project
-# runs `npm test` in a NodeJS project
-# runs `stack test` in a Haskell project
-# ... etc.
+# runs `cargo test` in a Rust project, `npm test` in a NodeJS project, etc.
 ```
 
 ## What
 
 `projectdo` is a portable shell script that automatically detects the
-appropriate build, run, and test command to run in the nearest project root
+appropriate build, run, and test command to perform in the nearest project root
 relative to where it is executed. For instance, it detects a Rust project based
 on the presence of a `Cargo.toml` file and then runs `cargo build/run/test`,
 etc.
@@ -37,6 +38,7 @@ write.
   be run.
 * Works with many different programming languages and project configurations.
   [See the entire list here](#supported-tools-and-languages).
+* Supports 10+ tools accross many different programming languages.
 * Easy to extend with support for new tools.
 
 ## Install
@@ -78,16 +80,18 @@ alias b='projectdo build'
 only prints information about what it would do without actually doing anything.
 It is a good idea to do a dry run when using `projectdo` in a project for the
 first time to verify that it does the right thing.
+
 ```
 Usage: projectdo [options] [action]
 Options:
   -h, --help             Display this help.
   -n, -d, --dry-run      Do not execute any commands with side-effects.
   -q, --quiet            Do not print commands as they are about to be executed.
-  -v, --version          Display the version of the program (which is 0.2.0).
+  -v, --version          Display the version of the program.
 
 Actions:
-  build, run, test       Build, run, or test the current project
+  build, run, test       Build, run, or test the current project.
+  print-tool             Output the guessed tool for the current project.
 ```
 
 ## Supported tools and languages
@@ -95,17 +99,17 @@ Actions:
 **Note:** If a tool you are interested in is not supported please open an issue or a pull
 request.
 
-| Tool      | Language         | Detected by                                       | Commands                                           |
-|-----------|------------------|---------------------------------------------------|----------------------------------------------------|
-| Cargo     | Rust             | `Cargo.toml`                                      | `cargo build` <br/> `cargo run` <br/> `cargo test` |
-| Poetry    | Python           | `pyproject.toml` with `[tool.poetry]`             | `poetry run pytest`                                |
-| CMake     | C/C++/Obj-C      | `CMakeLists.txt`                                  | `cmake --build . --target test`                    |
-| npm       | JavaScript, etc. | `package.json` with `test` script                 | `npm build` <br/> `npm start` <br/> `npm test`     |
-| yarn      | JavaScript, etc. | `package.json` with `test` script and `yarn.lock` | `yarn build` <br/> `yarn start` <br/> `yarn test`  |
-| Maven     | Java, etc.       | `pom.xml`                                         | `mvn test`                                         |
-| Leiningen | Clojure          | `project.clj`                                     | `lein test`                                        |
-| Stack     | Haskell          | `stack.yaml`                                      | `stack test`                                       |
-| make      | Any              | `Makefile` with a `test`/`check` target           | `make test/check`                                  |
-| Mage      | Go               | `magefile.go` with a `test`/`check` target        | `mage test/check`                                  |
-| Go        | Go               | `go.mod`                                          | `go test`                                          |
+| Tool      | Language         | Detected by                                | Commands                                           |
+|-----------|------------------|--------------------------------------------|----------------------------------------------------|
+| Cargo     | Rust             | `Cargo.toml`                               | `cargo build` <br/> `cargo run` <br/> `cargo test` |
+| Poetry    | Python           | `pyproject.toml` with `[tool.poetry]`      | `poetry run pytest`                                |
+| CMake     | C/C++/Obj-C      | `CMakeLists.txt`                           | `cmake --build . --target test`                    |
+| npm       | JavaScript, etc. | `package.json`                             | `npm build` <br/> `npm start` <br/> `npm test`     |
+| yarn      | JavaScript, etc. | `package.json` and `yarn.lock`             | `yarn build` <br/> `yarn start` <br/> `yarn test`  |
+| Maven     | Java, etc.       | `pom.xml`                                  | `mvn test`                                         |
+| Leiningen | Clojure          | `project.clj`                              | `lein test`                                        |
+| Stack     | Haskell          | `stack.yaml`                               | `stack build` <br/> `stack run` <br/> `stack test` |
+| make      | Any              | `Makefile` with a `test`/`check` target    | `make test/check`                                  |
+| Mage      | Go               | `magefile.go` with a `test`/`check` target | `mage test/check`                                  |
+| Go        | Go               | `go.mod`                                   | `go test`                                          |
 

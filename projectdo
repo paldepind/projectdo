@@ -107,15 +107,14 @@ try_cargo() {
 
 # CMake
 
-detect_cmake() {
-  [ -f CMakeLists.txt ]
-}
-
-run_cmake() {
-  if [ -f build ]; then
-    execute "cmake --build build --target test"
-  else
-    execute "cmake --build . --target test"
+try_cmake() {
+  if [ -f CMakeLists.txt ] && [ $ACTION = test ]; then
+    if [ -f build ]; then
+      execute "cmake --build build --target test"
+    else
+      execute "cmake --build . --target test"
+    fi
+    exit
   fi
 }
 
@@ -134,22 +133,18 @@ try_stack() {
 
 # Maven
 
-detect_maven() {
-  [ -f pom.xml ]
-}
-
-run_maven() {
-  execute "mvn test"
+try_maven() {
+  if [ -f pom.xml ] && [ $ACTION = test ]; then
+    execute "mvn test"
+  fi
 }
 
 # Clojure + Leiningen
 
-detect_lein() {
-  [ -f project.clj ]
-}
-
-run_lein() {
-  execute "lein test"
+try_lein() {
+  if [ -f project.clj ] && [ $ACTION = test ]; then
+    execute "lein test"
+  fi
 }
 
 # Makefile
@@ -172,19 +167,21 @@ has_make_target() {
     return 0
 }
 
-detect_run_makefile() {
+try_makefile() {
   if [ -f Makefile ]; then
     if ! has_command "make"; then
       echo "Found a Makefile but 'make' is not installed."
       exit 1
     fi
     # We found a Makefile, let's see if it contains a test target.
-    if has_make_target "test"; then
-      execute "make test"
-      exit
-    elif has_make_target "check"; then
-      execute "make check"
-      exit
+    if [ $ACTION = test ]; then
+      if has_make_target "test"; then
+        execute "make test"
+        exit
+      elif has_make_target "check"; then
+        execute "make check"
+        exit
+      fi
     fi
   fi
   return 1
@@ -192,43 +189,39 @@ detect_run_makefile() {
 
 # Python
 
-detect_python() {
-  [ -f pyproject.toml ]
-}
-
-run_python() {
-  if grep -q -m 1 "^\[tool.poetry\]$" pyproject.toml; then
-    # TODO: There are other Python test frameworks, it would be nice to detect
-    # and run the right one.
-    execute "poetry run pytest"
-    exit
-  else
-    echo "Found a pyproject.toml file but t is not sure how to run it."
+try_python() {
+  if [ -f pyproject.toml ] && [ $ACTION = test ]; then
+    if grep -q -m 1 "^\[tool.poetry\]$" pyproject.toml; then
+      # TODO: There are other Python test frameworks, it would be nice to
+      # detect and run the right one.
+      execute "poetry run pytest"
+      exit
+    else
+      echo "Found a pyproject.toml file but t is not sure how to run it."
+    fi
+    return 1
   fi
-  return 1
 }
 
 # Go
 
-detect_go() {
-  [ -f go.mod ]
-}
+try_go() {
+  if [ -f go.mod ] && [ $ACTION = test ]; then
+    # We detect Makefiles before we detect Go, so here we know that the Go
+    # project is _not_ tested by a Makefile.
 
-run_go() {
-  # We detect Makefiles before we detect Go, so here we know that the Go
-  # project is _not_ tested by a Makefile.
-
-  # Check if the project uses Mage. A magefile could in theory have any name,
-  # but `magefile.go` seems to be the convention.
-  if grep -q -m 1 '^func Check(' magefile.go; then
-    execute "mage check"
-    return 0
-  elif grep -q -m 1 '^func Test(' magefile.go; then
-    execute "mage test"
-    return 0
+    # Check if the project uses Mage. A magefile could in theory have any name,
+    # but `magefile.go` seems to be the convention.
+    if grep -q -m 1 '^func Check(' magefile.go; then
+      execute "mage check"
+      exit
+    elif grep -q -m 1 '^func Test(' magefile.go; then
+      execute "mage test"
+      exit
+    fi
+    execute "go test"
+    exit
   fi
-  execute "go test"
-  return 0
 }
 
 # End of list of tools
@@ -237,29 +230,12 @@ detect_and_run() {
   try_nodejs
   try_cargo
   try_stack
-  # The remaining options has not been updated to support actions other than
-  # `test`.
-  if [ $ACTION = test ]; then
-    if detect_cmake; then
-      run_cmake
-      exit
-    elif detect_maven; then
-      run_maven
-      exit
-    elif detect_lein; then
-      run_lein
-      exit
-    fi
-    detect_run_makefile
-    if detect_python; then
-      run_python
-      exit
-    fi
-    if detect_go; then
-      run_go
-      exit
-    fi
-  fi
+  try_cmake
+  try_maven
+  try_lein
+  try_makefile
+  try_python
+  try_go
 }
 
 set_project_root() {

@@ -200,14 +200,24 @@ try_makefile() {
 # Python
 
 try_python() {
-  if [ -f pyproject.toml ] && [ $ACTION = test ]; then
+  if [ -f pyproject.toml ]; then
     if grep -q -m 1 "^\[tool.poetry\]$" pyproject.toml; then
-      # TODO: There are other Python test frameworks, it would be nice to
-      # detect and run the right one.
-      execute "poetry run pytest"
-      exit
+      case $ACTION in
+        build)
+          execute "poetry build"
+          exit ;;
+        test)
+          # TODO: There are other Python test frameworks, it would be nice to
+          # detect and run the right one.
+          execute "poetry run pytest"
+          exit ;;
+        run)
+          echo "projectdo does not know how to run a project with Poetry."
+          exit
+      esac
     else
-      echo "Found a pyproject.toml file but t is not sure how to run it."
+      echo "Found a pyproject.toml file but projectdo is not sure how to run it."
+      exit
     fi
     return 1
   fi

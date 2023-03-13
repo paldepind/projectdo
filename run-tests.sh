@@ -166,6 +166,10 @@ if describe "go"; then
 fi
 
 if describe "python"; then
+  if it "can build with poetry"; then
+    do_build_in "poetry"; assert
+    assertEqual "$RUN_RESULT" "poetry build"
+  fi
   if it "runs pytest with poetry"; then
     do_test_in "poetry"; assert
     assertEqual "$RUN_RESULT" "poetry run pytest"

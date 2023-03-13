@@ -134,8 +134,18 @@ try_stack() {
 # Maven
 
 try_maven() {
-  if [ -f pom.xml ] && [ $ACTION = test ]; then
-    execute "mvn test"
+  if [ -f pom.xml ]; then
+    case $ACTION in
+      build)
+        execute "mvn compile"
+        exit ;;
+      test)
+        execute "mvn test"
+        exit ;;
+      run)
+        echo "projectdo does not know how to run a project with Maven."
+        exit
+    esac
   fi
 }
 

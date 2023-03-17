@@ -72,7 +72,7 @@ do_test_in() {
 }
 
 do_print_tool_in() {
-  RUN_RESULT=$(cd tests/$1 && ../../projectdo print-tool)
+  RUN_RESULT=$(cd tests/$1 && ../../projectdo -n tool)
   RUN_EXIT=$?
 }
 

@@ -23,7 +23,7 @@ QUIET=false
 DRY_RUN=false
 PROJECT_ROOT="${PROJECT_ROOT:-}"
 ACTION=""
-IS_PRINT=false # True if ACTION is print-tool as this action is somewhat
+IS_TOOL=false # True if ACTION is 'tool' as this action is somewhat
                # special.
 
 has_command() {
@@ -49,7 +49,7 @@ execute() {
 # indicating what tool the function tries to detect. The function should:
 #
 # * Return if it does not detect that the tool is appropriate.
-# * Read the variables `ACTION` and `IS_PRINT` to determine the correct action
+# * Read the variables `ACTION` and `IS_TOOL` to determine the correct action
 #   to run.
 # * When running an action is should use the `execute` function and _exit_ when
 #   it is done.
@@ -71,8 +71,8 @@ try_nodejs() {
     echo "Found a package.json file but '$tool' is not installed."
     exit 1
   fi
-  if $IS_PRINT; then
-    echo $tool
+  if $IS_TOOL; then
+    execute $tool
     exit
   fi
   local node_action=$ACTION
@@ -96,8 +96,8 @@ try_nodejs() {
 
 try_cargo() {
   if [ -f Cargo.toml ]; then
-    if $IS_PRINT; then
-      echo "cargo"
+    if $IS_TOOL; then
+      execute "cargo"
     else
       execute "cargo $ACTION"
     fi
@@ -122,8 +122,8 @@ try_cmake() {
 
 try_stack() {
   if [ -f package.yaml -a -f stack.yaml ]; then
-    if $IS_PRINT; then
-      echo "stack"
+    if $IS_TOOL; then
+      execute "stack"
     else
       execute "stack $ACTION"
     fi
@@ -293,7 +293,7 @@ Options:
 
 Actions:
   build, run, test       Build, run, or test the current project.
-  print-tool             Output the guessed tool for the current project."
+  tool                   Invoke the guessed tool for the current project."
 }
 
 # Main execution starts here
@@ -323,10 +323,10 @@ shift $((OPTIND-1)) # Shift away the parsed option arguments
 if [ "$1" = "test" ] ||
    [ "$1" = "run" ] ||
    [ "$1" = "build" ] ||
-   [ "$1" = "print-tool" ]; then
+   [ "$1" = "tool" ]; then
   ACTION=$1
-  if [ "$1" = "print-tool" ]; then
-    IS_PRINT=true
+  if [ "$1" = "tool" ]; then
+    IS_TOOL=true
   fi
 else
   if [ -z "$1" ]; then
@@ -335,7 +335,7 @@ else
     echo "$1 is not a valid action."
   fi
   echo ""
-  echo "The valid actions are: build, run, test, print-tool"
+  echo "The valid actions are: build, run, test, tool"
   echo ""
   echo "Example: projectdo test"
   exit 1

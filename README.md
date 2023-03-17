@@ -4,8 +4,8 @@
 
 Universal project commands that invoke the appropriate tool in any project.
 
-Commbined with shell aliases `projectdo` makes it easier to build, run, and
-test from the command line.
+Combined with shell aliases `projectdo` makes it easier to build, run, and test
+from the command line.
 
 ```sh
 ../any-project> b
@@ -27,7 +27,7 @@ etc.
 By combining `projectdo` with shell aliases you can swiftly build, run, and
 test in any project by typing only <kbd>b</kbd>+<kbd>enter</kbd>,
 <kbd>r</kbd>+<kbd>enter</kbd>, <kbd>t</kbd>+<kbd>enter</kbd>. Treat it as a
-key-stroke saving short-cut that always expands to the command you want to
+keystroke saving short-cut that always expands to the command you want to
 write.
 
 ## Features
@@ -36,9 +36,8 @@ write.
   Linux, macOS, WSL, etc.
 * Provides helpful error messages in case command are not available or cannot
   be run.
-* Works with many different programming languages and project configurations.
-  [See the entire list here](#supported-tools-and-languages).
-* Supports 10+ tools accross many different programming languages.
+* Supports 10+ tools across many programming languages and project
+  configurations. [See the entire list here](#supported-tools-and-languages).
 * Easy to extend with support for new tools.
 
 ## Install

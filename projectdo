@@ -165,8 +165,10 @@ has_make_target() {
 
     # If there is a file with the name of the target we're looking for but no
     # actual target with that name, make will exit successfully with that
-    # message. We need to consider that case as a "target not found".
-    if [ "${output}" = "make: Nothing to be done for '${target}'." ]; then
+    # message. We need to consider that case as a "target not found". Note that
+    # the way the target is quoted in the output (`test' vs 'test') can differ
+    # across OSes so we only check a prefix up to the problematic quotes.
+    if expr "$output" : "make: Nothing to be done for" 1> /dev/null; then
         return 1
     fi
 

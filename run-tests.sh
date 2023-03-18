@@ -150,7 +150,7 @@ if describe "make"; then
   fi
   if it "ignores file named check"; then
     do_test_in "make-check-with-check-file"; assertFails
-    assertEqual "$RUN_RESULT" "No tests found :'("
+    assertEqual "$RUN_RESULT" "No way to test found :'("
   fi
   if it "finds check target if both target and file named check"; then
     do_test_in "make-check-with-check-file-and-target"; assert

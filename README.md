@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/paldepind/tst.svg?branch=master)](https://travis-ci.com/paldepind/tst)
+[![CI](https://github.com/paldepind/projectdo/actions/workflows/makefile.yml/badge.svg)](https://github.com/paldepind/projectdo/actions/workflows/makefile.yml)
 
 # `projectdo`
 

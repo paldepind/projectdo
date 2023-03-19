@@ -2,43 +2,49 @@
 
 # `projectdo`
 
-Universal project commands that invoke the appropriate tool in any project.
+Universal context-aware project commands that can build, run, and test any
+project.
 
-Combined with shell aliases `projectdo` makes it easier to build, run, and test
-from the command line.
+Combined with shell aliases or shell abbreviations `projectdo` makes it easy
+to build, run, and test from the command line.
 
 ```sh
-../any-project> b
-# runs `cargo build` in a Rust project, `npm build` in a NodeJS project, etc.
-../any-project> r
-# runs `cargo run` in a Rust project, `npm start` in a NodeJS project, etc.
-../any-project> t
-# runs `cargo test` in a Rust project, `npm test` in a NodeJS project, etc.
+../any-project> b # alias for `projectdo build`
+# runs `cargo build`, `npm build`, `make`, etc. depending on the project
+../any-project> r # alias for `projectdo run`
+# runs `cargo run`, `npm start`, etc. depending on the project
+../any-project> t # alias for `projectdo test`
+# runs `cargo test`, `npm test`, `make check`, etc. depending on the project
 ```
 
 ## What
 
 `projectdo` is a portable shell script that automatically detects the
-appropriate build, run, and test command to perform in the nearest project root
-relative to where it is executed. For instance, it detects a Rust project based
-on the presence of a `Cargo.toml` file and then runs `cargo build/run/test`,
-etc.
+appropriate project/build tool in the nearest project root relative to where it
+is executed. It can invoke this tool to build, run, or test the project or pass
+arbitrary commands to the tool.
 
-By combining `projectdo` with shell aliases you can swiftly build, run, and
-test in any project by typing only <kbd>b</kbd>+<kbd>enter</kbd>,
-<kbd>r</kbd>+<kbd>enter</kbd>, <kbd>t</kbd>+<kbd>enter</kbd>. Treat it as a
-keystroke saving short-cut that always expands to the command you want to
-write.
+For instance, it detects a Rust project based on the presence of a `Cargo.toml`
+file and `projectdo run` then executes `cargo run`. If, on the other hand, a
+`package.json` file is present then `projectdo run` executes `npm start`.
+
+By combining `projectdo` with shell aliases or shell abbreviations project
+commands can be run in any project with less typing. For instance, with the
+alias `alias b='projectdo build'` one can build any project simply by typing
+<kbd>b</kbd>+<kbd>enter</kbd>. Treat it as a keystroke saving short-cut that
+always expands to the command you want to write.
 
 ## Features
 
-* Implemented as a dependency free portable POSIX shell script that works on
-  Linux, macOS, WSL, etc.
-* Provides helpful error messages in case command are not available or cannot
-  be run.
-* Supports 10+ tools across many programming languages and project
-  configurations. [See the entire list here](#supported-tools-and-languages).
-* Easy to extend with support for new tools.
+* **Portable** – Implemented as a dependency free portable POSIX shell script
+  that works on Linux, macOS, WSL, etc.
+* **Shell Integration** – Ships with shell integration for the Fish shell.
+* **Helpful** – Provides helpful error messages in case command are not
+  available or cannot be run.
+* **Supports Many Tools** – Supports 10+ tools across many programming
+  languages and project configurations. [See the entire list
+  here](#supported-tools-and-languages).
+* **Simple** – Easy to extend with support for new tools.
 
 ## Install
 
@@ -63,14 +69,42 @@ If `~/bin` is in your path you can now run `projectdo`.
 
 <!-- This automatically adds `t` to your path. -->
 
-## Shell configuration
+## Shell integration
 
-It is recommended that you set up shell aliases. Here are some ideas:
+### Fish integration
+
+`projectdo` ships with integration for Fish. The integration includes
+auto-completion and functions for use with Fish's abbreviation feature.
+
+The Fish integration can be installed manually or with
+[Fisher](https://github.com/jorgebucaran/fisher):
+
+```
+fisher install paldepind/projectdo
+```
+
+Afterwards abbreviations should be configured as desired. For instance:
+
+```
+abbr -a b --function projectdo_build
+abbr -a s --function projectdo_run
+abbr -a t --function projectdo_test
+abbr -a p --function projectdo_tool
+```
+
+With the above `t` will expand to `cargo test`, `p` will expand to `cargo`,
+etc. depending on the project.
+
+### Aliases
+
+`projectdo` can be configured with shell aliases. These work in any shell. For
+instance:
 
 ```sh
 alias t='projectdo test'
 alias r='projectdo run'
 alias b='projectdo build'
+alias p='projectdo tool'
 ```
 
 ## Usage
@@ -90,7 +124,7 @@ Options:
 
 Actions:
   build, run, test       Build, run, or test the current project.
-  print-tool             Output the guessed tool for the current project.
+  tool                   Invoke the guessed tool for the current project."
 ```
 
 ## Supported tools and languages

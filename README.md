@@ -1,12 +1,11 @@
 [![CI](https://github.com/paldepind/projectdo/actions/workflows/makefile.yml/badge.svg)](https://github.com/paldepind/projectdo/actions/workflows/makefile.yml)
 
-# `projectdo`
+<p align="center">
+  <img src="logo.png" height="103" alt="projectdo" /><br/> 
+  Context-aware single-letter project commands to speed up your terminal workflow.
+</p>
 
-Universal context-aware project commands that can build, run, and test any
-project.
-
-Combined with shell aliases or shell abbreviations `projectdo` makes it easy
-to build, run, and test from the command line.
+<!-- Universal single-letter project commands that work everywhere. -->
 
 ```sh
 ../any-project> b # alias for `projectdo build`
@@ -17,34 +16,28 @@ to build, run, and test from the command line.
 # runs `cargo test`, `npm test`, `make check`, etc. depending on the project
 ```
 
+* **Supports 10+ tools and programming languages** – [See the entire list
+  here](#supported-tools-and-languages).
+* **Portable** – Dependency free portable POSIX shell script. Supports Linux,
+  macOS, WSL, etc.
+* **Shell Integration** – Shell integration for the Fish shell.
+* **Simple** – Easy to extend with support for new tools.
+
 ## What
 
-`projectdo` is a portable shell script that automatically detects the
-appropriate project/build tool in the nearest project root relative to where it
-is executed. It can invoke this tool to build, run, or test the project or pass
-arbitrary commands to the tool.
+`projectdo` is a terminal program that executes project actions (such as build,
+run, test, etc.) with the _appropriate tool_ in the _current project_. The
+appropriate tool and the current project root is intelligently detected based
+on the context where `projectdo` is executed.
 
-For instance, it detects a Rust project based on the presence of a `Cargo.toml`
-file and `projectdo run` then executes `cargo run`. If, on the other hand, a
-`package.json` file is present then `projectdo run` executes `npm start`.
+For instance, `projectdo test` tests the current project. If a `Cargo.toml` is
+found then `cargo test` is executed, if a `package.json` file is found then
+`npm test` is executed, and so on.
 
 By combining `projectdo` with shell aliases or shell abbreviations project
 commands can be run in any project with less typing. For instance, with the
 alias `alias b='projectdo build'` one can build any project simply by typing
-<kbd>b</kbd>+<kbd>enter</kbd>. Treat it as a keystroke saving short-cut that
-always expands to the command you want to write.
-
-## Features
-
-* **Portable** – Implemented as a dependency free portable POSIX shell script
-  that works on Linux, macOS, WSL, etc.
-* **Shell Integration** – Ships with shell integration for the Fish shell.
-* **Helpful** – Provides helpful error messages in case command are not
-  available or cannot be run.
-* **Supports Many Tools** – Supports 10+ tools across many programming
-  languages and project configurations. [See the entire list
-  here](#supported-tools-and-languages).
-* **Simple** – Easy to extend with support for new tools.
+<kbd>b</kbd>+<kbd>enter</kbd>.
 
 ## Install
 
@@ -130,6 +123,7 @@ Actions:
 ## Supported tools and languages
 
 **Note:** If a tool you are interested in is not supported please open an issue or a pull
+
 request.
 
 | Tool      | Language         | Detected by                                | Commands                                               |

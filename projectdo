@@ -127,6 +127,15 @@ try_stack() {
   fi
 }
 
+# Haskell + Cabal
+
+try_cabal() {
+  cabal_file="$(find ./ -maxdepth 1 -name "*.cabal" 2> /dev/null | wc -l)"
+  if [ "$cabal_file" -gt 0 ] && [ ! -f stack.yml ]; then
+    execute_command cabal "$ACTION"
+  fi
+}
+
 # Maven
 
 try_maven() {
@@ -248,6 +257,7 @@ detect_and_run() {
   try_nodejs
   try_cargo
   try_stack
+  try_cabal
   try_cmake
   try_maven
   try_lein

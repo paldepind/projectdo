@@ -135,6 +135,7 @@ request.
 | yarn      | JavaScript, etc. | `package.json` and `yarn.lock`             | `yarn build` <br/> `yarn start` <br/> `yarn test`      |
 | Maven     | Java, etc.       | `pom.xml`                                  | `mvn compile` <br/> run n/a <br/> `mvn test`           |
 | Leiningen | Clojure          | `project.clj`                              | `lein test`                                            |
+| Cabal     | Haskell          | `*.cabal`                                  | `cabal build` <br/> `cabal run` <br/> `cabal test`     |
 | Stack     | Haskell          | `stack.yaml`                               | `stack build` <br/> `stack run` <br/> `stack test`     |
 | make      | Any              | `Makefile` with a `test`/`check` target    | `make test/check`                                      |
 | Mage      | Go               | `magefile.go` with a `test`/`check` target | `mage test/check`                                      |

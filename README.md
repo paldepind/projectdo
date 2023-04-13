@@ -1,20 +1,24 @@
 [![CI](https://github.com/paldepind/projectdo/actions/workflows/makefile.yml/badge.svg)](https://github.com/paldepind/projectdo/actions/workflows/makefile.yml)
 
 <p align="center">
-  <img src="logo.png" height="103" alt="projectdo" /><br/> 
+  <img src="logo.png" height="90" alt="projectdo" /><br/> 
   Context-aware single-letter project commands to speed up your terminal workflow.
 </p>
 
 <!-- Universal single-letter project commands that work everywhere. -->
 
-```sh
-../any-project> b # alias for `projectdo build`
-# runs `cargo build`, `npm build`, `make`, etc. depending on the project
-../any-project> r # alias for `projectdo run`
-# runs `cargo run`, `npm start`, etc. depending on the project
-../any-project> t # alias for `projectdo test`
-# runs `cargo test`, `npm test`, `make check`, etc. depending on the project
-```
+* `t` -- Test in any project
+* `b` -- Build/compile in any project
+* `r` -- Run/start in any project
+
+<!-- ```sh -->
+<!-- ../any-project> b # alias for `projectdo build` -->
+<!-- # runs `cargo build`, `npm build`, `make`, etc. depending on the project -->
+<!-- ../any-project> r # alias for `projectdo run` -->
+<!-- # runs `cargo run`, `npm start`, etc. depending on the project -->
+<!-- ../any-project> t # alias for `projectdo test` -->
+<!-- # runs `cargo test`, `npm test`, `make check`, etc. depending on the project -->
+<!-- ``` -->
 
 * **Supports 10+ tools and programming languages** – [See the entire list
   here](#supported-tools-and-languages).
@@ -117,7 +121,7 @@ Options:
 
 Actions:
   build, run, test       Build, run, or test the current project.
-  tool                   Invoke the guessed tool for the current project."
+  tool                   Invoke the guessed tool for the current project.
 ```
 
 ## Supported tools and languages

@@ -11,6 +11,8 @@
 * `b` -- Build/compile in any project
 * `r` -- Run/start in any project
 
+<video src="https://user-images.githubusercontent.com/521604/231857437-12c14aff-585d-4817-8f44-59b40ecc32e0.mov" width="10em" />
+
 <!-- ```sh -->
 <!-- ../any-project> b # alias for `projectdo build` -->
 <!-- # runs `cargo build`, `npm build`, `make`, etc. depending on the project -->

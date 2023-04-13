@@ -7,22 +7,13 @@
 
 <!-- Universal single-letter project commands that work everywhere. -->
 
-* `t` -- Test in any project
-* `b` -- Build/compile in any project
-* `r` -- Run/start in any project
+* `b` to build/compile any project
+* `r` to run/start any project
+* `t` to test any project
 
-<video src="https://user-images.githubusercontent.com/521604/231857437-12c14aff-585d-4817-8f44-59b40ecc32e0.mov" width="10em" />
+https://user-images.githubusercontent.com/521604/231857437-12c14aff-585d-4817-8f44-59b40ecc32e0.mov
 
-<!-- ```sh -->
-<!-- ../any-project> b # alias for `projectdo build` -->
-<!-- # runs `cargo build`, `npm build`, `make`, etc. depending on the project -->
-<!-- ../any-project> r # alias for `projectdo run` -->
-<!-- # runs `cargo run`, `npm start`, etc. depending on the project -->
-<!-- ../any-project> t # alias for `projectdo test` -->
-<!-- # runs `cargo test`, `npm test`, `make check`, etc. depending on the project -->
-<!-- ``` -->
-
-* **Supports 10+ tools and programming languages** – [See the entire list
+* **Supports 10+ build and project tools** – [See the entire list
   here](#supported-tools-and-languages).
 * **Portable** – Dependency free portable POSIX shell script. Supports Linux,
   macOS, WSL, etc.

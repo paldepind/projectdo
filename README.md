@@ -1,31 +1,33 @@
 [![CI](https://github.com/paldepind/projectdo/actions/workflows/makefile.yml/badge.svg)](https://github.com/paldepind/projectdo/actions/workflows/makefile.yml)
 
-<p align="center">
-  <img src="logo.png" height="90" alt="projectdo" /><br/> 
-  Context-aware single-letter project commands to speed up your terminal workflow.
-</p>
+<img src="logo.png" height="90" alt="projectdo" />
 
-<!-- Universal single-letter project commands that work everywhere. -->
+Context-aware single-letter project commands to speed up your terminal workflow.
 
 * `b` to build/compile any project
 * `r` to run/start any project
 * `t` to test any project
 
-https://user-images.githubusercontent.com/521604/231857437-12c14aff-585d-4817-8f44-59b40ecc32e0.mov
+<!-- For some reason putthing the video in a p tag causes GitHub to render the
+video in a nicer box -->
+<p>
+  <video src="https://user-images.githubusercontent.com/521604/231857437-12c14aff-585d-4817-8f44-59b40ecc32e0.mov" />
+</p>
 
 * **Supports 10+ build and project tools** – [See the entire list
   here](#supported-tools-and-languages).
 * **Portable** – Dependency free portable POSIX shell script. Supports Linux,
   macOS, WSL, etc.
-* **Shell Integration** – Shell integration for the Fish shell.
+* **Shell Integration** – Shell integration for the Fish shell through a [Fish
+  shell](#fish-integration) plugin.
 * **Simple** – Easy to extend with support for new tools.
 
 ## What
 
-`projectdo` is a terminal program that executes project actions (such as build,
-run, test, etc.) with the _appropriate tool_ in the _current project_. The
-appropriate tool and the current project root is intelligently detected based
-on the context where `projectdo` is executed.
+`projectdo` is a terminal program and Fish shell plugin that executes project
+actions (such as build, run, test, etc.) with the _appropriate tool_ in the
+_current project_. The appropriate tool and the current project root is
+intelligently detected based on the context where `projectdo` is executed.
 
 For instance, `projectdo test` tests the current project. If a `Cargo.toml` is
 found then `cargo test` is executed, if a `package.json` file is found then
@@ -61,9 +63,9 @@ If `~/bin` is in your path you can now run `projectdo`.
 
 ## Shell integration
 
-### Fish integration
+### Fish Plugin
 
-`projectdo` ships with integration for Fish. The integration includes
+`projectdo` ships with a plugin for the Fish shell. The plugin includes
 auto-completion and functions for use with Fish's abbreviation feature.
 
 The Fish integration can be installed manually or with
@@ -77,7 +79,7 @@ Afterwards abbreviations should be configured as desired. For instance:
 
 ```
 abbr -a b --function projectdo_build
-abbr -a s --function projectdo_run
+abbr -a r --function projectdo_run
 abbr -a t --function projectdo_test
 abbr -a p --function projectdo_tool
 ```
@@ -87,8 +89,7 @@ etc. depending on the project.
 
 ### Aliases
 
-`projectdo` can be configured with shell aliases. These work in any shell. For
-instance:
+`projectdo` can be configured with shell aliases in any shell. For instance:
 
 ```sh
 alias t='projectdo test'

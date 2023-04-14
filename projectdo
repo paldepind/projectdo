@@ -251,6 +251,15 @@ try_go() {
   fi
 }
 
+# LaTeX
+
+try_latex() {
+  if [ -f Tectonic.toml ] && [ "$ACTION" = build ]; then
+      execute "tectonic -X build"
+      exit
+  fi
+}
+
 # End of list of tools
 
 detect_and_run() {
@@ -264,6 +273,7 @@ detect_and_run() {
   try_makefile
   try_python
   try_go
+  try_latex
 }
 
 set_project_root() {

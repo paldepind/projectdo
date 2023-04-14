@@ -176,6 +176,13 @@ if describe "python"; then
   fi
 fi
 
+if describe "latex"; then
+  if it "can build with tectonic"; then
+    do_build_in "tectonic"; assert
+    assertEqual "$RUN_RESULT" "tectonic -X build"
+  fi
+fi
+
 echo ""
 
 if [ $ANY_ERRORS = true ]; then

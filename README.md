@@ -138,4 +138,5 @@ request.
 | make      | Any              | `Makefile` with a `test`/`check` target    | `make test/check`                                      |
 | Mage      | Go               | `magefile.go` with a `test`/`check` target | `mage test/check`                                      |
 | Go        | Go               | `go.mod`                                   | `go test`                                              |
+| Tectonic  | LaTeX            | `Tectonic.toml`                            | `tectonic -X build`                                    |
 

@@ -87,7 +87,7 @@ abbr -a p --function projectdo_tool
 With the above `t` will expand to `cargo test`, `p` will expand to `cargo`,
 etc. depending on the project.
 
-_Note that you have to have the binary in your path in order for the fish plugin to work!_
+_Note that you need to have the script in your path in order for the fish plugin to work!_
 
 ### Aliases
 

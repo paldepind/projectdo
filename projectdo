@@ -190,8 +190,12 @@ try_makefile() {
       echo "Found a Makefile but 'make' is not installed."
       exit 1
     fi
-    # We found a Makefile, let's see if it contains a test target.
-    if [ "$ACTION" = test ]; then
+    if $IS_TOOL || [ "$ACTION" = build ]; then
+      # For make "build" is the default action when running `make`
+      execute "make"
+      exit
+    elif [ "$ACTION" = test ]; then
+      # Let's see if the makefile contains a test or check target
       if has_make_target "test"; then
         execute "make test"
         exit

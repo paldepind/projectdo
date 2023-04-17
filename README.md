@@ -137,7 +137,7 @@ request.
 | Leiningen | Clojure          | `project.clj`                              | `lein test`                                            |
 | Cabal     | Haskell          | `*.cabal`                                  | `cabal build` <br/> `cabal run` <br/> `cabal test`     |
 | Stack     | Haskell          | `stack.yaml`                               | `stack build` <br/> `stack run` <br/> `stack test`     |
-| make      | Any              | `Makefile` with a `test`/`check` target    | `make test/check`                                      |
+| make      | Any              | `Makefile`                                 | `make` <br/> `make test/check`                         |
 | Mage      | Go               | `magefile.go` with a `test`/`check` target | `mage test/check`                                      |
 | Go        | Go               | `go.mod`                                   | `go test`                                              |
 | Tectonic  | LaTeX            | `Tectonic.toml`                            | `tectonic -X build`                                    |

@@ -8,11 +8,7 @@ Context-aware single-letter project commands to speed up your terminal workflow.
 * `r` to run/start any project
 * `t` to test any project
 
-<!-- For some reason putthing the video in a p tag causes GitHub to render the
-video in a nicer box -->
-<p>
-  <video src="https://user-images.githubusercontent.com/521604/231857437-12c14aff-585d-4817-8f44-59b40ecc32e0.mov" />
-</p>
+https://user-images.githubusercontent.com/521604/231857437-12c14aff-585d-4817-8f44-59b40ecc32e0.mov
 
 * **Supports 10+ build and project tools** – [See the entire list
   here](#supported-tools-and-languages).
@@ -123,7 +119,6 @@ Actions:
 ## Supported tools and languages
 
 **Note:** If a tool you are interested in is not supported please open an issue or a pull
-
 request.
 
 | Tool      | Language         | Detected by                                | Commands                                               |

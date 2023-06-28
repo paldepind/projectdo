@@ -19,7 +19,7 @@ video in a nicer box -->
 * **Portable** – Dependency free portable POSIX shell script. Supports Linux,
   macOS, WSL, etc.
 * **Shell Integration** – Shell integration for the Fish shell through a [Fish
-  shell](#fish-integration) plugin.
+  shell](#fish-plugin) plugin.
 * **Simple** – Easy to extend with support for new tools.
 
 ## What
@@ -68,7 +68,7 @@ If `~/bin` is in your path you can now run `projectdo`.
 `projectdo` ships with a plugin for the Fish shell. The plugin includes
 auto-completion and functions for use with Fish's abbreviation feature.
 
-The Fish integration can be installed manually or with
+The Fish plugin can be installed manually or with
 [Fisher](https://github.com/jorgebucaran/fisher):
 
 ```

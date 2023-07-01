@@ -1,5 +1,8 @@
-[![CI](https://github.com/paldepind/projectdo/actions/workflows/makefile.yml/badge.svg)](https://github.com/paldepind/projectdo/actions/workflows/makefile.yml)
-
+<div align="right">
+  <a href="https://github.com/paldepind/projectdo/actions/workflows/makefile.yml">
+    <img src="https://github.com/paldepind/projectdo/actions/workflows/makefile.yml/badge.svg" />
+  </a>
+</div>
 <img src="logo.png" height="90" alt="projectdo" />
 
 Context-aware single-letter project commands to speed up your terminal workflow.
@@ -36,28 +39,28 @@ alias `alias b='projectdo build'` one can build any project simply by typing
 
 ## Install
 
+### Using Homebrew
+
+`projectdo` can be installed with Homebrew on macOS and Linux.
+
+```
+brew install paldepind/tap/projectdo
+```
+
 ### From source
 
-Download the script and place it somewhere in your path. For instance:
+Download the script and place it somewhere in your path. For instance if
+`~/bin` is in your path:
 
 ```
 curl https://raw.githubusercontent.com/paldepind/projectdo/master/projectdo -o ~/bin/projectdo
 chmod +x ~/bin/projectdo
 ```
 
-If `~/bin` is in your path you can now run `projectdo`.
-
-<!-- ### npm -->
-
-<!-- T For Test can be installed from npm (easy if you're already using npm). -->
-
-<!-- ``` -->
-<!-- npm i --global @paldepind/tst -->
-<!-- ``` -->
-
-<!-- This automatically adds `t` to your path. -->
-
 ## Shell integration
+
+For the Fish shell use [the Fish plugin](#fish-plugin). For Bash and Zsh setup
+[shell aliases](#aliases).
 
 ### Fish Plugin
 
@@ -71,7 +74,8 @@ The Fish plugin can be installed manually or with
 fisher install paldepind/projectdo
 ```
 
-Afterwards abbreviations should be configured as desired. For instance:
+The plugin exposes four shell functions that should be configured with
+abbreviations as desired. For instance:
 
 ```
 abbr -a b --function projectdo_build
@@ -83,7 +87,7 @@ abbr -a p --function projectdo_tool
 With the above `t` will expand to `cargo test`, `p` will expand to `cargo`,
 etc. depending on the project.
 
-_Note that you need to have the script in your path in order for the fish plugin to work!_
+_Note that you need to have the script in your path in order for the Fish plugin to work!_
 
 ### Aliases
 

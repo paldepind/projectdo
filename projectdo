@@ -285,14 +285,12 @@ set_project_root() {
     return
   fi
 
-  # Check if git exists on the system.
   if has_command git; then
-    # Find the root of the git repository if we are inside one.
+    # Find the root of the git repository if we're inside one. If we're in a
+    # git submodule then the root of the outer git repo is used. If we're not
+    # in a git repo the git command will not output anything and $PROJECT_ROOT
+    # is set to the empty string which is fine.
     PROJECT_ROOT=$(git rev-parse --show-superproject-working-tree --show-toplevel 2> /dev/null | head -n 1)
-    if [ $? -ne 0 ]; then
-      # We are not in a git repository
-      PROJECT_ROOT=$HOME
-    fi
   fi
 }
 

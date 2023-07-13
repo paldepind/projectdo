@@ -365,11 +365,11 @@ set_project_root
 
 while :
 do
-  # We don't want to do anything if we are in the home directory or above
-  case $PWD in
-    $HOME/*) detect_and_run ;; # $HOME is a proper prefix of $PWD
-    *) nothing_found ;;
-  esac
+  # We don't want to do anything if we are in the home or root directory
+  if [ "$PWD" = "$HOME" ] || [ "$PWD" = / ]; then
+    nothing_found
+  fi
+  detect_and_run
   # If we didn't detect a tool to run in this directory we go up one directory
   # while ensuring that we don't leave the project root
   if [ "$PWD" = "$PROJECT_ROOT" ]; then

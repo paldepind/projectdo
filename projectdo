@@ -23,6 +23,7 @@ QUIET=false
 DRY_RUN=false
 PROJECT_ROOT="${PROJECT_ROOT:-}"
 ACTION=""
+TOOL_ARGS="" # Arguments to pass along to the tool
 IS_TOOL=false # True if ACTION is 'tool' as this action is somewhat special.
 
 has_command() {
@@ -33,13 +34,13 @@ has_command() {
 # evaluates the given command while respecting $QUIET and $DRY_RUN.
 execute() {
   if [ $QUIET = false ]; then
-    echo "$1"
+    echo "$1" $TOOL_ARGS
   fi
   if [ $DRY_RUN = false ]; then
     if [ $QUIET = false ]; then
-      eval "$1"
+      eval "$1" $TOOL_ARGS
     else
-      eval "$1" > /dev/null
+      eval "$1" $TOOL_ARGS > /dev/null
     fi
   fi
 }
@@ -304,7 +305,7 @@ display_version() {
 }
 
 display_help() {
-  echo "Usage: $(basename "$0") [options] [action]
+  echo "Usage: $(basename "$0") [options] [action] [tool-arguments]
 Options:
   -h, --help             Display this help.
   -n, -d, --dry-run      Do not execute any commands with side-effects.
@@ -313,7 +314,10 @@ Options:
 
 Actions:
   build, run, test       Build, run, or test the current project.
-  tool                   Invoke the guessed tool for the current project."
+  tool                   Invoke the guessed tool for the current project.
+
+Tool arguments:
+  Any arguments following [action] are passed along to the invoked tool."
 }
 
 # Main execution starts here
@@ -348,6 +352,8 @@ if [ "$1" = test ] ||
   if [ "$1" = tool ]; then
     IS_TOOL=true
   fi
+  shift 1 # Remove the action from the arguments
+  TOOL_ARGS=$@
 else
   if [ -z "$1" ]; then
     echo "No action specified."

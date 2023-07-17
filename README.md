@@ -108,7 +108,7 @@ It is a good idea to do a dry run when using `projectdo` in a project for the
 first time to verify that it does the right thing.
 
 ```
-Usage: projectdo [options] [action]
+Usage: projectdo [options] [action] [tool-arguments]
 Options:
   -h, --help             Display this help.
   -n, -d, --dry-run      Do not execute any commands with side-effects.
@@ -118,6 +118,9 @@ Options:
 Actions:
   build, run, test       Build, run, or test the current project.
   tool                   Invoke the guessed tool for the current project.
+
+Tool arguments:
+  Any arguments following [action] are passed along to the invoked tool.
 ```
 
 ## Supported tools and languages

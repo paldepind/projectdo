@@ -93,6 +93,10 @@ if describe "cargo"; then
     do_print_tool_in "cargo"; assert
     assertEqual "$RUN_RESULT" "cargo"
   fi
+  if it "passes additional arguments to the tool"; then
+    RUN_RESULT=$(cd tests/cargo && ../../projectdo -n build --release)
+    assertEqual "$RUN_RESULT" "cargo build --release"
+  fi
 fi
 
 if describe "stack"; then

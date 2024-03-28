@@ -187,6 +187,17 @@ if describe "latex"; then
   fi
 fi
 
+if describe "meson"; then
+  if it "can build with meson"; then
+    do_build_in "meson"; assert
+    assertEqual "$RUN_RESULT" "meson compile"
+  fi
+  if it "can test with meson"; then
+    do_test_in "meson"; assert
+    assertEqual "$RUN_RESULT" "meson test"
+  fi
+fi
+
 echo ""
 
 if [ $ANY_ERRORS = true ]; then

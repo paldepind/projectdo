@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-VERSION="0.2.0"
+VERSION="0.2.1"
 
 # Global mutable variables.
 QUIET=false
@@ -117,6 +117,24 @@ try_cmake() {
       execute "cmake --build . --target test"
     fi
     exit
+  fi
+}
+
+# Meson
+
+try_meson() {
+  if [ -f meson.build ]; then
+    case $ACTION in
+      build)
+        execute "meson compile"
+        exit ;;
+      test)
+        execute "meson test"
+        exit ;;
+      run)
+        echo "projectdo does not know how to run a project with Meson."
+        exit
+    esac
   fi
 }
 
@@ -273,6 +291,7 @@ detect_and_run() {
   try_stack
   try_cabal
   try_cmake
+  try_meson
   try_maven
   try_lein
   try_makefile

@@ -107,19 +107,6 @@ try_cargo() {
   fi
 }
 
-# CMake
-
-try_cmake() {
-  if [ -f CMakeLists.txt ] && [ "$ACTION" = test ]; then
-    if [ -f build ]; then
-      execute "cmake --build build --target test"
-    else
-      execute "cmake --build . --target test"
-    fi
-    exit
-  fi
-}
-
 # Meson
 
 try_meson() {
@@ -135,6 +122,19 @@ try_meson() {
         echo "projectdo does not know how to run a project with Meson."
         exit
     esac
+  fi
+}
+
+# CMake
+
+try_cmake() {
+  if [ -f CMakeLists.txt ] && [ "$ACTION" = test ]; then
+    if [ -f build ]; then
+      execute "cmake --build build --target test"
+    else
+      execute "cmake --build . --target test"
+    fi
+    exit
   fi
 }
 
@@ -290,8 +290,8 @@ detect_and_run() {
   try_cargo
   try_stack
   try_cabal
-  try_cmake
   try_meson
+  try_cmake
   try_maven
   try_lein
   try_makefile

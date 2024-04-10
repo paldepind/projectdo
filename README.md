@@ -53,7 +53,7 @@ Download the script and place it somewhere in your path. For instance if
 `~/bin` is in your path:
 
 ```
-curl https://raw.githubusercontent.com/paldepind/projectdo/master/projectdo -o ~/bin/projectdo
+curl https://raw.githubusercontent.com/paldepind/projectdo/main/projectdo -o ~/bin/projectdo
 chmod +x ~/bin/projectdo
 ```
 

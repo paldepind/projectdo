@@ -118,10 +118,10 @@ if describe "stack"; then
   fi
 fi
 
-if describe "nodejs"; then
+if describe "npm and yarn"; then
   if it "can run npm build if package.json with build script"; then
     do_build_in "npm"; assert
-    assertEqual "$RUN_RESULT" "npm build"
+    assertEqual "$RUN_RESULT" "npm run build"
   fi
   if it "can run npm start if package.json with start script"; then
     do_run_in "npm"; assert

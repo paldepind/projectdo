@@ -96,7 +96,11 @@ try_nodejs() {
   if ! $IS_TOOL && ! grep -q "^[[:space:]]*\"${node_action}\":" package.json; then
     return 0
   fi
-  execute_command "$tool" "$node_action"
+  if [ "$ACTION" = build ]; then
+    execute_command "$tool" "run build"
+  else
+    execute_command "$tool" "$node_action"
+  fi
 }
 
 # Rust + Cargo

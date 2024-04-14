@@ -1,6 +1,6 @@
 {
   "name": "projectdo",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Context-aware single-letter project commands to speed up your terminal workflow.",
   "bin": {
     "projectdo": "./projectdo"

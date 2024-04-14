@@ -1,27 +1,32 @@
 {
-  "name": "@paldepind/tst",
-  "version": "0.1.0",
-  "description": "A universal test command. For running tests with fewer key-strokes.",
+  "name": "projectdo",
+  "version": "0.2.0",
+  "description": "Context-aware single-letter project commands to speed up your terminal workflow.",
   "bin": {
-    "t": "./tst",
-    "tst": "./tst"
+    "projectdo": "./projectdo"
   },
   "files": [
-    "tst"
+    "projectdo"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/paldepind/tst.git"
+    "url": "git+https://github.com/paldepind/projectdo.git"
   },
   "keywords": [
     "test",
+    "build",
+    "run",
     "cli",
+    "project",
     "command"
   ],
   "author": "Simon Friis Vindum",
   "license": "GPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/paldepind/tst/issues"
+    "url": "https://github.com/paldepind/projectdo/issues"
   },
-  "homepage": "https://github.com/paldepind/tst#readme"
+  "homepage": "https://github.com/paldepind/projectdo#readme",
+  "dependencies": {
+    "projectdo": "^0.2.0"
+  }
 }

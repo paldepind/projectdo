@@ -5,7 +5,7 @@
 </div>
 <img src="logo.png" height="90" alt="projectdo" />
 
-Context-aware single-letter project commands to speed up your terminal workflow.
+Context-aware single-letter project commands to speed up your command-line workflow.
 
 * `b` to build/compile any project
 * `r` to run/start any project
@@ -17,34 +17,54 @@ https://user-images.githubusercontent.com/521604/231857437-12c14aff-585d-4817-8f
   here](#supported-tools-and-languages).
 * **Portable** – Dependency free portable POSIX shell script. Supports Linux,
   macOS, WSL, etc.
-* **Shell Integration** – Shell integration for the Fish shell through a [Fish
-  shell](#fish-plugin) plugin.
+* **Shell Integration** – Works with aliases in any shell and for the Fish
+  shell through a [Fish shell](#fish-plugin) plugin.
 * **Simple** – Easy to extend with support for new tools.
 
 ## What
 
-`projectdo` is a terminal program and Fish shell plugin that executes project
-actions (such as build, run, test, etc.) with the _appropriate tool_ in the
-_current project_. The appropriate tool and the current project root is
-intelligently detected based on the context where `projectdo` is executed.
-
-For instance, `projectdo test` tests the current project. If a `Cargo.toml` is
-found then `cargo test` is executed, if a `package.json` file is found then
-`npm test` is executed, and so on.
+`projectdo` is a command-line program hat executes project actions (such as
+build, run, test, etc.) with the appropriate tool for current project in the
+working directory. The appropriate tool and the current project root is
+intelligently detected based on the context where `projectdo` is executed. For
+instance, `projectdo test` runs `cargo test` if a `Cargo.toml` is found and
+`npm test` if a `package.json` file is found.
 
 By combining `projectdo` with shell aliases or shell abbreviations project
-commands can be run in any project with less typing. For instance, with the
+commands can be run in any project with less typing. As an example, with the
 alias `alias b='projectdo build'` one can build any project simply by typing
 <kbd>b</kbd>+<kbd>enter</kbd>.
 
 ## Install
 
-### Using Homebrew
+`projectdo` can be installed through a number of package managers or by
+manually downloading the shell script.
+
+### Homebrew
 
 `projectdo` can be installed with Homebrew on macOS and Linux.
 
 ```
 brew install paldepind/tap/projectdo
+```
+
+### AUR (Arch Linux)
+
+The [AUR package](https://aur.archlinux.org/packages/projectdo) can be installed manually or using an AUR helper.
+
+```sh
+yay -S projectdo
+```
+
+### npm
+
+`projectdo` is not related to Node.js or JavaScript, but npm works perfectly
+fine for distributing shell scripts and can be a handy installation method if
+you're already using npm:
+
+
+```sh
+npm i -g projectdo
 ```
 
 ### From source

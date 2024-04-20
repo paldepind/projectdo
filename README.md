@@ -11,18 +11,19 @@
 
 Context-aware single-letter project commands to speed up your command-line workflow.
 
-* `b` to build/compile any project
-* `r` to run/start any project
-* `t` to test any project
+* &hairsp; 🏗 &hairsp; <kbd>b</kbd> to build/compile any project.
+* &hairsp; 🚀 &hairsp; <kbd>r</kbd> to run/start any project.
+* &hairsp; 🧪 &hairsp; <kbd>t</kbd> to test any project.
 
 https://user-images.githubusercontent.com/521604/231857437-12c14aff-585d-4817-8f44-59b40ecc32e0.mov
 
-* **Supports 10+ build and project tools** – [See the entire list
-  here](#supported-tools-and-languages).
+* **Supports 10+ build and project tools** – CMake, Cabal, Cargo, Go,
+  Leiningen, Mage, Maven, Meson, Poetry, Stack, Tectonic, make, npm, and yarn.
+  [More details](#supported-tools-and-languages).
 * **Portable** – Dependency free portable POSIX shell script. Supports Linux,
   macOS, WSL, etc.
 * **Shell Integration** – Works with aliases in any shell and for the Fish
-  shell through a [Fish shell](#fish-plugin) plugin.
+  shell through a [Fish plugin](#fish-plugin).
 * **Simple** – Easy to extend with support for new tools.
 
 ## What

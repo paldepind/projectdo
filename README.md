@@ -3,7 +3,11 @@
     <img src="https://github.com/paldepind/projectdo/actions/workflows/makefile.yml/badge.svg" />
   </a>
 </div>
-<img src="logo.png" height="90" alt="projectdo" />
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/logo-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="docs/logo-light.png">
+  <img alt="projectdo logo" src="docs/logo-light.png" height="120">
+</picture>
 
 Context-aware single-letter project commands to speed up your command-line workflow.
 

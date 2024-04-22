@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-VERSION="0.2.1"
+VERSION="0.2.2"
 
 # Global mutable variables.
 QUIET=false
@@ -287,6 +287,20 @@ try_latex() {
   fi
 }
 
+# Any / Generic
+
+try_build_script() {
+  if [ "$ACTION" = build ]; then
+    if [ -f build.sh ]; then
+      execute "sh -c build.sh"
+      exit
+    else
+      echo "Did not find build.sh script"
+      exit
+    fi
+  fi
+}
+
 # End of list of tools
 
 detect_and_run() {
@@ -302,6 +316,7 @@ detect_and_run() {
   try_python
   try_go
   try_latex
+  try_build_script
 }
 
 set_project_root() {

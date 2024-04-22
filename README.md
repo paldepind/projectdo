@@ -82,6 +82,23 @@ curl https://raw.githubusercontent.com/paldepind/projectdo/main/projectdo -o ~/b
 chmod +x ~/bin/projectdo
 ```
 
+#### From repository
+
+Clone the project repository:
+
+```sh
+git clone https://github.com/paldepind/projectdo; cd projectdo
+```
+
+Install it with this command:
+
+```sh
+make install
+
+# Or to uninstall
+make uninstall
+```
+
 ## Shell integration
 
 For the Fish shell use [the Fish plugin](#fish-plugin). For Bash and Zsh setup
@@ -153,20 +170,21 @@ Tool arguments:
 **Note:** If a tool you are interested in is not supported please open an issue or a pull
 request.
 
-| Tool      | Language         | Detected by                                | Commands                                               |
-|-----------|------------------|--------------------------------------------|--------------------------------------------------------|
-| Cargo     | Rust             | `Cargo.toml`                               | `cargo build` <br/> `cargo run` <br/> `cargo test`     |
-| Poetry    | Python           | `pyproject.toml` with `[tool.poetry]`      | `poetry build` <br/> run n/a <br/> `poetry run pytest` |
-| CMake     | C, C++ and Obj-C | `CMakeLists.txt`                           | `cmake --build . --target test`                        |
-| Meson     | C, C++, etc.     | `meson.build`                              | `meson compile` <br/> run n/a <br/> `meson test`       |
-| npm       | JavaScript, etc. | `package.json`                             | `npm build` <br/> `npm start` <br/> `npm test`         |
-| yarn      | JavaScript, etc. | `package.json` and `yarn.lock`             | `yarn build` <br/> `yarn start` <br/> `yarn test`      |
-| Maven     | Java, etc.       | `pom.xml`                                  | `mvn compile` <br/> run n/a <br/> `mvn test`           |
-| Leiningen | Clojure          | `project.clj`                              | `lein test`                                            |
-| Cabal     | Haskell          | `*.cabal`                                  | `cabal build` <br/> `cabal run` <br/> `cabal test`     |
-| Stack     | Haskell          | `stack.yaml`                               | `stack build` <br/> `stack run` <br/> `stack test`     |
-| make      | Any              | `Makefile`                                 | `make` <br/> `make test/check`                         |
-| Mage      | Go               | `magefile.go` with a `test`/`check` target | `mage test/check`                                      |
-| Go        | Go               | `go.mod`                                   | `go test`                                              |
-| Tectonic  | LaTeX            | `Tectonic.toml`                            | `tectonic -X build`                                    |
+| Tool         | Language         | Detected by                                | Commands                                               |
+|--------------|------------------|--------------------------------------------|--------------------------------------------------------|
+| Cargo        | Rust             | `Cargo.toml`                               | `cargo build` <br/> `cargo run` <br/> `cargo test`     |
+| Poetry       | Python           | `pyproject.toml` with `[tool.poetry]`      | `poetry build` <br/> run n/a <br/> `poetry run pytest` |
+| CMake        | C, C++ and Obj-C | `CMakeLists.txt`                           | `cmake --build . --target test`                        |
+| Meson        | C, C++, etc.     | `meson.build`                              | `meson compile` <br/> run n/a <br/> `meson test`       |
+| npm          | JavaScript, etc. | `package.json`                             | `npm build` <br/> `npm start` <br/> `npm test`         |
+| yarn         | JavaScript, etc. | `package.json` and `yarn.lock`             | `yarn build` <br/> `yarn start` <br/> `yarn test`      |
+| Maven        | Java, etc.       | `pom.xml`                                  | `mvn compile` <br/> run n/a <br/> `mvn test`           |
+| Leiningen    | Clojure          | `project.clj`                              | `lein test`                                            |
+| Cabal        | Haskell          | `*.cabal`                                  | `cabal build` <br/> `cabal run` <br/> `cabal test`     |
+| Stack        | Haskell          | `stack.yaml`                               | `stack build` <br/> `stack run` <br/> `stack test`     |
+| make         | Any              | `Makefile`                                 | `make` <br/> `make test/check`                         |
+| Mage         | Go               | `magefile.go` with a `test`/`check` target | `mage test/check`                                      |
+| Go           | Go               | `go.mod`                                   | `go test`                                              |
+| Tectonic     | LaTeX            | `Tectonic.toml`                            | `tectonic -X build`                                    |
+| Shell script | Any              | `build.sh`                                 | `sh -c build.sh`                                       |
 

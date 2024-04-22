@@ -34,13 +34,13 @@ has_command() {
 # evaluates the given command while respecting $QUIET and $DRY_RUN.
 execute() {
   if [ $QUIET = false ]; then
-    echo "$1" $TOOL_ARGS
+    echo "$1" "$TOOL_ARGS"
   fi
   if [ $DRY_RUN = false ]; then
     if [ $QUIET = false ]; then
-      eval "$1" $TOOL_ARGS
+      eval "$1" "$TOOL_ARGS"
     else
-      eval "$1" $TOOL_ARGS > /dev/null
+      eval "$1" "$TOOL_ARGS" > /dev/null
     fi
   fi
 }
@@ -83,7 +83,7 @@ try_nodejs() {
     echo "Found a package.json file but '$tool' is not installed."
     exit 1
   fi
-  local node_action="$ACTION"
+  node_action="$ACTION"
   # Only the "run" action need translation, the others match 1-to-1
   if [ "$ACTION" = run ]; then
     node_action=start

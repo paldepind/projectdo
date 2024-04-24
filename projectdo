@@ -34,7 +34,11 @@ has_command() {
 # evaluates the given command while respecting $QUIET and $DRY_RUN.
 execute() {
   if [ $QUIET = false ]; then
-    echo "$1" "$TOOL_ARGS"
+    if [ -z "$TOOL_ARGS" ]; then
+      printf '%s' "$1"
+    else
+      printf '%s %s' "$1" "$TOOL_ARGS"
+    fi
   fi
   if [ $DRY_RUN = false ]; then
     if [ $QUIET = false ]; then
@@ -291,11 +295,8 @@ try_latex() {
 
 try_build_script() {
   if [ "$ACTION" = build ]; then
-    if [ -f build.sh ]; then
+    if [ -f ./build.sh ]; then
       execute "sh -c build.sh"
-      exit
-    else
-      echo "Did not find build.sh script"
       exit
     fi
   fi
@@ -391,7 +392,7 @@ if [ "$1" = test ] ||
     IS_TOOL=true
   fi
   shift 1 # Remove the action from the arguments
-  TOOL_ARGS=$@
+  TOOL_ARGS=$*
 else
   if [ -z "$1" ]; then
     echo "No action specified."

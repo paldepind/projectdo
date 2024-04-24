@@ -26,22 +26,6 @@ it() {
   printf "\n  %s" "$1"
 }
 
-trim_string() {
-    # Usage: trim_string "   example   string    "
-
-    # Remove all leading white-space.
-    # '${1%%[![:space:]]*}': Strip everything but leading white-space.
-    # '${1#${XXX}}': Remove the white-space from the start of the string.
-    trim=${1#${1%%[![:space:]]*}}
-
-    # Remove all trailing white-space.
-    # '${trim##*[![:space:]]}': Strip everything but trailing white-space.
-    # '${trim%${XXX}}': Remove the white-space from the end of the string.
-    trim=${trim%${trim##*[![:space:]]}}
-
-    printf '%s' "$trim"
-}
-
 assert() {
   if [ $RUN_EXIT -eq 0 ]; then
     printf " ✓"
@@ -93,129 +77,129 @@ do_print_tool_in() {
 if describe "cargo"; then
   if it "can run build"; then
     do_build_in "cargo"; assert
-    assertEqual "$(trim_string "$RUN_RESULT")" "cargo build"
+    assertEqual "$RUN_RESULT" "cargo build"
   fi
   if it "can run run"; then
     do_run_in "cargo"; assert
-    assertEqual "$(trim_string "$RUN_RESULT")" "cargo run"
+    assertEqual "$RUN_RESULT" "cargo run"
   fi
   if it "can run test"; then
     do_test_in "cargo"; assert
-    assertEqual "$(trim_string "$RUN_RESULT")" "cargo test"
+    assertEqual "$RUN_RESULT" "cargo test"
   fi
   if it "can print tool"; then
     do_print_tool_in "cargo"; assert
-    assertEqual "$(trim_string "$RUN_RESULT")" "cargo"
+    assertEqual "$RUN_RESULT" "cargo"
   fi
   if it "passes additional arguments to the tool"; then
     RUN_RESULT=$(cd tests/cargo && ../../projectdo -n build --release)
-    assertEqual "$(trim_string "$RUN_RESULT")" "cargo build --release"
+    assertEqual "$RUN_RESULT" "cargo build --release"
   fi
 fi
 
 if describe "stack"; then
   if it "can run build"; then
     do_build_in "stack"; assert
-    assertEqual "$(trim_string "$RUN_RESULT")" "stack build"
+    assertEqual "$RUN_RESULT" "stack build"
   fi
   if it "can run run"; then
     do_run_in "stack"; assert
-    assertEqual "$(trim_string "$RUN_RESULT")" "stack run"
+    assertEqual "$RUN_RESULT" "stack run"
   fi
   if it "can run test"; then
     do_test_in "stack"; assert
-    assertEqual "$(trim_string "$RUN_RESULT")" "stack test"
+    assertEqual "$RUN_RESULT" "stack test"
   fi
   if it "can print tool"; then
     do_print_tool_in "stack"; assert
-    assertEqual "$(trim_string "$RUN_RESULT")" "stack"
+    assertEqual "$RUN_RESULT" "stack"
   fi
 fi
 
 if describe "npm and yarn"; then
   if it "can run npm build if package.json with build script"; then
     do_build_in "npm"; assert
-    assertEqual "$(trim_string "$RUN_RESULT")" "npm run build"
+    assertEqual "$RUN_RESULT" "npm run build"
   fi
   if it "can run npm start if package.json with start script"; then
     do_run_in "npm"; assert
-    assertEqual "$(trim_string "$RUN_RESULT")" "npm start"
+    assertEqual "$RUN_RESULT" "npm start"
   fi
   if it "can run npm test if package.json with test script"; then
     do_test_in "npm"; assert
-    assertEqual "$(trim_string "$RUN_RESULT")" "npm test"
+    assertEqual "$RUN_RESULT" "npm test"
   fi
   if it "uses yarn file if yarn.lock is present"; then
     do_test_in "yarn"; assert
-    assertEqual "$(trim_string "$RUN_RESULT")" "yarn test"
+    assertEqual "$RUN_RESULT" "yarn test"
   fi
   if it "does not use npm if package.json contains no test script"; then
     do_test_in "npm-without-test"; assert
-    assertEqual "$(trim_string "$RUN_RESULT")" "make test"
+    assertEqual "$RUN_RESULT" "make test"
   fi
   if it "can print tool"; then
     do_print_tool_in "npm"; assert
-    assertEqual "$(trim_string "$RUN_RESULT")" "npm"
+    assertEqual "$RUN_RESULT" "npm"
     do_print_tool_in "yarn"; assert
-    assertEqual "$(trim_string "$RUN_RESULT")" "yarn"
+    assertEqual "$RUN_RESULT" "yarn"
   fi
 fi
 
 if describe "make"; then
   if it "finds check target"; then
     do_test_in "make-check"; assert
-    assertEqual "$(trim_string "$RUN_RESULT")" "make check"
+    assertEqual "$RUN_RESULT" "make check"
   fi
   if it "ignores file named check"; then
     do_test_in "make-check-with-check-file"; assertFails
-    assertEqual "$(trim_string "$RUN_RESULT")" "No way to test found :'("
+    assertEqual "$RUN_RESULT" "No way to test found :'("
   fi
   if it "finds check target if both target and file named check"; then
     do_test_in "make-check-with-check-file-and-target"; assert
-    assertEqual "$(trim_string "$RUN_RESULT")" "make check"
+    assertEqual "$RUN_RESULT" "make check"
   fi
 fi
 
 if describe "go"; then
   if it "finds check target in magefile"; then
     do_test_in "mage"; assert
-    assertEqual "$(trim_string "$RUN_RESULT")" "mage check"
+    assertEqual "$RUN_RESULT" "mage check"
   fi
 fi
 
 if describe "python"; then
   if it "can build with poetry"; then
     do_build_in "poetry"; assert
-    assertEqual "$(trim_string "$RUN_RESULT")" "poetry build"
+    assertEqual "$RUN_RESULT" "poetry build"
   fi
   if it "runs pytest with poetry"; then
     do_test_in "poetry"; assert
-    assertEqual "$(trim_string "$RUN_RESULT")" "poetry run pytest"
+    assertEqual "$RUN_RESULT" "poetry run pytest"
   fi
 fi
 
 if describe "latex"; then
   if it "can build with tectonic"; then
     do_build_in "tectonic"; assert
-    assertEqual "$(trim_string "$RUN_RESULT")" "tectonic -X build"
+    assertEqual "$RUN_RESULT" "tectonic -X build"
   fi
 fi
 
 if describe "meson"; then
   if it "can build with meson"; then
     do_build_in "meson"; assert
-    assertEqual "$(trim_string "$RUN_RESULT")" "meson compile"
+    assertEqual "$RUN_RESULT" "meson compile"
   fi
   if it "can test with meson"; then
     do_test_in "meson"; assert
-    assertEqual "$(trim_string "$RUN_RESULT")" "meson test"
+    assertEqual "$RUN_RESULT" "meson test"
   fi
 fi
 
 if describe "build script"; then
   if it "can build with build script"; then
     do_build_in "build_script"; assert
-    assertEqual "$(trim_string "$RUN_RESULT")" "sh -c build.sh"
+    assertEqual "$RUN_RESULT" "sh -c build.sh"
   fi
 fi
 

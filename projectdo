@@ -34,17 +34,13 @@ has_command() {
 # evaluates the given command while respecting $QUIET and $DRY_RUN.
 execute() {
   if [ $QUIET = false ]; then
-    if [ -z "$TOOL_ARGS" ]; then
-      printf '%s' "$1"
-    else
-      printf '%s %s' "$1" "$TOOL_ARGS"
-    fi
+    echo "$1" $TOOL_ARGS
   fi
   if [ $DRY_RUN = false ]; then
     if [ $QUIET = false ]; then
-      eval "$1" "$TOOL_ARGS"
+      eval "$1" $TOOL_ARGS
     else
-      eval "$1" "$TOOL_ARGS" > /dev/null
+      eval "$1" $TOOL_ARGS > /dev/null
     fi
   fi
 }
@@ -392,7 +388,8 @@ if [ "$1" = test ] ||
     IS_TOOL=true
   fi
   shift 1 # Remove the action from the arguments
-  TOOL_ARGS=$*
+  # shellcheck disable=SC2124
+  TOOL_ARGS=$@
 else
   if [ -z "$1" ]; then
     echo "No action specified."

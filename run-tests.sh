@@ -1,9 +1,9 @@
 #!/bin/sh
 
 # Colors
-RED=`tput setaf 1`
-BOLD=`tput bold`
-RESET=`tput sgr0`
+RED=$(tput setaf 1)
+BOLD=$(tput bold)
+RESET=$(tput sgr0)
 
 ANY_ERRORS=false
 
@@ -13,17 +13,17 @@ unset MAKELEVEL
 
 # Get the directory of the current script, in a POSIX compatible way
 # https://stackoverflow.com/a/29835459
-script_directory=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
+script_directory=$(CDPATH="$(cd -- "$(dirname -- "$0")")" && pwd -P)
 
 # Set this variable to ensure top level Makefile doesn't affect the results.
 export PROJECT_ROOT="${script_directory}/tests"
 
 describe() {
-  printf "\n$BOLD$1$RESET"
+  printf "\n%s%s%s" "$BOLD" "$1" "$RESET"
 }
 
 it() {
-  printf "\n  $1"
+  printf "\n  %s" "$1"
 }
 
 assert() {
@@ -48,31 +48,29 @@ assertEqual() {
   if [ "$1" = "$2" ]; then
     printf " ✓"
   else
-    printf "\n   $BOLD$RED Error:$RESET Expected \"$1\" to equal \"$2\"\n"
+    printf "\n   %s%s Error:%s Expected \"%s\" to equal \"%s\"\n" "$BOLD" "$RED" "$RESET" "$1" "$2"
     ANY_ERRORS=true
   fi
 }
-
-RUN_RESULT=""
 RUN_EXIT=0
 
 do_build_in() {
-  RUN_RESULT=$(cd tests/$1 && ../../projectdo -n build)
+  RUN_RESULT=$(cd tests/"$1" && ../../projectdo -n build)
   RUN_EXIT=$?
 }
 
 do_run_in() {
-  RUN_RESULT=$(cd tests/$1 && ../../projectdo -n run)
+  RUN_RESULT=$(cd tests/"$1" && ../../projectdo -n run)
   RUN_EXIT=$?
 }
 
 do_test_in() {
-  RUN_RESULT=$(cd tests/$1 && ../../projectdo -n test)
+  RUN_RESULT=$(cd tests/"$1" && ../../projectdo -n test)
   RUN_EXIT=$?
 }
 
 do_print_tool_in() {
-  RUN_RESULT=$(cd tests/$1 && ../../projectdo -n tool)
+  RUN_RESULT=$(cd tests/"$1" && ../../projectdo -n tool)
   RUN_EXIT=$?
 }
 
@@ -195,6 +193,13 @@ if describe "meson"; then
   if it "can test with meson"; then
     do_test_in "meson"; assert
     assertEqual "$RUN_RESULT" "meson test"
+  fi
+fi
+
+if describe "build script"; then
+  if it "can build with build script"; then
+    do_build_in "build_script"; assert
+    assertEqual "$RUN_RESULT" "sh -c build.sh"
   fi
 fi
 

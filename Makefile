@@ -21,6 +21,8 @@ manpage:
 		echo "ERROR: could not generate manpage. Pandoc not found."; \
 	fi
 
+version:
+	@sh -c docs/version_changer.sh
 
 uninstall:
 	@rm -f $(DESTDIR)$(PREFIX)/bin/$(BINARY_NAME)

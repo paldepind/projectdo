@@ -27,10 +27,10 @@ man_dir="${project_dir}/man"
 date=$(date '+%B %d, %Y')
 version=$(sh -c "${project_dir}/./projectdo --version" | grep -Eo '[0-9]\.[0-9]\.[0-9]+')
 
-sed -i "s/date\:.*/date: $date/g" "${man_dir}/projectdo.1.md"
-
 printf '%s is the current projectdo version.\n' "$version"
 printf "What version do you want to change it to?\n: "; read -r ver_choice
+
+sed -i "s/date\:.*/date: $date/g" "${man_dir}/projectdo.1.md"
 
 sed -i "s/VERSION=.*/VERSION=\"$ver_choice\"/" "${project_dir}/./projectdo"
 printf 'Successfully updated version number to %s in projectdo.\n' "$ver_choice"

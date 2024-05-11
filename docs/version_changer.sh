@@ -35,6 +35,9 @@ sed -i "s/date\:.*/date: $date/g" "${man_dir}/projectdo.1.md"
 sed -i "s/VERSION=.*/VERSION=\"$ver_choice\"/" "${project_dir}/./projectdo"
 printf 'Successfully updated version number to %s in projectdo.\n' "$ver_choice"
 
+sed -i "s/\"version\": \"[^\"]*\"/\"version\": \"$ver_choice\"/g" "${project_dir}/package.json"
+printf 'Successfully updated version number to %s in package.json.\n' "$ver_choice"
+
 sed -i "s/footer\:.*/footer: projectdo $ver_choice/" "${man_dir}/projectdo.1.md"
 printf 'Successfully updated version number to %s in projectdo.1.md\n' "$ver_choice"
 

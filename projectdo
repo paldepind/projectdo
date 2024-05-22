@@ -287,6 +287,14 @@ try_latex() {
   fi
 }
 
+# .NET
+
+try_dotnet() {
+  if [ -f *.csproj ] || [ -f *.fsproj ] || [ -f *.sln ]; then
+    execute_command dotnet "$ACTION"
+  fi
+}
+
 # Any / Generic
 
 try_build_script() {
@@ -313,6 +321,7 @@ detect_and_run() {
   try_python
   try_go
   try_latex
+  try_dotnet
   try_build_script
 }
 

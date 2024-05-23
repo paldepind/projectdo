@@ -196,6 +196,51 @@ if describe "meson"; then
   fi
 fi
 
+if describe "dotnet csproj"; then
+  if it "can build with dotnet"; then
+    do_build_in "dotnet-csproj"; assert
+    assertEqual "$RUN_RESULT" "dotnet build"
+  fi
+  if it "can run with dotnet"; then
+    do_run_in "dotnet-csproj"; assert
+    assertEqual "$RUN_RESULT" "dotnet run"
+  fi
+  if it "can test with dotnet"; then
+    do_test_in "dotnet-csproj"; assert
+    assertEqual "$RUN_RESULT" "dotnet test"
+  fi
+fi
+
+if describe "dotnet fsproj"; then
+  if it "can build with dotnet"; then
+    do_build_in "dotnet-fsproj"; assert
+    assertEqual "$RUN_RESULT" "dotnet build"
+  fi
+  if it "can run with dotnet"; then
+    do_run_in "dotnet-fsproj"; assert
+    assertEqual "$RUN_RESULT" "dotnet run"
+  fi
+  if it "can test with dotnet"; then
+    do_test_in "dotnet-fsproj"; assert
+    assertEqual "$RUN_RESULT" "dotnet test"
+  fi
+fi
+
+if describe "dotnet sln"; then
+  if it "can build with dotnet"; then
+    do_build_in "dotnet-sln"; assert
+    assertEqual "$RUN_RESULT" "dotnet build"
+  fi
+  if it "can run with dotnet"; then
+    do_run_in "dotnet-sln"; assert
+    assertEqual "$RUN_RESULT" "dotnet run"
+  fi
+  if it "can test with dotnet"; then
+    do_test_in "dotnet-sln"; assert
+    assertEqual "$RUN_RESULT" "dotnet test"
+  fi
+fi
+
 if describe "build script"; then
   if it "can build with build script"; then
     do_build_in "build_script"; assert

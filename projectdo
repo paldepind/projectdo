@@ -290,7 +290,7 @@ try_latex() {
 # .NET
 
 try_dotnet() {
-  if [ -f *.csproj ] || [ -f *.fsproj ] || [ -f *.sln ]; then
+  if [ -n "$(find . -maxdepth 1 \( -name '*.csproj' -o -name '*.fsproj' -o -name '*.sln' \) -print -quit)" ]; then
     execute_command dotnet "$ACTION"
   fi
 }

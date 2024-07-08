@@ -116,7 +116,7 @@ if describe "stack"; then
   fi
 fi
 
-if describe "npm and yarn"; then
+if describe "npm / yarn / pnpm"; then
   if it "can run npm build if package.json with build script"; then
     do_build_in "npm"; assert
     assertEqual "$RUN_RESULT" "npm run build"
@@ -129,9 +129,25 @@ if describe "npm and yarn"; then
     do_test_in "npm"; assert
     assertEqual "$RUN_RESULT" "npm test"
   fi
-  if it "uses yarn file if yarn.lock is present"; then
+  if it "uses yarn if yarn.lock is present"; then
     do_test_in "yarn"; assert
     assertEqual "$RUN_RESULT" "yarn test"
+  fi
+  if it "uses pnpm if pnpm-lock.yaml is present"; then
+    do_test_in "pnpm"; assert
+    assertEqual "$RUN_RESULT" "pnpm test"
+  fi
+  if it "can run pnpm build if package.json with build script"; then
+    do_build_in "pnpm"; assert
+    assertEqual "$RUN_RESULT" "pnpm run build"
+  fi
+  if it "can run pnpm start if package.json with start script"; then
+    do_run_in "pnpm"; assert
+    assertEqual "$RUN_RESULT" "pnpm start"
+  fi
+  if it "can run pnpm test if package.json with test script"; then
+    do_test_in "pnpm"; assert
+    assertEqual "$RUN_RESULT" "pnpm test"
   fi
   if it "does not use npm if package.json contains no test script"; then
     do_test_in "npm-without-test"; assert
@@ -142,6 +158,8 @@ if describe "npm and yarn"; then
     assertEqual "$RUN_RESULT" "npm"
     do_print_tool_in "yarn"; assert
     assertEqual "$RUN_RESULT" "yarn"
+    do_print_tool_in "pnpm"; assert
+    assertEqual "$RUN_RESULT" "pnpm"
   fi
 fi
 

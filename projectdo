@@ -76,6 +76,8 @@ try_nodejs() {
   fi
   if [ -f yarn.lock ]; then
     tool=yarn
+  elif [ -f pnpm-lock.yaml ]; then
+    tool=pnpm
   else
     tool=npm
   fi

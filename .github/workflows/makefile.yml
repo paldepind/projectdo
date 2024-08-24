@@ -10,6 +10,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
+    - name: Install tools used in tests
+      run: |
+        npm install -g pnpm
     - name: Run tests
       run: dash run-tests.sh

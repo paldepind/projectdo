@@ -187,6 +187,18 @@ try_lein() {
   fi
 }
 
+# justfile
+
+try_justfile() {
+  if [ -f justfile ]; then
+    if ! has_command "just"; then
+      echo "Found a justfile but 'just' is not installed."
+      exit 1
+    fi
+    execute_command just "$ACTION"
+  fi
+}
+
 # Makefile
 
 has_make_target() {
@@ -319,6 +331,7 @@ detect_and_run() {
   try_cmake
   try_maven
   try_lein
+  try_justfile
   try_makefile
   try_python
   try_go

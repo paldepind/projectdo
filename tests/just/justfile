@@ -1,0 +1,8 @@
+test:
+	@echo "Tests passed"
+
+build:
+	@echo "Built"
+
+run:
+	@echo "Ran"

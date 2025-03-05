@@ -28,7 +28,7 @@ https://user-images.githubusercontent.com/521604/231857437-12c14aff-585d-4817-8f
 
 ## What
 
-`projectdo` is a command-line program hat executes project actions (such as
+`projectdo` is a command-line program that executes project actions (such as
 build, run, test, etc.) with the appropriate tool for current project in the
 working directory. The appropriate tool and the current project root is
 intelligently detected based on the context where `projectdo` is executed. For

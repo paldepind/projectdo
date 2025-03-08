@@ -163,6 +163,25 @@ if describe "npm / yarn / pnpm"; then
   fi
 fi
 
+if describe "just"; then
+  if it "finds test target"; then
+    do_test_in "just"; assert
+    assertEqual "$RUN_RESULT" "just test"
+  fi
+  if it "finds build target"; then
+    do_build_in "just"; assert
+    assertEqual "$RUN_RESULT" "just build"
+  fi
+  if it "finds run target"; then
+    do_run_in "just"; assert
+    assertEqual "$RUN_RESULT" "just run"
+  fi
+  if it "can print tool"; then
+    do_print_tool_in "just"; assert
+    assertEqual "$RUN_RESULT" "just"
+  fi
+fi
+
 if describe "make"; then
   if it "finds check target"; then
     do_test_in "make-check"; assert

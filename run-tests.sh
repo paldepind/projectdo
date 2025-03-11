@@ -197,6 +197,28 @@ if describe "make"; then
   fi
 fi
 
+if describe "nix-flake"; then
+  if it "can build with nix"; then
+    do_build_in "nix-flake"; assert
+    assertEqual "$RUN_RESULT" "nix build"
+  fi
+  if it "can run with nix"; then
+    do_run_in "nix-flake"; assert
+    assertEqual "$RUN_RESULT" "nix run"
+  fi
+  if it "can test with nix"; then
+    do_test_in "nix-flake"; assert
+    assertEqual "$RUN_RESULT" "nix flake check"
+  fi
+fi
+
+if describe "nix"; then
+  if it "can build with nix-build"; then
+    do_build_in "nix"; assert
+    assertEqual "$RUN_RESULT" "nix-build"
+  fi
+fi
+
 if describe "go"; then
   if it "finds check target in magefile"; then
     do_test_in "mage"; assert

@@ -245,6 +245,40 @@ try_makefile() {
   return 1
 }
 
+# Nix (Flake)
+
+try_nix_flake() {
+  if [ -f flake.nix ]; then
+    if ! has_command "nix"; then
+      echo "Found a flake.nix file but 'nix' is not installed."
+      exit 1
+    fi
+    if [ "$ACTION" = test ]; then
+      execute "nix flake check"
+      exit
+    else
+      execute_command nix $ACTION
+    fi
+  fi
+  return 1
+}
+
+# Nix (package)
+
+try_nix_package() {
+  if [ -f default.nix ]; then
+    if ! has_command "nix-build"; then
+      echo "Found a default.nix file but 'nix' is not installed."
+      exit 1
+    fi
+    if [ "$ACTION" = build ]; then
+      execute "nix-build"
+      exit
+    fi
+  fi
+  return 1
+}
+
 # Python
 
 try_python() {
@@ -333,6 +367,8 @@ detect_and_run() {
   try_lein
   try_justfile
   try_makefile
+  try_nix_flake
+  try_nix_package
   try_python
   try_go
   try_latex

@@ -274,21 +274,27 @@ try_python() {
 # Go
 
 try_go() {
-  if [ -f go.mod ] && [ "$ACTION" = test ]; then
-    # We detect Makefiles before we detect Go, so here we know that the Go
-    # project is _not_ tested by a Makefile.
+  if [ -f go.mod ]; then
+    if [ "$ACTION" = test ]; then
+      # We detect Makefiles before we detect Go, so here we know that the Go
+      # project is _not_ tested by a Makefile.
 
-    # Check if the project uses Mage. A magefile could in theory have any name,
-    # but `magefile.go` seems to be the convention.
-    if grep -q -m 1 '^func Check(' magefile.go; then
-      execute "mage check"
+      # Check if the project uses Mage. A magefile could in theory have any name,
+      # but `magefile.go` seems to be the convention.
+      if [ -f magefile.go ]; then
+        if grep -q -m 1 '^func Check(' magefile.go; then
+          execute "mage check"
+          exit
+        elif grep -q -m 1 '^func Test(' magefile.go; then
+          execute "mage test"
+          exit
+        fi
+      fi
+      execute "go test"
       exit
-    elif grep -q -m 1 '^func Test(' magefile.go; then
-      execute "mage test"
-      exit
+    else
+      execute_command go "$ACTION"
     fi
-    execute "go test"
-    exit
   fi
 }
 

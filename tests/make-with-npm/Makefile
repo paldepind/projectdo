@@ -1,0 +1,2 @@
+check:
+	@echo "Tests passed."

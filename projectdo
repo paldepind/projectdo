@@ -365,6 +365,8 @@ try_build_script() {
 # End of list of tools
 
 detect_and_run() {
+  try_justfile
+  try_makefile
   try_nodejs
   try_cargo
   try_stack
@@ -373,8 +375,6 @@ detect_and_run() {
   try_cmake
   try_maven
   try_lein
-  try_justfile
-  try_makefile
   try_nix_flake
   try_nix_package
   try_python

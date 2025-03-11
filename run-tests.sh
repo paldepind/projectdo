@@ -202,6 +202,22 @@ if describe "go"; then
     do_test_in "mage"; assert
     assertEqual "$RUN_RESULT" "mage check"
   fi
+  if it "runs go test without magefile"; then
+    do_test_in "go"; assert
+    assertEqual "$RUN_RESULT" "go test"
+  fi
+  if it "can run go run"; then
+    do_run_in "go"; assert
+    assertEqual "$RUN_RESULT" "go run"
+  fi
+  if it "can run go build"; then
+    do_build_in "go"; assert
+    assertEqual "$RUN_RESULT" "go build"
+  fi
+  if it "can print tool"; then
+    do_print_tool_in "go"; assert
+    assertEqual "$RUN_RESULT" "go"
+  fi
 fi
 
 if describe "python"; then

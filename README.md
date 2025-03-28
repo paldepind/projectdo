@@ -170,24 +170,25 @@ Tool arguments:
 **Note:** If a tool you are interested in is not supported please open an issue or a pull
 request.
 
-| Tool         | Language         | Detected by                                | Commands                                               |
-|--------------|------------------|--------------------------------------------|--------------------------------------------------------|
-| Cargo        | Rust             | `Cargo.toml`                               | `cargo build` <br/> `cargo run` <br/> `cargo test`     |
-| Poetry       | Python           | `pyproject.toml` with `[tool.poetry]`      | `poetry build` <br/> run n/a <br/> `poetry run pytest` |
-| CMake        | C, C++ and Obj-C | `CMakeLists.txt`                           | `cmake --build . --target test`                        |
-| Meson        | C, C++, etc.     | `meson.build`                              | `meson compile` <br/> run n/a <br/> `meson test`       |
-| npm          | JavaScript, etc. | `package.json`                             | `npm build` <br/> `npm start` <br/> `npm test`         |
-| yarn         | JavaScript, etc. | `package.json` and `yarn.lock`             | `yarn build` <br/> `yarn start` <br/> `yarn test`      |
-| pnpm         | JavaScript, etc  | `package.json` and `pnpm-lock.yaml`        | `pnpm build` <br/> `pnpm start` <br/> `pnpm test`      |
-| Maven        | Java, etc.       | `pom.xml`                                  | `mvn compile` <br/> run n/a <br/> `mvn test`           |
-| Leiningen    | Clojure          | `project.clj`                              | `lein test`                                            |
-| Cabal        | Haskell          | `*.cabal`                                  | `cabal build` <br/> `cabal run` <br/> `cabal test`     |
-| Stack        | Haskell          | `stack.yaml`                               | `stack build` <br/> `stack run` <br/> `stack test`     |
-| make         | Any              | `Makefile`                                 | `make` <br/> `make test/check`                         |
-| just         | Any              | `justfile`                                 | `just build` <br /> `just run` <br /> `just test`      |
-| Mage         | Go               | `magefile.go` with a `test`/`check` target | `mage test/check`                                      |
-| Go           | Go               | `go.mod`                                   | `go test`                                              |
-| Tectonic     | LaTeX            | `Tectonic.toml`                            | `tectonic -X build`                                    |
-| .NET         | C# and F#        | `*.csproj`, `*.fsproj` or `*.sln`          | `dotnet build` <br/> `dotnet run` <br/> `dotnet test`  |
-| Shell script | Any              | `build.sh`                                 | `sh -c build.sh`                                       |
-
+| Tool            | Language         | Detected by                                | Commands                                               |
+|-----------------|------------------|--------------------------------------------|--------------------------------------------------------|
+| Cargo           | Rust             | `Cargo.toml`                               | `cargo build` <br/> `cargo run` <br/> `cargo test`     |
+| Poetry          | Python           | `pyproject.toml` with `[tool.poetry]`      | `poetry build` <br/> run n/a <br/> `poetry run pytest` |
+| CMake           | C, C++ and Obj-C | `CMakeLists.txt`                           | `cmake --build . --target test`                        |
+| Meson           | C, C++, etc.     | `meson.build`                              | `meson compile` <br/> run n/a <br/> `meson test`       |
+| npm             | JavaScript, etc. | `package.json`                             | `npm build` <br/> `npm start` <br/> `npm test`         |
+| yarn            | JavaScript, etc. | `package.json` and `yarn.lock`             | `yarn build` <br/> `yarn start` <br/> `yarn test`      |
+| pnpm            | JavaScript, etc  | `package.json` and `pnpm-lock.yaml`        | `pnpm build` <br/> `pnpm start` <br/> `pnpm test`      |
+| Maven           | Java, etc.       | `pom.xml`                                  | `mvn compile` <br/> run n/a <br/> `mvn test`           |
+| Leiningen       | Clojure          | `project.clj`                              | `lein test`                                            |
+| Cabal           | Haskell          | `*.cabal`                                  | `cabal build` <br/> `cabal run` <br/> `cabal test`     |
+| Stack           | Haskell          | `stack.yaml`                               | `stack build` <br/> `stack run` <br/> `stack test`     |
+| nix (flake)     | nix              | `flake.nix`                                | `nix build` <br/> `nix run` <br/> `nix flake check`    |
+| nix (non-flake) | nix              | `default.nix`                              | `nix-build`                                            |
+| make            | Any              | `Makefile`                                 | `make` <br/> `make test/check`                         |
+| just            | Any              | `justfile`                                 | `just build` <br /> `just run` <br /> `just test`      |
+| Mage            | Go               | `magefile.go` with a `test`/`check` target | `mage test/check`                                      |
+| Go              | Go               | `go.mod`                                   | `go test`                                              |
+| Tectonic        | LaTeX            | `Tectonic.toml`                            | `tectonic -X build`                                    |
+| .NET            | C# and F#        | `*.csproj`, `*.fsproj` or `*.sln`          | `dotnet build` <br/> `dotnet run` <br/> `dotnet test`  |
+| Shell script    | Any              | `build.sh`                                 | `sh -c build.sh`                                       |

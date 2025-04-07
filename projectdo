@@ -74,7 +74,9 @@ try_nodejs() {
   if [ ! -f package.json ]; then
     return 1
   fi
-  if [ -f yarn.lock ]; then
+  if [ -f bun.lock ] || [ -f bun.lockb ]; then
+    tool=bun
+  elif [ -f yarn.lock ]; then
     tool=yarn
   elif [ -f pnpm-lock.yaml ]; then
     tool=pnpm

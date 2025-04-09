@@ -17,7 +17,7 @@ Context-aware single-letter project commands to speed up your command-line workf
 
 https://user-images.githubusercontent.com/521604/231857437-12c14aff-585d-4817-8f44-59b40ecc32e0.mov
 
-* **Supports 10+ build and project tools** – CMake, Cabal, Cargo, Go,
+* **Supports 10+ build and project tools** – Bun, CMake, Cabal, Cargo, Go,
   Leiningen, Mage, Maven, Meson, Poetry, Stack, Tectonic, make, npm, yarn and .NET.
   [More details](#supported-tools-and-languages).
 * **Portable** – Dependency free portable POSIX shell script. Supports Linux,

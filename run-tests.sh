@@ -138,11 +138,23 @@ if describe "npm / yarn / pnpm / bun"; then
     assertEqual "$RUN_RESULT" "pnpm test"
   fi
   if it "uses bun if bun.lock is present"; then
-    do_test_in "bun-lock"; assert
+    do_test_in "bun"; assert
     assertEqual "$RUN_RESULT" "bun test"
   fi
   if it "uses bun if bun.lockb is present"; then
     do_test_in "bun-lockb"; assert
+    assertEqual "$RUN_RESULT" "bun test"
+  fi
+  if it "can run bun build if package.json with build script"; then
+    do_build_in "bun"; assert
+    assertEqual "$RUN_RESULT" "bun run build"
+  fi
+  if it "can run bun start if package.json with start script"; then
+    do_run_in "bun"; assert
+    assertEqual "$RUN_RESULT" "bun start"
+  fi
+  if it "can run bun test if package.json with test script"; then
+    do_test_in "bun"; assert
     assertEqual "$RUN_RESULT" "bun test"
   fi
   if it "can run pnpm build if package.json with build script"; then

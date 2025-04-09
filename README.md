@@ -17,7 +17,7 @@ Context-aware single-letter project commands to speed up your command-line workf
 
 https://user-images.githubusercontent.com/521604/231857437-12c14aff-585d-4817-8f44-59b40ecc32e0.mov
 
-* **Supports 10+ build and project tools** – CMake, Cabal, Cargo, Go,
+* **Supports 10+ build and project tools** – Bun, CMake, Cabal, Cargo, Go,
   Leiningen, Mage, Maven, Meson, Poetry, Stack, Tectonic, make, npm, yarn and .NET.
   [More details](#supported-tools-and-languages).
 * **Portable** – Dependency free portable POSIX shell script. Supports Linux,
@@ -179,6 +179,7 @@ request.
 | npm             | JavaScript, etc. | `package.json`                             | `npm build` <br/> `npm start` <br/> `npm test`         |
 | yarn            | JavaScript, etc. | `package.json` and `yarn.lock`             | `yarn build` <br/> `yarn start` <br/> `yarn test`      |
 | pnpm            | JavaScript, etc  | `package.json` and `pnpm-lock.yaml`        | `pnpm build` <br/> `pnpm start` <br/> `pnpm test`      |
+| bun             | JavaScript, etc  | `package.json` and `bun.lock`/`bun.lockb`  | `bun build` <br/> `bun start` <br/> `bun test`         |
 | Maven           | Java, etc.       | `pom.xml`                                  | `mvn compile` <br/> run n/a <br/> `mvn test`           |
 | Leiningen       | Clojure          | `project.clj`                              | `lein test`                                            |
 | Cabal           | Haskell          | `*.cabal`                                  | `cabal build` <br/> `cabal run` <br/> `cabal test`     |

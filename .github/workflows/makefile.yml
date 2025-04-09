@@ -15,5 +15,6 @@ jobs:
       run: |
         sudo apt install -y just nix-bin
         npm install -g pnpm
+        npm install -g bun
     - name: Run tests
       run: dash run-tests.sh

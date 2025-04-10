@@ -217,6 +217,10 @@ if describe "make"; then
     do_test_in "make-check-with-check-file-and-target"; assert
     assertEqual "$RUN_RESULT" "make check"
   fi
+  if it "finds check target despite package.json"; then
+    do_test_in "make-with-npm"; assert
+    assertEqual "$RUN_RESULT" "make check"
+  fi
 fi
 
 if describe "nix-flake"; then

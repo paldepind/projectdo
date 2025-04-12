@@ -181,6 +181,7 @@ request.
 | pnpm            | JavaScript, etc  | `package.json` and `pnpm-lock.yaml`        | `pnpm build` <br/> `pnpm start` <br/> `pnpm test`      |
 | bun             | JavaScript, etc  | `package.json` and `bun.lock`/`bun.lockb`  | `bun build` <br/> `bun start` <br/> `bun test`         |
 | Maven           | Java, etc.       | `pom.xml`                                  | `mvn compile` <br/> run n/a <br/> `mvn test`           |
+| Gradle          | Java, etc.       | `build.gradle` or `build.gradle.kts`       | `gradle compile` <br/> run n/a <br/> `gradle test`     |
 | Leiningen       | Clojure          | `project.clj`                              | `lein test`                                            |
 | Cabal           | Haskell          | `*.cabal`                                  | `cabal build` <br/> `cabal run` <br/> `cabal test`     |
 | Stack           | Haskell          | `stack.yaml`                               | `stack build` <br/> `stack run` <br/> `stack test`     |

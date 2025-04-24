@@ -299,9 +299,22 @@ try_python() {
           echo "projectdo does not know how to run a project with Poetry."
           exit
       esac
+    else if [ -f uv.lock ]; then
+      case $ACTION in
+        build)
+          echo "projectdo does not know how to run a project with uv."
+          exit ;;
+        test)
+          echo "projectdo does not know how to run a project with uv."
+          exit ;;
+        run)
+          execute "uv run"
+          exit ;;
+      esac
     else
       echo "Found a pyproject.toml file but projectdo is not sure how to run it."
       exit
+    fi
     fi
     return 1
   fi

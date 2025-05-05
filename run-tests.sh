@@ -277,6 +277,10 @@ if describe "python"; then
     do_test_in "poetry"; assert
     assertEqual "$RUN_RESULT" "poetry run pytest"
   fi
+  if it "can run with uv"; then
+    do_run_in "uv"; assert
+    assertEqual "$RUN_RESULT" "uv run"
+  fi
 fi
 
 if describe "latex"; then

@@ -181,6 +181,24 @@ try_maven() {
   fi
 }
 
+# Gradle
+
+try_gradle() {
+  if [ -f build.gradle ] || [ -f build.gradle.kts ]; then
+    case $ACTION in
+      build)
+        execute "gradle build"
+        exit ;;
+      test)
+        execute "gradle test"
+        exit ;;
+      run)
+        echo "projectdo does not know how to run a project with Gradle."
+        exit ;;
+    esac
+  fi
+}
+
 # Clojure + Leiningen
 
 try_lein() {
@@ -387,6 +405,7 @@ detect_and_run() {
   try_meson
   try_cmake
   try_maven
+  try_gradle
   try_lein
   try_nix_flake
   try_nix_package

@@ -301,6 +301,17 @@ if describe "meson"; then
   fi
 fi
 
+if describe "gradle"; then
+  if it "can build with gradle"; then
+    do_build_in "gradle"; assert
+    assertEqual "$RUN_RESULT" "gradle build"
+  fi
+  if it "can test with gradle"; then
+    do_test_in "gradle"; assert
+    assertEqual "$RUN_RESULT" "gradle test"
+  fi
+fi
+
 if describe "dotnet csproj"; then
   if it "can build with dotnet"; then
     do_build_in "dotnet-csproj"; assert

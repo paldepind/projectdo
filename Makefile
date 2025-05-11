@@ -14,8 +14,8 @@ install:
 	@cp -p man/$(BINARY_NAME).1 $(DESTDIR)$(MANDIR)/man1
 
 manpage:
-	@if [ -n "$(command -v pandoc)" ]; then \
-		pandoc -s -t man man/$(BINARY_NAME).1.md -o man/$(BINARY_NAME).1; \
+	@if [ -n "$(shell command -v pandoc)" ]; then \
+		pandoc --standalone --to man man/$(BINARY_NAME).1.md --output man/$(BINARY_NAME).1; \
 		echo "SUCCESS: manpage generated"; \
 	else \
 		echo "ERROR: could not generate manpage. Pandoc not found."; \

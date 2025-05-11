@@ -17,9 +17,9 @@ Context-aware single-letter project commands to speed up your command-line workf
 
 https://user-images.githubusercontent.com/521604/231857437-12c14aff-585d-4817-8f44-59b40ecc32e0.mov
 
-* **Supports 10+ build and project tools** – Bun, CMake, Cabal, Cargo, Go,
-  Leiningen, Mage, Maven, Meson, Poetry, Stack, Tectonic, make, npm, yarn and .NET.
-  [More details](#supported-tools-and-languages).
+* **Supports 20+ build and project tools** – Bun, Cabal, Cargo, CMake, .NET, Go,
+  Gradle, Leiningen, Mage, Maven, Meson, Poetry, Stack, Tectonic, just, make,
+  nix, npm, pnpm, and yarn. [More details](#supported-tools-and-languages).
 * **Portable** – Dependency free portable POSIX shell script. Supports Linux,
   macOS, WSL, etc.
 * **Shell Integration** – Works with aliases in any shell and for the Fish
@@ -172,25 +172,25 @@ request.
 
 | Tool            | Language         | Detected by                                | Commands                                               |
 |-----------------|------------------|--------------------------------------------|--------------------------------------------------------|
-| Cargo           | Rust             | `Cargo.toml`                               | `cargo build` <br/> `cargo run` <br/> `cargo test`     |
-| Poetry          | Python           | `pyproject.toml` with `[tool.poetry]`      | `poetry build` <br/> run n/a <br/> `poetry run pytest` |
-| CMake           | C, C++ and Obj-C | `CMakeLists.txt`                           | `cmake --build . --target test`                        |
-| Meson           | C, C++, etc.     | `meson.build`                              | `meson compile` <br/> run n/a <br/> `meson test`       |
-| npm             | JavaScript, etc. | `package.json`                             | `npm build` <br/> `npm start` <br/> `npm test`         |
-| yarn            | JavaScript, etc. | `package.json` and `yarn.lock`             | `yarn build` <br/> `yarn start` <br/> `yarn test`      |
-| pnpm            | JavaScript, etc  | `package.json` and `pnpm-lock.yaml`        | `pnpm build` <br/> `pnpm start` <br/> `pnpm test`      |
 | bun             | JavaScript, etc  | `package.json` and `bun.lock`/`bun.lockb`  | `bun build` <br/> `bun start` <br/> `bun test`         |
-| Maven           | Java, etc.       | `pom.xml`                                  | `mvn compile` <br/> run n/a <br/> `mvn test`           |
-| Gradle          | Java, etc.       | `build.gradle` or `build.gradle.kts`       | `gradle compile` <br/> run n/a <br/> `gradle test`     |
-| Leiningen       | Clojure          | `project.clj`                              | `lein test`                                            |
 | Cabal           | Haskell          | `*.cabal`                                  | `cabal build` <br/> `cabal run` <br/> `cabal test`     |
-| Stack           | Haskell          | `stack.yaml`                               | `stack build` <br/> `stack run` <br/> `stack test`     |
+| Cargo           | Rust             | `Cargo.toml`                               | `cargo build` <br/> `cargo run` <br/> `cargo test`     |
+| CMake           | C, C++ and Obj-C | `CMakeLists.txt`                           | `cmake --build . --target test`                        |
+| Go              | Go               | `go.mod`                                   | `go test`                                              |
+| Gradle          | Java, etc.       | `build.gradle` or `build.gradle.kts`       | `gradle compile` <br/> run n/a <br/> `gradle test`     |
+| just            | Any              | `justfile`                                 | `just build` <br /> `just run` <br /> `just test`      |
+| Leiningen       | Clojure          | `project.clj`                              | `lein test`                                            |
+| Mage            | Go               | `magefile.go` with a `test`/`check` target | `mage test/check`                                      |
+| make            | Any              | `Makefile`                                 | `make` <br/> `make test/check`                         |
+| Maven           | Java, etc.       | `pom.xml`                                  | `mvn compile` <br/> run n/a <br/> `mvn test`           |
+| Meson           | C, C++, etc.     | `meson.build`                              | `meson compile` <br/> run n/a <br/> `meson test`       |
+| .NET            | C# and F#        | `*.csproj`, `*.fsproj` or `*.sln`          | `dotnet build` <br/> `dotnet run` <br/> `dotnet test`  |
 | nix (flake)     | nix              | `flake.nix`                                | `nix build` <br/> `nix run` <br/> `nix flake check`    |
 | nix (non-flake) | nix              | `default.nix`                              | `nix-build`                                            |
-| make            | Any              | `Makefile`                                 | `make` <br/> `make test/check`                         |
-| just            | Any              | `justfile`                                 | `just build` <br /> `just run` <br /> `just test`      |
-| Mage            | Go               | `magefile.go` with a `test`/`check` target | `mage test/check`                                      |
-| Go              | Go               | `go.mod`                                   | `go test`                                              |
-| Tectonic        | LaTeX            | `Tectonic.toml`                            | `tectonic -X build`                                    |
-| .NET            | C# and F#        | `*.csproj`, `*.fsproj` or `*.sln`          | `dotnet build` <br/> `dotnet run` <br/> `dotnet test`  |
+| npm             | JavaScript, etc. | `package.json`                             | `npm build` <br/> `npm start` <br/> `npm test`         |
+| pnpm            | JavaScript, etc  | `package.json` and `pnpm-lock.yaml`        | `pnpm build` <br/> `pnpm start` <br/> `pnpm test`      |
+| Poetry          | Python           | `pyproject.toml` with `[tool.poetry]`      | `poetry build` <br/> run n/a <br/> `poetry run pytest` |
 | Shell script    | Any              | `build.sh`                                 | `sh -c build.sh`                                       |
+| Stack           | Haskell          | `stack.yaml`                               | `stack build` <br/> `stack run` <br/> `stack test`     |
+| Tectonic        | LaTeX            | `Tectonic.toml`                            | `tectonic -X build`                                    |
+| yarn            | JavaScript, etc. | `package.json` and `yarn.lock`             | `yarn build` <br/> `yarn start` <br/> `yarn test`      |

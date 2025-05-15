@@ -57,6 +57,20 @@ execute_command() {
   exit 0
 }
 
+# Navigate up one directory. The command is successful if this is possible
+# without leaving the current project, entering the home directory, or entering
+# the root directory.
+go_up() {
+  if [ "$PWD" = "$PROJECT_ROOT" ]; then
+    return 1
+  fi
+  cd ..
+  if [ "$PWD" = "$HOME" ] || [ "$PWD" = / ]; then
+    return 1
+  fi
+  return 0
+}
+
 # Every supported tool requires a function `try_tool` where `tool` is a name
 # indicating what tool the function tries to detect. The function should:
 #
@@ -70,19 +84,39 @@ execute_command() {
 
 # JavaScript + NodeJS
 
+# After a `package.json` has been found this detects the tool to use based on
+# any present lock file. In monorepo setups the lockfile might be in a parent
+# directory and not right next to the `package.json` file. This is handled by
+# looking up the directory hierarchy.
+detect_nodejs_tool() {
+  while :
+  do
+    # echo looking for nodejs tool
+    if [ -f package-lock.json ]; then
+      echo yarn
+      return
+    elif [ -f bun.lock ] || [ -f bun.lockb ]; then
+      echo bun
+      return
+    elif [ -f yarn.lock ]; then
+      echo yarn
+      return
+    elif [ -f pnpm-lock.yaml ]; then
+      echo pnpm
+      return
+    fi
+    if ! go_up; then
+      echo npm
+      return
+    fi
+  done
+}
+
 try_nodejs() {
   if [ ! -f package.json ]; then
     return 1
   fi
-  if [ -f bun.lock ] || [ -f bun.lockb ]; then
-    tool=bun
-  elif [ -f yarn.lock ]; then
-    tool=yarn
-  elif [ -f pnpm-lock.yaml ]; then
-    tool=pnpm
-  else
-    tool=npm
-  fi
+  tool=$(detect_nodejs_tool)
   if ! has_command $tool; then
     echo "Found a package.json file but '$tool' is not installed."
     exit 1
@@ -507,15 +541,9 @@ set_project_root
 
 while :
 do
-  # We don't want to do anything if we are in the home or root directory
-  if [ "$PWD" = "$HOME" ] || [ "$PWD" = / ]; then
-    nothing_found
-  fi
   detect_and_run
   # If we didn't detect a tool to run in this directory we go up one directory
-  # while ensuring that we don't leave the project root
-  if [ "$PWD" = "$PROJECT_ROOT" ]; then
+  if ! go_up; then
     nothing_found
   fi
-  cd ..
 done

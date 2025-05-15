@@ -55,22 +55,22 @@ assertEqual() {
 RUN_EXIT=0
 
 do_build_in() {
-  RUN_RESULT=$(cd tests/"$1" && ../../projectdo -n build)
+  RUN_RESULT=$(cd tests/"$1" && "$script_directory"/projectdo -n build)
   RUN_EXIT=$?
 }
 
 do_run_in() {
-  RUN_RESULT=$(cd tests/"$1" && ../../projectdo -n run)
+  RUN_RESULT=$(cd tests/"$1" && "$script_directory"/projectdo -n run)
   RUN_EXIT=$?
 }
 
 do_test_in() {
-  RUN_RESULT=$(cd tests/"$1" && ../../projectdo -n test)
+  RUN_RESULT=$(cd tests/"$1" && "$script_directory"/projectdo -n test)
   RUN_EXIT=$?
 }
 
 do_print_tool_in() {
-  RUN_RESULT=$(cd tests/"$1" && ../../projectdo -n tool)
+  RUN_RESULT=$(cd tests/"$1" && "$script_directory"/projectdo -n tool)
   RUN_EXIT=$?
 }
 
@@ -182,6 +182,12 @@ if describe "npm / yarn / pnpm / bun"; then
     assertEqual "$RUN_RESULT" "pnpm"
     do_print_tool_in "bun"; assert
     assertEqual "$RUN_RESULT" "bun"
+  fi
+  if it "detects yarn in workspace setup"; then
+    do_print_tool_in "yarn-workspace/workspace-a"; assert
+    assertEqual "$RUN_RESULT" "yarn"
+    do_print_tool_in "yarn-workspace/workspace-b"; assert
+    assertEqual "$RUN_RESULT" "yarn"
   fi
 fi
 

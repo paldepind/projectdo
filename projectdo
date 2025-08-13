@@ -32,6 +32,7 @@ has_command() {
 
 # When running the appropriate external tool this function is used which
 # evaluates the given command while respecting $QUIET and $DRY_RUN.
+# shellcheck disable=SC2086
 execute() {
   if [ $QUIET = false ]; then
     echo "$1" $TOOL_ARGS
@@ -116,7 +117,7 @@ try_nodejs() {
     return 1
   fi
   tool=$(detect_nodejs_tool)
-  if ! has_command $tool; then
+  if ! has_command "$tool"; then
     echo "Found a package.json file but '$tool' is not installed."
     exit 1
   fi
@@ -319,7 +320,7 @@ try_nix_flake() {
       execute "nix flake check"
       exit
     else
-      execute_command nix $ACTION
+      execute_command nix "$ACTION"
     fi
   fi
   return 1

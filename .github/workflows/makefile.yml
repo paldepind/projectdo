@@ -2,19 +2,19 @@ name: CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Install tools used in tests
-      run: |
-        sudo apt install -y just nix-bin gradle
-        npm install -g pnpm
-        npm install -g bun
-    - name: Run tests
-      run: dash run-tests.sh
+      - uses: actions/checkout@v4
+      - name: Install tools used in tests
+        run: |
+          sudo apt install -y just nix-bin gradle
+          npm install -g pnpm
+          npm install -g bun
+      - name: Run tests
+        run: dash run-tests.sh

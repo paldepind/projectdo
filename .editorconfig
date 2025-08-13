@@ -1,0 +1,11 @@
+root = true
+
+[*]
+end_of_line = lf
+
+[{projectdo,*.sh,*.fish,project.json,tests/**}]
+indent_size = 2
+indent_style = space
+
+[{Makefile,justfile}]
+indent_style = tab

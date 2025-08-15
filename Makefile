@@ -30,3 +30,10 @@ uninstall:
 
 test:
 	sh run-tests.sh
+
+format:
+	@if [ -n "$(shell command -v shfmt)" ]; then \
+		shfmt -w projectdo run-tests.sh; \
+	else \
+		echo "ERROR: could not format scripts. shfmt not found."; \
+	fi

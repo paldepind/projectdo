@@ -23,7 +23,7 @@ QUIET=false
 DRY_RUN=false
 PROJECT_ROOT="${PROJECT_ROOT:-}"
 ACTION=""
-TOOL_ARGS="" # Arguments to pass along to the tool
+TOOL_ARGS=""  # Arguments to pass along to the tool
 IS_TOOL=false # True if ACTION is 'tool' as this action is somewhat special.
 
 has_command() {
@@ -32,6 +32,7 @@ has_command() {
 
 # When running the appropriate external tool this function is used which
 # evaluates the given command while respecting $QUIET and $DRY_RUN.
+# shellcheck disable=SC2086
 execute() {
   if [ $QUIET = false ]; then
     echo "$1" $TOOL_ARGS
@@ -40,7 +41,7 @@ execute() {
     if [ $QUIET = false ]; then
       eval "$1" $TOOL_ARGS
     else
-      eval "$1" $TOOL_ARGS > /dev/null
+      eval "$1" $TOOL_ARGS >/dev/null
     fi
   fi
 }
@@ -89,8 +90,7 @@ go_up() {
 # directory and not right next to the `package.json` file. This is handled by
 # looking up the directory hierarchy.
 detect_nodejs_tool() {
-  while :
-  do
+  while :; do
     # echo looking for nodejs tool
     if [ -f package-lock.json ]; then
       echo yarn
@@ -117,7 +117,7 @@ try_nodejs() {
     return 1
   fi
   tool=$(detect_nodejs_tool)
-  if ! has_command $tool; then
+  if ! has_command "$tool"; then
     echo "Found a package.json file but '$tool' is not installed."
     exit 1
   fi
@@ -154,15 +154,18 @@ try_cargo() {
 try_meson() {
   if [ -f meson.build ]; then
     case $ACTION in
-      build)
-        execute "meson compile"
-        exit ;;
-      test)
-        execute "meson test"
-        exit ;;
-      run)
-        echo "projectdo does not know how to run a project with Meson."
-        exit
+    build)
+      execute "meson compile"
+      exit
+      ;;
+    test)
+      execute "meson test"
+      exit
+      ;;
+    run)
+      echo "projectdo does not know how to run a project with Meson."
+      exit
+      ;;
     esac
   fi
 }
@@ -191,7 +194,7 @@ try_stack() {
 # Haskell + Cabal
 
 try_cabal() {
-  cabal_file="$(find ./ -maxdepth 1 -name "*.cabal" 2> /dev/null | wc -l)"
+  cabal_file="$(find ./ -maxdepth 1 -name "*.cabal" 2>/dev/null | wc -l)"
   if [ "$cabal_file" -gt 0 ] && [ ! -f stack.yml ]; then
     execute_command cabal "$ACTION"
   fi
@@ -202,15 +205,18 @@ try_cabal() {
 try_maven() {
   if [ -f pom.xml ]; then
     case $ACTION in
-      build)
-        execute "mvn compile"
-        exit ;;
-      test)
-        execute "mvn test"
-        exit ;;
-      run)
-        echo "projectdo does not know how to run a project with Maven."
-        exit
+    build)
+      execute "mvn compile"
+      exit
+      ;;
+    test)
+      execute "mvn test"
+      exit
+      ;;
+    run)
+      echo "projectdo does not know how to run a project with Maven."
+      exit
+      ;;
     esac
   fi
 }
@@ -220,15 +226,18 @@ try_maven() {
 try_gradle() {
   if [ -f build.gradle ] || [ -f build.gradle.kts ]; then
     case $ACTION in
-      build)
-        execute "gradle build"
-        exit ;;
-      test)
-        execute "gradle test"
-        exit ;;
-      run)
-        echo "projectdo does not know how to run a project with Gradle."
-        exit ;;
+    build)
+      execute "gradle build"
+      exit
+      ;;
+    test)
+      execute "gradle test"
+      exit
+      ;;
+    run)
+      echo "projectdo does not know how to run a project with Gradle."
+      exit
+      ;;
     esac
   fi
 }
@@ -256,23 +265,23 @@ try_justfile() {
 # Makefile
 
 has_make_target() {
-    target="${1?}"
-    output=$(make -n "${target}" 2>&1)
-    exit_code=$?
-    if [ $exit_code -ne 0 ]; then
-        return $exit_code
-    fi
+  target="${1?}"
+  output=$(make -n "${target}" 2>&1)
+  exit_code=$?
+  if [ $exit_code -ne 0 ]; then
+    return $exit_code
+  fi
 
-    # If there is a file with the name of the target we're looking for but no
-    # actual target with that name, make will exit successfully with that
-    # message. We need to consider that case as a "target not found". Note that
-    # the way the target is quoted in the output (`test' vs 'test') can differ
-    # across OSes so we only check a prefix up to the problematic quotes.
-    if expr "$output" : "make: Nothing to be done for" 1> /dev/null; then
-        return 1
-    fi
+  # If there is a file with the name of the target we're looking for but no
+  # actual target with that name, make will exit successfully with that
+  # message. We need to consider that case as a "target not found". Note that
+  # the way the target is quoted in the output (`test' vs 'test') can differ
+  # across OSes so we only check a prefix up to the problematic quotes.
+  if expr "$output" : "make: Nothing to be done for" 1>/dev/null; then
+    return 1
+  fi
 
-    return 0
+  return 0
 }
 
 try_makefile() {
@@ -311,7 +320,7 @@ try_nix_flake() {
       execute "nix flake check"
       exit
     else
-      execute_command nix $ACTION
+      execute_command nix "$ACTION"
     fi
   fi
   return 1
@@ -339,34 +348,41 @@ try_python() {
   if [ -f pyproject.toml ]; then
     if grep -q -m 1 "^\[tool.poetry\]$" pyproject.toml; then
       case $ACTION in
-        build)
-          execute "poetry build"
-          exit ;;
-        test)
-          # TODO: There are other Python test frameworks, it would be nice to
-          # detect and run the right one.
-          execute "poetry run pytest"
-          exit ;;
-        run)
-          echo "projectdo does not know how to run a project with Poetry."
-          exit
-      esac
-    else if [ -f uv.lock ]; then
-      case $ACTION in
-        build)
-          echo "projectdo does not know how to run a project with uv."
-          exit ;;
-        test)
-          echo "projectdo does not know how to run a project with uv."
-          exit ;;
-        run)
-          execute "uv run"
-          exit ;;
+      build)
+        execute "poetry build"
+        exit
+        ;;
+      test)
+        # TODO: There are other Python test frameworks, it would be nice to
+        # detect and run the right one.
+        execute "poetry run pytest"
+        exit
+        ;;
+      run)
+        echo "projectdo does not know how to run a project with Poetry."
+        exit
+        ;;
       esac
     else
-      echo "Found a pyproject.toml file but projectdo is not sure how to run it."
-      exit
-    fi
+      if [ -f uv.lock ]; then
+        case $ACTION in
+        build)
+          echo "projectdo does not know how to run a project with uv."
+          exit
+          ;;
+        test)
+          echo "projectdo does not know how to run a project with uv."
+          exit
+          ;;
+        run)
+          execute "uv run"
+          exit
+          ;;
+        esac
+      else
+        echo "Found a pyproject.toml file but projectdo is not sure how to run it."
+        exit
+      fi
     fi
     return 1
   fi
@@ -403,8 +419,8 @@ try_go() {
 
 try_latex() {
   if [ -f Tectonic.toml ] && [ "$ACTION" = build ]; then
-      execute "tectonic -X build"
-      exit
+    execute "tectonic -X build"
+    exit
   fi
 }
 
@@ -460,7 +476,7 @@ set_project_root() {
     # git submodule then the root of the outer git repo is used. If we're not
     # in a git repo the git command will not output anything and $PROJECT_ROOT
     # is set to the empty string which is fine.
-    PROJECT_ROOT=$(git rev-parse --show-superproject-working-tree --show-toplevel 2> /dev/null | head -n 1)
+    PROJECT_ROOT=$(git rev-parse --show-superproject-working-tree --show-toplevel 2>/dev/null | head -n 1)
   fi
 }
 
@@ -491,32 +507,46 @@ Tool arguments:
 
 # Main execution starts here
 
-while getopts dhnqv-: c
-do
+while getopts dhnqv-: c; do
   case $c in
-    d) DRY_RUN=true ;;
-    h) display_help; exit 0 ;;
-    n) DRY_RUN=true ;;
-    q) QUIET=true ;;
-    v) display_version; exit 0 ;;
-    -) case $OPTARG in
-         help) display_help; exit 0 ;;
-         dry-run) DRY_RUN=true ;;
-         quiet) QUIET=true ;;
-         version) display_version; exit 0 ;;
-         '' ) break ;; # "--" should terminate argument processing
-         * ) echo "Illegal option --$OPTARG" >&2; exit 1 ;;
-      esac ;;
-    \?) exit 1 ;;
+  d) DRY_RUN=true ;;
+  h)
+    display_help
+    exit 0
+    ;;
+  n) DRY_RUN=true ;;
+  q) QUIET=true ;;
+  v)
+    display_version
+    exit 0
+    ;;
+  -) case $OPTARG in
+    help)
+      display_help
+      exit 0
+      ;;
+    dry-run) DRY_RUN=true ;;
+    quiet) QUIET=true ;;
+    version)
+      display_version
+      exit 0
+      ;;
+    '') break ;; # "--" should terminate argument processing
+    *)
+      echo "Illegal option --$OPTARG" >&2
+      exit 1
+      ;;
+    esac ;;
+  \?) exit 1 ;;
   esac
 done
 
-shift $((OPTIND-1)) # Shift away the parsed option arguments
+shift $((OPTIND - 1)) # Shift away the parsed option arguments
 
 if [ "$1" = test ] ||
-   [ "$1" = run ] ||
-   [ "$1" = build ] ||
-   [ "$1" = tool ]; then
+  [ "$1" = run ] ||
+  [ "$1" = build ] ||
+  [ "$1" = tool ]; then
   ACTION=$1
   if [ "$1" = tool ]; then
     IS_TOOL=true
@@ -539,8 +569,7 @@ fi
 
 set_project_root
 
-while :
-do
+while :; do
   detect_and_run
   # If we didn't detect a tool to run in this directory we go up one directory
   if ! go_up; then

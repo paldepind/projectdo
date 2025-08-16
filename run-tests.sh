@@ -76,19 +76,23 @@ do_print_tool_in() {
 
 if describe "cargo"; then
   if it "can run build"; then
-    do_build_in "cargo"; assert
+    do_build_in "cargo"
+    assert
     assertEqual "$RUN_RESULT" "cargo build"
   fi
   if it "can run run"; then
-    do_run_in "cargo"; assert
+    do_run_in "cargo"
+    assert
     assertEqual "$RUN_RESULT" "cargo run"
   fi
   if it "can run test"; then
-    do_test_in "cargo"; assert
+    do_test_in "cargo"
+    assert
     assertEqual "$RUN_RESULT" "cargo test"
   fi
   if it "can print tool"; then
-    do_print_tool_in "cargo"; assert
+    do_print_tool_in "cargo"
+    assert
     assertEqual "$RUN_RESULT" "cargo"
   fi
   if it "passes additional arguments to the tool"; then
@@ -99,273 +103,332 @@ fi
 
 if describe "stack"; then
   if it "can run build"; then
-    do_build_in "stack"; assert
+    do_build_in "stack"
+    assert
     assertEqual "$RUN_RESULT" "stack build"
   fi
   if it "can run run"; then
-    do_run_in "stack"; assert
+    do_run_in "stack"
+    assert
     assertEqual "$RUN_RESULT" "stack run"
   fi
   if it "can run test"; then
-    do_test_in "stack"; assert
+    do_test_in "stack"
+    assert
     assertEqual "$RUN_RESULT" "stack test"
   fi
   if it "can print tool"; then
-    do_print_tool_in "stack"; assert
+    do_print_tool_in "stack"
+    assert
     assertEqual "$RUN_RESULT" "stack"
   fi
 fi
 
 if describe "npm / yarn / pnpm / bun"; then
   if it "can run npm build if package.json with build script"; then
-    do_build_in "npm"; assert
+    do_build_in "npm"
+    assert
     assertEqual "$RUN_RESULT" "npm run build"
   fi
   if it "can run npm start if package.json with start script"; then
-    do_run_in "npm"; assert
+    do_run_in "npm"
+    assert
     assertEqual "$RUN_RESULT" "npm start"
   fi
   if it "can run npm test if package.json with test script"; then
-    do_test_in "npm"; assert
+    do_test_in "npm"
+    assert
     assertEqual "$RUN_RESULT" "npm test"
   fi
   if it "uses yarn if yarn.lock is present"; then
-    do_test_in "yarn"; assert
+    do_test_in "yarn"
+    assert
     assertEqual "$RUN_RESULT" "yarn test"
   fi
   if it "uses pnpm if pnpm-lock.yaml is present"; then
-    do_test_in "pnpm"; assert
+    do_test_in "pnpm"
+    assert
     assertEqual "$RUN_RESULT" "pnpm test"
   fi
   if it "uses bun if bun.lock is present"; then
-    do_test_in "bun"; assert
+    do_test_in "bun"
+    assert
     assertEqual "$RUN_RESULT" "bun test"
   fi
   if it "uses bun if bun.lockb is present"; then
-    do_test_in "bun-lockb"; assert
+    do_test_in "bun-lockb"
+    assert
     assertEqual "$RUN_RESULT" "bun test"
   fi
   if it "can run bun build if package.json with build script"; then
-    do_build_in "bun"; assert
+    do_build_in "bun"
+    assert
     assertEqual "$RUN_RESULT" "bun run build"
   fi
   if it "can run bun start if package.json with start script"; then
-    do_run_in "bun"; assert
+    do_run_in "bun"
+    assert
     assertEqual "$RUN_RESULT" "bun start"
   fi
   if it "can run bun test if package.json with test script"; then
-    do_test_in "bun"; assert
+    do_test_in "bun"
+    assert
     assertEqual "$RUN_RESULT" "bun test"
   fi
   if it "can run pnpm build if package.json with build script"; then
-    do_build_in "pnpm"; assert
+    do_build_in "pnpm"
+    assert
     assertEqual "$RUN_RESULT" "pnpm run build"
   fi
   if it "can run pnpm start if package.json with start script"; then
-    do_run_in "pnpm"; assert
+    do_run_in "pnpm"
+    assert
     assertEqual "$RUN_RESULT" "pnpm start"
   fi
   if it "can run pnpm test if package.json with test script"; then
-    do_test_in "pnpm"; assert
+    do_test_in "pnpm"
+    assert
     assertEqual "$RUN_RESULT" "pnpm test"
   fi
   if it "does not use npm if package.json contains no test script"; then
-    do_test_in "npm-without-test"; assert
+    do_test_in "npm-without-test"
+    assert
     assertEqual "$RUN_RESULT" "make test"
   fi
   if it "can print tool"; then
-    do_print_tool_in "npm"; assert
+    do_print_tool_in "npm"
+    assert
     assertEqual "$RUN_RESULT" "npm"
-    do_print_tool_in "yarn"; assert
+    do_print_tool_in "yarn"
+    assert
     assertEqual "$RUN_RESULT" "yarn"
-    do_print_tool_in "pnpm"; assert
+    do_print_tool_in "pnpm"
+    assert
     assertEqual "$RUN_RESULT" "pnpm"
-    do_print_tool_in "bun"; assert
+    do_print_tool_in "bun"
+    assert
     assertEqual "$RUN_RESULT" "bun"
   fi
   if it "detects yarn in workspace setup"; then
-    do_print_tool_in "yarn-workspace/workspace-a"; assert
+    do_print_tool_in "yarn-workspace/workspace-a"
+    assert
     assertEqual "$RUN_RESULT" "yarn"
-    do_print_tool_in "yarn-workspace/workspace-b"; assert
+    do_print_tool_in "yarn-workspace/workspace-b"
+    assert
     assertEqual "$RUN_RESULT" "yarn"
   fi
 fi
 
 if describe "just"; then
   if it "finds test target"; then
-    do_test_in "just"; assert
+    do_test_in "just"
+    assert
     assertEqual "$RUN_RESULT" "just test"
   fi
   if it "finds build target"; then
-    do_build_in "just"; assert
+    do_build_in "just"
+    assert
     assertEqual "$RUN_RESULT" "just build"
   fi
   if it "finds run target"; then
-    do_run_in "just"; assert
+    do_run_in "just"
+    assert
     assertEqual "$RUN_RESULT" "just run"
   fi
   if it "can print tool"; then
-    do_print_tool_in "just"; assert
+    do_print_tool_in "just"
+    assert
     assertEqual "$RUN_RESULT" "just"
   fi
 fi
 
 if describe "make"; then
   if it "finds check target"; then
-    do_test_in "make-check"; assert
+    do_test_in "make-check"
+    assert
     assertEqual "$RUN_RESULT" "make check"
   fi
   if it "ignores file named check"; then
-    do_test_in "make-check-with-check-file"; assertFails
+    do_test_in "make-check-with-check-file"
+    assertFails
     assertEqual "$RUN_RESULT" "No way to test found :'("
   fi
   if it "finds check target if both target and file named check"; then
-    do_test_in "make-check-with-check-file-and-target"; assert
+    do_test_in "make-check-with-check-file-and-target"
+    assert
     assertEqual "$RUN_RESULT" "make check"
   fi
   if it "finds check target despite package.json"; then
-    do_test_in "make-with-npm"; assert
+    do_test_in "make-with-npm"
+    assert
     assertEqual "$RUN_RESULT" "make check"
   fi
 fi
 
 if describe "nix-flake"; then
   if it "can build with nix"; then
-    do_build_in "nix-flake"; assert
+    do_build_in "nix-flake"
+    assert
     assertEqual "$RUN_RESULT" "nix build"
   fi
   if it "can run with nix"; then
-    do_run_in "nix-flake"; assert
+    do_run_in "nix-flake"
+    assert
     assertEqual "$RUN_RESULT" "nix run"
   fi
   if it "can test with nix"; then
-    do_test_in "nix-flake"; assert
+    do_test_in "nix-flake"
+    assert
     assertEqual "$RUN_RESULT" "nix flake check"
   fi
 fi
 
 if describe "nix"; then
   if it "can build with nix-build"; then
-    do_build_in "nix"; assert
+    do_build_in "nix"
+    assert
     assertEqual "$RUN_RESULT" "nix-build"
   fi
 fi
 
 if describe "go"; then
   if it "finds check target in magefile"; then
-    do_test_in "mage"; assert
+    do_test_in "mage"
+    assert
     assertEqual "$RUN_RESULT" "mage check"
   fi
   if it "runs go test without magefile"; then
-    do_test_in "go"; assert
+    do_test_in "go"
+    assert
     assertEqual "$RUN_RESULT" "go test"
   fi
   if it "can run go run"; then
-    do_run_in "go"; assert
+    do_run_in "go"
+    assert
     assertEqual "$RUN_RESULT" "go run"
   fi
   if it "can run go build"; then
-    do_build_in "go"; assert
+    do_build_in "go"
+    assert
     assertEqual "$RUN_RESULT" "go build"
   fi
   if it "can print tool"; then
-    do_print_tool_in "go"; assert
+    do_print_tool_in "go"
+    assert
     assertEqual "$RUN_RESULT" "go"
   fi
 fi
 
 if describe "python"; then
   if it "can build with poetry"; then
-    do_build_in "poetry"; assert
+    do_build_in "poetry"
+    assert
     assertEqual "$RUN_RESULT" "poetry build"
   fi
   if it "runs pytest with poetry"; then
-    do_test_in "poetry"; assert
+    do_test_in "poetry"
+    assert
     assertEqual "$RUN_RESULT" "poetry run pytest"
   fi
   if it "can run with uv"; then
-    do_run_in "uv"; assert
+    do_run_in "uv"
+    assert
     assertEqual "$RUN_RESULT" "uv run"
   fi
 fi
 
 if describe "latex"; then
   if it "can build with tectonic"; then
-    do_build_in "tectonic"; assert
+    do_build_in "tectonic"
+    assert
     assertEqual "$RUN_RESULT" "tectonic -X build"
   fi
 fi
 
 if describe "meson"; then
   if it "can build with meson"; then
-    do_build_in "meson"; assert
+    do_build_in "meson"
+    assert
     assertEqual "$RUN_RESULT" "meson compile"
   fi
   if it "can test with meson"; then
-    do_test_in "meson"; assert
+    do_test_in "meson"
+    assert
     assertEqual "$RUN_RESULT" "meson test"
   fi
 fi
 
 if describe "gradle"; then
   if it "can build with gradle"; then
-    do_build_in "gradle"; assert
+    do_build_in "gradle"
+    assert
     assertEqual "$RUN_RESULT" "gradle build"
   fi
   if it "can test with gradle"; then
-    do_test_in "gradle"; assert
+    do_test_in "gradle"
+    assert
     assertEqual "$RUN_RESULT" "gradle test"
   fi
 fi
 
 if describe "dotnet csproj"; then
   if it "can build with dotnet"; then
-    do_build_in "dotnet-csproj"; assert
+    do_build_in "dotnet-csproj"
+    assert
     assertEqual "$RUN_RESULT" "dotnet build"
   fi
   if it "can run with dotnet"; then
-    do_run_in "dotnet-csproj"; assert
+    do_run_in "dotnet-csproj"
+    assert
     assertEqual "$RUN_RESULT" "dotnet run"
   fi
   if it "can test with dotnet"; then
-    do_test_in "dotnet-csproj"; assert
+    do_test_in "dotnet-csproj"
+    assert
     assertEqual "$RUN_RESULT" "dotnet test"
   fi
 fi
 
 if describe "dotnet fsproj"; then
   if it "can build with dotnet"; then
-    do_build_in "dotnet-fsproj"; assert
+    do_build_in "dotnet-fsproj"
+    assert
     assertEqual "$RUN_RESULT" "dotnet build"
   fi
   if it "can run with dotnet"; then
-    do_run_in "dotnet-fsproj"; assert
+    do_run_in "dotnet-fsproj"
+    assert
     assertEqual "$RUN_RESULT" "dotnet run"
   fi
   if it "can test with dotnet"; then
-    do_test_in "dotnet-fsproj"; assert
+    do_test_in "dotnet-fsproj"
+    assert
     assertEqual "$RUN_RESULT" "dotnet test"
   fi
 fi
 
 if describe "dotnet sln"; then
   if it "can build with dotnet"; then
-    do_build_in "dotnet-sln"; assert
+    do_build_in "dotnet-sln"
+    assert
     assertEqual "$RUN_RESULT" "dotnet build"
   fi
   if it "can run with dotnet"; then
-    do_run_in "dotnet-sln"; assert
+    do_run_in "dotnet-sln"
+    assert
     assertEqual "$RUN_RESULT" "dotnet run"
   fi
   if it "can test with dotnet"; then
-    do_test_in "dotnet-sln"; assert
+    do_test_in "dotnet-sln"
+    assert
     assertEqual "$RUN_RESULT" "dotnet test"
   fi
 fi
 
 if describe "build script"; then
   if it "can build with build script"; then
-    do_build_in "build_script"; assert
+    do_build_in "build_script"
+    assert
     assertEqual "$RUN_RESULT" "sh -c build.sh"
   fi
 fi

@@ -432,6 +432,27 @@ try_dotnet() {
   fi
 }
 
+# OCaml + Dune
+
+try_dune() {
+  if [ -f dune-project ]; then
+    case $ACTION in
+    build)
+      execute_command dune build
+      ;;
+    test)
+      execute_command dune runtest
+      ;;
+    run)
+      execute_command dune exec
+      ;;
+    tool)
+      execute_command dune tool
+      ;;
+    esac
+  fi
+}
+
 # Any / Generic
 
 try_build_script() {
@@ -463,6 +484,7 @@ detect_and_run() {
   try_go
   try_latex
   try_dotnet
+  try_dune
   try_build_script
 }
 

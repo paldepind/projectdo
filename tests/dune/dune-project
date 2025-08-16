@@ -1,0 +1,7 @@
+(lang dune 3.0)
+
+(name hello)
+
+(package
+ (name hello)
+ (depends ocaml dune))

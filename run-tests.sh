@@ -425,6 +425,29 @@ if describe "dotnet sln"; then
   fi
 fi
 
+if describe "dune"; then
+  if it "can build with dune"; then
+    do_build_in "dune"
+    assert
+    assertEqual "$RUN_RESULT" "dune build"
+  fi
+  if it "can run with dune"; then
+    do_run_in "dune"
+    assert
+    assertEqual "$RUN_RESULT" "dune exec"
+  fi
+  if it "can test with dune"; then
+    do_test_in "dune"
+    assert
+    assertEqual "$RUN_RESULT" "dune runtest"
+  fi
+  if it "can print tool"; then
+    do_print_tool_in "dune"
+    assert
+    assertEqual "$RUN_RESULT" "dune"
+  fi
+fi
+
 if describe "build script"; then
   if it "can build with build script"; then
     do_build_in "build_script"

@@ -1,1 +1,4 @@
 package-lock.json
+
+# Dune build artifacts in test directory
+tests/dune/_build/

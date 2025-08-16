@@ -17,9 +17,10 @@ Context-aware single-letter project commands to speed up your command-line workf
 
 https://user-images.githubusercontent.com/521604/231857437-12c14aff-585d-4817-8f44-59b40ecc32e0.mov
 
-* **Supports 20+ build and project tools** – Bun, Cabal, Cargo, CMake, .NET, Go,
-  Gradle, Leiningen, Mage, Maven, Meson, Poetry, Stack, Tectonic, just, make,
-  nix, npm, pnpm, and yarn. [More details](#supported-tools-and-languages).
+* **Supports 20+ build and project tools** – Bun, Cabal, Cargo, CMake, .NET,
+  Dune, Go, Gradle, Leiningen, Mage, Maven, Meson, Poetry, Stack, Tectonic,
+  just, make, nix, npm, pnpm, and yarn. [More
+  details](#supported-tools-and-languages).
 * **Portable** – Dependency free portable POSIX shell script. Supports Linux,
   macOS, WSL, etc.
 * **Shell Integration** – Works with aliases in any shell and for the Fish
@@ -176,6 +177,7 @@ request.
 | Cabal           | Haskell          | `*.cabal`                                  | `cabal build` <br/> `cabal run` <br/> `cabal test`     |
 | Cargo           | Rust             | `Cargo.toml`                               | `cargo build` <br/> `cargo run` <br/> `cargo test`     |
 | CMake           | C, C++ and Obj-C | `CMakeLists.txt`                           | `cmake --build . --target test`                        |
+| Dune            | OCaml            | `dune-project`                             | `dune build` <br/> `dune exec` <br/> `dune runtest`    |
 | Go              | Go               | `go.mod`                                   | `go test`                                              |
 | Gradle          | Java, etc.       | `build.gradle` or `build.gradle.kts`       | `gradle compile` <br/> run n/a <br/> `gradle test`     |
 | just            | Any              | `justfile`                                 | `just build` <br /> `just run` <br /> `just test`      |

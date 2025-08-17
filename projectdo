@@ -26,8 +26,17 @@ ACTION=""
 TOOL_ARGS=""  # Arguments to pass along to the tool
 IS_TOOL=false # True if ACTION is 'tool' as this action is somewhat special.
 
+# Check if a command is available.
 has_command() {
   command -v "$1" >/dev/null 2>&1
+}
+
+# Check if a command is available, if not print an error message and exit.
+has_command_or_error() {
+  if ! has_command "$1"; then
+    echo "Found a '$2' file but '$3' is not installed."
+    exit 1
+  fi
 }
 
 # When running the appropriate external tool this function is used which
@@ -91,7 +100,6 @@ go_up() {
 # looking up the directory hierarchy.
 detect_nodejs_tool() {
   while :; do
-    # echo looking for nodejs tool
     if [ -f package-lock.json ]; then
       echo yarn
       return
@@ -117,10 +125,7 @@ try_nodejs() {
     return 1
   fi
   tool=$(detect_nodejs_tool)
-  if ! has_command "$tool"; then
-    echo "Found a package.json file but '$tool' is not installed."
-    exit 1
-  fi
+  has_command_or_error "$tool" package.json "$tool"
   node_action="$ACTION"
   # Only the "run" action need translation, the others match 1-to-1
   if [ "$ACTION" = run ]; then
@@ -254,10 +259,7 @@ try_lein() {
 
 try_justfile() {
   if [ -f justfile ]; then
-    if ! has_command "just"; then
-      echo "Found a justfile but 'just' is not installed."
-      exit 1
-    fi
+    has_command_or_error just justfile just
     execute_command just "$ACTION"
   fi
 }
@@ -286,10 +288,7 @@ has_make_target() {
 
 try_makefile() {
   if [ -f Makefile ]; then
-    if ! has_command "make"; then
-      echo "Found a Makefile but 'make' is not installed."
-      exit 1
-    fi
+    has_command_or_error make Makefile make
     if $IS_TOOL || [ "$ACTION" = build ]; then
       # For make "build" is the default action when running `make`
       execute "make"
@@ -312,10 +311,7 @@ try_makefile() {
 
 try_nix_flake() {
   if [ -f flake.nix ]; then
-    if ! has_command "nix"; then
-      echo "Found a flake.nix file but 'nix' is not installed."
-      exit 1
-    fi
+    has_command_or_error nix-build flake.nix nix
     if [ "$ACTION" = test ]; then
       execute "nix flake check"
       exit
@@ -330,10 +326,7 @@ try_nix_flake() {
 
 try_nix_package() {
   if [ -f default.nix ]; then
-    if ! has_command "nix-build"; then
-      echo "Found a default.nix file but 'nix' is not installed."
-      exit 1
-    fi
+    has_command_or_error nix-build default.nix nix
     if [ "$ACTION" = build ]; then
       execute "nix-build"
       exit

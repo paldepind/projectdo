@@ -55,11 +55,11 @@ execute() {
   fi
 }
 
-# Takes the name of a tool and an action. If the action is `tool` it is
+# Takes the name of a tool and an optional action. If the action is `tool` it is
 # ignored. It handles the common case where the tool is invoked as `tool
 # action`.
 execute_command() {
-  if [ "$2" = tool ]; then
+  if [ "$2" = tool ] || [ -z "$2" ]; then
     execute "$1"
   else
     execute "$1 $2"
@@ -159,20 +159,10 @@ try_cargo() {
 try_meson() {
   if [ -f meson.build ]; then
     case $ACTION in
-    build)
-      execute "meson compile"
-      exit
-      ;;
-    test)
-      execute "meson test"
-      exit
-      ;;
+    build) execute_command meson compile ;;
+    test | tool) execute_command meson "$ACTION" ;;
     run)
       echo "projectdo does not know how to run a project with Meson."
-      exit
-      ;;
-    tool)
-      execute "meson"
       exit
       ;;
     esac
@@ -186,16 +176,12 @@ try_cmake() {
     case $ACTION in
     test)
       if [ -f build ]; then
-        execute "cmake --build build --target test"
+        execute_command cmake "--build build --target test"
       else
-        execute "cmake --build . --target test"
+        execute_command cmake "--build . --target test"
       fi
-      exit
       ;;
-    tool)
-      execute "cmake"
-      exit
-      ;;
+    tool) execute_command cmake tool ;;
     esac
   fi
 }
@@ -222,22 +208,12 @@ try_cabal() {
 try_maven() {
   if [ -f pom.xml ]; then
     case $ACTION in
-    build)
-      execute "mvn compile"
-      exit
-      ;;
-    test)
-      execute "mvn test"
-      exit
-      ;;
+    build) execute_command mvn compile ;;
     run)
       echo "projectdo does not know how to run a project with Maven."
       exit
       ;;
-    tool)
-      execute "mvn"
-      exit
-      ;;
+    test | tool) execute_command mvn "$ACTION" ;;
     esac
   fi
 }
@@ -303,11 +279,9 @@ try_makefile() {
     elif [ "$ACTION" = test ]; then
       # Let's see if the makefile contains a test or check target
       if has_make_target "test"; then
-        execute "make test"
-        exit
+        execute_command make test
       elif has_make_target "check"; then
-        execute "make check"
-        exit
+        execute_command make check
       fi
     fi
   fi
@@ -318,10 +292,9 @@ try_makefile() {
 
 try_nix_flake() {
   if [ -f flake.nix ]; then
-    has_command_or_error nix-build flake.nix nix
+    has_command_or_error nix flake.nix nix
     if [ "$ACTION" = test ]; then
-      execute "nix flake check"
-      exit
+      execute_command nix "flake check"
     else
       execute_command nix "$ACTION"
     fi
@@ -334,16 +307,9 @@ try_nix_flake() {
 try_nix_package() {
   if [ -f default.nix ]; then
     has_command_or_error nix-build default.nix nix
-    case $ACTION in
-    build)
-      execute "nix-build"
-      exit
-      ;;
-    tool)
-      execute "nix-build"
-      exit
-      ;;
-    esac
+    if [ "$ACTION" = test ] || [ "$ACTION" = tool ]; then
+      execute_command nix-build
+    fi
   fi
   return 1
 }
@@ -354,22 +320,10 @@ try_python() {
   if [ -f pyproject.toml ]; then
     if grep -q -m 1 "^\[tool.poetry\]$" pyproject.toml; then
       case $ACTION in
-      build)
-        execute "poetry build"
-        exit
-        ;;
-      test)
-        # TODO: There are other Python test frameworks, it would be nice to
-        # detect and run the right one.
-        execute "poetry run pytest"
-        exit
-        ;;
+      build | tool) execute_command poetry "$ACTION" ;;
+      test) execute_command poetry "run pytest" ;;
       run)
         echo "projectdo does not know how to run a project with Poetry."
-        exit
-        ;;
-      tool)
-        execute "poetry"
         exit
         ;;
       esac
@@ -381,17 +335,10 @@ try_python() {
           exit
           ;;
         test)
-          echo "projectdo does not know how to run a project with uv."
+          echo "projectdo does not know how to test a project with uv."
           exit
           ;;
-        run)
-          execute "uv run"
-          exit
-          ;;
-        tool)
-          execute "uv"
-          exit
-          ;;
+        run | tool) execute_command uv "$ACTION" ;;
         esac
       else
         echo "Found a pyproject.toml file but projectdo is not sure how to run it."
@@ -434,14 +381,8 @@ try_go() {
 try_latex() {
   if [ -f Tectonic.toml ]; then
     case $ACTION in
-    build)
-      execute "tectonic -X build"
-      exit
-      ;;
-    tool)
-      execute "tectonic"
-      exit
-      ;;
+    build) execute_command tectonic "-X build" ;;
+    tool) execute_command tectonic ;;
     esac
   fi
 }
@@ -459,17 +400,14 @@ try_dotnet() {
 try_dune() {
   if [ -f dune-project ]; then
     case $ACTION in
-    build)
-      execute_command dune build
-      ;;
     test)
       execute_command dune runtest
       ;;
     run)
       execute_command dune exec
       ;;
-    tool)
-      execute_command dune tool
+    build | tool)
+      execute_command dune "$ACTION"
       ;;
     esac
   fi

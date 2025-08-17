@@ -412,6 +412,11 @@ if describe "gradle"; then
 fi
 
 if describe "cmake"; then
+  if it "can test tool"; then
+    do_test_in "cmake"
+    assert
+    assertEqual "$RUN_RESULT" "cmake --build . --target test"
+  fi
   if it "can print tool"; then
     do_print_tool_in "cmake"
     assert

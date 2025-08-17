@@ -254,16 +254,11 @@ try_gradle() {
 
 try_lein() {
   if [ -f project.clj ]; then
-    case $ACTION in
-    test)
-      execute "lein test"
+    if [ "$ACTION" = build ]; then
+      echo "projectdo does not know how to build a project with Leiningen."
       exit
-      ;;
-    tool)
-      execute "lein"
-      exit
-      ;;
-    esac
+    fi
+    execute_command lein "$ACTION"
   fi
 }
 

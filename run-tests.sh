@@ -428,6 +428,16 @@ if describe "maven"; then
 fi
 
 if describe "lein"; then
+  if it "can test"; then
+    do_test_in "lein"
+    assert
+    assertEqual "$RUN_RESULT" "lein test"
+  fi
+  if it "can run"; then
+    do_run_in "lein"
+    assert
+    assertEqual "$RUN_RESULT" "lein run"
+  fi
   if it "can print tool"; then
     do_print_tool_in "lein"
     assert

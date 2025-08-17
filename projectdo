@@ -171,6 +171,10 @@ try_meson() {
       echo "projectdo does not know how to run a project with Meson."
       exit
       ;;
+    tool)
+      execute "meson"
+      exit
+      ;;
     esac
   fi
 }
@@ -178,13 +182,21 @@ try_meson() {
 # CMake
 
 try_cmake() {
-  if [ -f CMakeLists.txt ] && [ "$ACTION" = test ]; then
-    if [ -f build ]; then
-      execute "cmake --build build --target test"
-    else
-      execute "cmake --build . --target test"
-    fi
-    exit
+  if [ -f CMakeLists.txt ]; then
+    case $ACTION in
+    test)
+      if [ -f build ]; then
+        execute "cmake --build build --target test"
+      else
+        execute "cmake --build . --target test"
+      fi
+      exit
+      ;;
+    tool)
+      execute "cmake"
+      exit
+      ;;
+    esac
   fi
 }
 
@@ -222,6 +234,10 @@ try_maven() {
       echo "projectdo does not know how to run a project with Maven."
       exit
       ;;
+    tool)
+      execute "mvn"
+      exit
+      ;;
     esac
   fi
 }
@@ -243,6 +259,10 @@ try_gradle() {
       echo "projectdo does not know how to run a project with Gradle."
       exit
       ;;
+    tool)
+      execute "gradle"
+      exit
+      ;;
     esac
   fi
 }
@@ -250,8 +270,17 @@ try_gradle() {
 # Clojure + Leiningen
 
 try_lein() {
-  if [ -f project.clj ] && [ "$ACTION" = test ]; then
-    execute "lein test"
+  if [ -f project.clj ]; then
+    case $ACTION in
+    test)
+      execute "lein test"
+      exit
+      ;;
+    tool)
+      execute "lein"
+      exit
+      ;;
+    esac
   fi
 }
 
@@ -327,10 +356,16 @@ try_nix_flake() {
 try_nix_package() {
   if [ -f default.nix ]; then
     has_command_or_error nix-build default.nix nix
-    if [ "$ACTION" = build ]; then
+    case $ACTION in
+    build)
       execute "nix-build"
       exit
-    fi
+      ;;
+    tool)
+      execute "nix-build"
+      exit
+      ;;
+    esac
   fi
   return 1
 }
@@ -355,6 +390,10 @@ try_python() {
         echo "projectdo does not know how to run a project with Poetry."
         exit
         ;;
+      tool)
+        execute "poetry"
+        exit
+        ;;
       esac
     else
       if [ -f uv.lock ]; then
@@ -369,6 +408,10 @@ try_python() {
           ;;
         run)
           execute "uv run"
+          exit
+          ;;
+        tool)
+          execute "uv"
           exit
           ;;
         esac
@@ -411,9 +454,17 @@ try_go() {
 # LaTeX
 
 try_latex() {
-  if [ -f Tectonic.toml ] && [ "$ACTION" = build ]; then
-    execute "tectonic -X build"
-    exit
+  if [ -f Tectonic.toml ]; then
+    case $ACTION in
+    build)
+      execute "tectonic -X build"
+      exit
+      ;;
+    tool)
+      execute "tectonic"
+      exit
+      ;;
+    esac
   fi
 }
 

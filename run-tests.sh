@@ -281,11 +281,21 @@ if describe "nix-flake"; then
     assert
     assertEqual "$RUN_RESULT" "nix flake check"
   fi
+  if it "can print tool"; then
+    do_print_tool_in "nix-flake"
+    assert
+    assertEqual "$RUN_RESULT" "nix"
+  fi
 fi
 
 if describe "nix"; then
   if it "can build with nix-build"; then
     do_build_in "nix"
+    assert
+    assertEqual "$RUN_RESULT" "nix-build"
+  fi
+  if it "can print tool"; then
+    do_print_tool_in "nix"
     assert
     assertEqual "$RUN_RESULT" "nix-build"
   fi
@@ -330,10 +340,20 @@ if describe "python"; then
     assert
     assertEqual "$RUN_RESULT" "poetry run pytest"
   fi
+  if it "can print tool with poetry"; then
+    do_print_tool_in "poetry"
+    assert
+    assertEqual "$RUN_RESULT" "poetry"
+  fi
   if it "can run with uv"; then
     do_run_in "uv"
     assert
     assertEqual "$RUN_RESULT" "uv run"
+  fi
+  if it "can print tool with uv"; then
+    do_print_tool_in "uv"
+    assert
+    assertEqual "$RUN_RESULT" "uv"
   fi
 fi
 
@@ -342,6 +362,11 @@ if describe "latex"; then
     do_build_in "tectonic"
     assert
     assertEqual "$RUN_RESULT" "tectonic -X build"
+  fi
+  if it "can print tool"; then
+    do_print_tool_in "tectonic"
+    assert
+    assertEqual "$RUN_RESULT" "tectonic"
   fi
 fi
 
@@ -356,6 +381,11 @@ if describe "meson"; then
     assert
     assertEqual "$RUN_RESULT" "meson test"
   fi
+  if it "can print tool"; then
+    do_print_tool_in "meson"
+    assert
+    assertEqual "$RUN_RESULT" "meson"
+  fi
 fi
 
 if describe "gradle"; then
@@ -368,6 +398,35 @@ if describe "gradle"; then
     do_test_in "gradle"
     assert
     assertEqual "$RUN_RESULT" "gradle test"
+  fi
+  if it "can print tool"; then
+    do_print_tool_in "gradle"
+    assert
+    assertEqual "$RUN_RESULT" "gradle"
+  fi
+fi
+
+if describe "cmake"; then
+  if it "can print tool"; then
+    do_print_tool_in "cmake"
+    assert
+    assertEqual "$RUN_RESULT" "cmake"
+  fi
+fi
+
+if describe "maven"; then
+  if it "can print tool"; then
+    do_print_tool_in "maven"
+    assert
+    assertEqual "$RUN_RESULT" "mvn"
+  fi
+fi
+
+if describe "lein"; then
+  if it "can print tool"; then
+    do_print_tool_in "lein"
+    assert
+    assertEqual "$RUN_RESULT" "lein"
   fi
 fi
 
@@ -387,6 +446,11 @@ if describe "dotnet csproj"; then
     assert
     assertEqual "$RUN_RESULT" "dotnet test"
   fi
+  if it "can print tool"; then
+    do_print_tool_in "dotnet-csproj"
+    assert
+    assertEqual "$RUN_RESULT" "dotnet"
+  fi
 fi
 
 if describe "dotnet fsproj"; then
@@ -405,6 +469,11 @@ if describe "dotnet fsproj"; then
     assert
     assertEqual "$RUN_RESULT" "dotnet test"
   fi
+  if it "can print tool"; then
+    do_print_tool_in "dotnet-fsproj"
+    assert
+    assertEqual "$RUN_RESULT" "dotnet"
+  fi
 fi
 
 if describe "dotnet sln"; then
@@ -422,6 +491,11 @@ if describe "dotnet sln"; then
     do_test_in "dotnet-sln"
     assert
     assertEqual "$RUN_RESULT" "dotnet test"
+  fi
+  if it "can print tool"; then
+    do_print_tool_in "dotnet-sln"
+    assert
+    assertEqual "$RUN_RESULT" "dotnet"
   fi
 fi
 

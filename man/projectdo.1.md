@@ -112,7 +112,7 @@ alias p='projectdo tool'
 | Go              | Go               | `go.mod`                                   | `go test`                                              |
 |-----------------|------------------|--------------------------------------------|--------------------------------------------------------|
 
-| Gradle          | Java, etc.       | `build.gradle` or `build.gradle.kts`       | `gradle compile`, run n/a, `gradle test`               |
+| Gradle          | Java, etc.       | `build.gradle` or `build.gradle.kts`       | `gradle compile`, `gradle run`, `gradle test`          |
 |-----------------|------------------|--------------------------------------------|--------------------------------------------------------|
 
 | just            | Any              | `justfile`                                 | `just build`, `just run`, `just test`                  |

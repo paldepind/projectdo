@@ -246,24 +246,7 @@ try_maven() {
 
 try_gradle() {
   if [ -f build.gradle ] || [ -f build.gradle.kts ]; then
-    case $ACTION in
-    build)
-      execute "gradle build"
-      exit
-      ;;
-    test)
-      execute "gradle test"
-      exit
-      ;;
-    run)
-      echo "projectdo does not know how to run a project with Gradle."
-      exit
-      ;;
-    tool)
-      execute "gradle"
-      exit
-      ;;
-    esac
+    execute_command gradle "$ACTION"
   fi
 }
 

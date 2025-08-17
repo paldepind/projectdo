@@ -394,6 +394,11 @@ if describe "gradle"; then
     assert
     assertEqual "$RUN_RESULT" "gradle build"
   fi
+  if it "can run with gradle"; then
+    do_run_in "gradle"
+    assert
+    assertEqual "$RUN_RESULT" "gradle run"
+  fi
   if it "can test with gradle"; then
     do_test_in "gradle"
     assert

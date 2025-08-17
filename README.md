@@ -179,7 +179,7 @@ request.
 | CMake           | C, C++ and Obj-C | `CMakeLists.txt`                           | `cmake --build . --target test`                        |
 | Dune            | OCaml            | `dune-project`                             | `dune build` <br/> `dune exec` <br/> `dune runtest`    |
 | Go              | Go               | `go.mod`                                   | `go test`                                              |
-| Gradle          | Java, etc.       | `build.gradle` or `build.gradle.kts`       | `gradle compile` <br/> run n/a <br/> `gradle test`     |
+| Gradle          | Java, etc.       | `build.gradle` or `build.gradle.kts`       | `gradle compile` <br/> `gradle run` <br/> `gradle test`     |
 | just            | Any              | `justfile`                                 | `just build` <br /> `just run` <br /> `just test`      |
 | Leiningen       | Clojure          | `project.clj`                              | `lein test`                                            |
 | Mage            | Go               | `magefile.go` with a `test`/`check` target | `mage test/check`                                      |

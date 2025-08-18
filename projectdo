@@ -307,7 +307,7 @@ try_nix_flake() {
 try_nix_package() {
   if [ -f default.nix ]; then
     has_command_or_error nix-build default.nix nix
-    if [ "$ACTION" = test ] || [ "$ACTION" = tool ]; then
+    if [ "$ACTION" = build ] || [ "$ACTION" = tool ]; then
       execute_command nix-build
     fi
   fi

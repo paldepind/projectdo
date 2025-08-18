@@ -33,8 +33,13 @@ has_command() {
 
 # Check if a command is available, if not print an error message and exit.
 has_command_or_error() {
-  if ! has_command "$1"; then
-    echo "Found a '$2' file but '$3' is not installed."
+  # If this is a dry run, we don't check whether the command is available.
+  if [ $DRY_RUN = false ] && ! has_command "$1"; then
+    tool_name="$3"
+    if [ -z "$tool_name" ]; then
+      tool_name="$1"
+    fi
+    echo "Found a '$2' file but '$tool_name' is not installed."
     exit 1
   fi
 }
@@ -125,7 +130,7 @@ try_nodejs() {
     return 1
   fi
   tool=$(detect_nodejs_tool)
-  has_command_or_error "$tool" package.json "$tool"
+  has_command_or_error "$tool" package.json
   node_action="$ACTION"
   # Only the "run" action need translation, the others match 1-to-1
   if [ "$ACTION" = run ]; then
@@ -150,6 +155,7 @@ try_nodejs() {
 
 try_cargo() {
   if [ -f Cargo.toml ]; then
+    has_command_or_error cargo Cargo.toml
     execute_command cargo "$ACTION"
   fi
 }
@@ -190,6 +196,7 @@ try_cmake() {
 
 try_stack() {
   if [ -f package.yaml ] && [ -f stack.yaml ]; then
+    has_command_or_error stack package.yaml
     execute_command stack "$ACTION"
   fi
 }
@@ -199,6 +206,7 @@ try_stack() {
 try_cabal() {
   cabal_file="$(find ./ -maxdepth 1 -name "*.cabal" 2>/dev/null | wc -l)"
   if [ "$cabal_file" -gt 0 ] && [ ! -f stack.yml ]; then
+    has_command_or_error cabal cabal
     execute_command cabal "$ACTION"
   fi
 }
@@ -207,6 +215,7 @@ try_cabal() {
 
 try_maven() {
   if [ -f pom.xml ]; then
+    has_command_or_error mvn pom.xml maven
     case $ACTION in
     build) execute_command mvn compile ;;
     run)
@@ -222,6 +231,7 @@ try_maven() {
 
 try_gradle() {
   if [ -f build.gradle ] || [ -f build.gradle.kts ]; then
+    has_command_or_error gradle build.gradle
     execute_command gradle "$ACTION"
   fi
 }
@@ -234,6 +244,7 @@ try_lein() {
       echo "projectdo does not know how to build a project with Leiningen."
       exit
     fi
+    has_command_or_error lein project.clj
     execute_command lein "$ACTION"
   fi
 }
@@ -242,7 +253,7 @@ try_lein() {
 
 try_justfile() {
   if [ -f justfile ]; then
-    has_command_or_error just justfile just
+    has_command_or_error just justfile
     execute_command just "$ACTION"
   fi
 }
@@ -271,11 +282,10 @@ has_make_target() {
 
 try_makefile() {
   if [ -f Makefile ]; then
-    has_command_or_error make Makefile make
+    has_command_or_error make Makefile
     if $IS_TOOL || [ "$ACTION" = build ]; then
       # For make "build" is the default action when running `make`
-      execute "make"
-      exit
+      execute_command "make"
     elif [ "$ACTION" = test ]; then
       # Let's see if the makefile contains a test or check target
       if has_make_target "test"; then
@@ -292,7 +302,7 @@ try_makefile() {
 
 try_nix_flake() {
   if [ -f flake.nix ]; then
-    has_command_or_error nix flake.nix nix
+    has_command_or_error nix flake.nix
     if [ "$ACTION" = test ]; then
       execute_command nix "flake check"
     else
@@ -306,7 +316,7 @@ try_nix_flake() {
 
 try_nix_package() {
   if [ -f default.nix ]; then
-    has_command_or_error nix-build default.nix nix
+    has_command_or_error nix-build default.nix
     if [ "$ACTION" = build ] || [ "$ACTION" = tool ]; then
       execute_command nix-build
     fi
@@ -361,15 +371,12 @@ try_go() {
       # but `magefile.go` seems to be the convention.
       if [ -f magefile.go ]; then
         if grep -q -m 1 '^func Check(' magefile.go; then
-          execute "mage check"
-          exit
+          execute_command mage check
         elif grep -q -m 1 '^func Test(' magefile.go; then
-          execute "mage test"
-          exit
+          execute_command mage test
         fi
       fi
-      execute "go test"
-      exit
+      execute_command go test
     else
       execute_command go "$ACTION"
     fi

@@ -44,6 +44,32 @@ has_command_or_error() {
   fi
 }
 
+# Output the global `ACTION` variable with a translation applied. A translation
+# has the form `action=translation`. The shortcut `action` is equivalent to
+# `action=action`. If no translation applies then a non-zero status code is
+# returned. The `tool` action is not subject to translations.
+translate_action() {
+  if $IS_TOOL; then
+    echo tool
+    return
+  fi
+  for arg in "$@"; do
+    case "$arg" in
+    $ACTION)
+      echo "$arg"
+      return 0
+      ;;
+    ${ACTION}=*)
+      # Pick out the part after the `=`
+      echo "$arg" | sed "s/${ACTION}=\(.*\)/\1/"
+      return 0
+      ;;
+    esac
+  done
+  echo ""
+  return 1
+}
+
 # When running the appropriate external tool this function is used which
 # evaluates the given command while respecting $QUIET and $DRY_RUN.
 # shellcheck disable=SC2086
@@ -131,11 +157,7 @@ try_nodejs() {
   fi
   tool=$(detect_nodejs_tool)
   has_command_or_error "$tool" package.json
-  node_action="$ACTION"
-  # Only the "run" action need translation, the others match 1-to-1
-  if [ "$ACTION" = run ]; then
-    node_action=start
-  fi
+  node_action=$(translate_action build run=start test)
   # We check if the package.json file contains an appropriate script. We use
   # grep for this. The check is not 100% bulletproof, but it's very close. We
   # could've used `npm run` to get the authorative list of the scripts but
@@ -164,14 +186,11 @@ try_cargo() {
 
 try_meson() {
   if [ -f meson.build ]; then
-    case $ACTION in
-    build) execute_command meson compile ;;
-    test | tool) execute_command meson "$ACTION" ;;
-    run)
-      echo "projectdo does not know how to run a project with Meson."
-      exit
-      ;;
-    esac
+    has_command_or_error meson meson.build
+    action=$(translate_action test build=compile)
+    if [ $? -eq 0 ]; then
+      execute_command meson "$action"
+    fi
   fi
 }
 
@@ -215,15 +234,11 @@ try_cabal() {
 
 try_maven() {
   if [ -f pom.xml ]; then
-    has_command_or_error mvn pom.xml maven
-    case $ACTION in
-    build) execute_command mvn compile ;;
-    run)
-      echo "projectdo does not know how to run a project with Maven."
-      exit
-      ;;
-    test | tool) execute_command mvn "$ACTION" ;;
-    esac
+    action=$(translate_action test build=compile)
+    if [ $? -eq 0 ]; then
+      has_command_or_error mvn pom.xml maven
+      execute_command mvn "$action"
+    fi
   fi
 }
 
@@ -303,11 +318,8 @@ try_makefile() {
 try_nix_flake() {
   if [ -f flake.nix ]; then
     has_command_or_error nix flake.nix
-    if [ "$ACTION" = test ]; then
-      execute_command nix "flake check"
-    else
-      execute_command nix "$ACTION"
-    fi
+    action=$(translate_action "test=flake check" build run)
+    execute_command nix "$action"
   fi
   return 1
 }
@@ -317,9 +329,8 @@ try_nix_flake() {
 try_nix_package() {
   if [ -f default.nix ]; then
     has_command_or_error nix-build default.nix
-    if [ "$ACTION" = build ] || [ "$ACTION" = tool ]; then
-      execute_command nix-build
-    fi
+    action=$(translate_action build=)
+    execute_command nix-build "$action"
   fi
   return 1
 }
@@ -329,23 +340,15 @@ try_nix_package() {
 try_python() {
   if [ -f pyproject.toml ]; then
     if grep -q -m 1 "^\[tool.poetry\]$" pyproject.toml; then
-      case $ACTION in
-      build | tool) execute_command poetry "$ACTION" ;;
-      test) execute_command poetry "run pytest" ;;
-      run)
-        echo "projectdo does not know how to run a project with Poetry."
-        exit
-        ;;
-      esac
+      action=$(translate_action build "test=run pytest")
+      if [ $? -eq 0 ]; then
+        execute_command poetry "$action"
+      fi
     else
       if [ -f uv.lock ]; then
         case $ACTION in
-        build)
-          echo "projectdo does not know how to run a project with uv."
-          exit
-          ;;
-        test)
-          echo "projectdo does not know how to test a project with uv."
+        build | test)
+          echo "projectdo does not know how to $ACTION a project with uv."
           exit
           ;;
         run | tool) execute_command uv "$ACTION" ;;
@@ -362,24 +365,21 @@ try_python() {
 # Go
 
 try_go() {
+  # We detect Makefiles before we detect Go, so here we know that the Go project
+  # is not tested by a Makefile.
   if [ -f go.mod ]; then
-    if [ "$ACTION" = test ]; then
-      # We detect Makefiles before we detect Go, so here we know that the Go
-      # project is _not_ tested by a Makefile.
 
-      # Check if the project uses Mage. A magefile could in theory have any name,
-      # but `magefile.go` seems to be the convention.
-      if [ -f magefile.go ]; then
-        if grep -q -m 1 '^func Check(' magefile.go; then
-          execute_command mage check
-        elif grep -q -m 1 '^func Test(' magefile.go; then
-          execute_command mage test
-        fi
+    # Check if the project uses Mage. A magefile could in theory have any name,
+    # but `magefile.go` seems to be the convention.
+    if [ "$ACTION" = test ] && [ -f magefile.go ]; then
+
+      if grep -q -m 1 '^func Check(' magefile.go; then
+        execute_command mage check
+      elif grep -q -m 1 '^func Test(' magefile.go; then
+        execute_command mage test
       fi
-      execute_command go test
-    else
-      execute_command go "$ACTION"
     fi
+    execute_command go "$ACTION"
   fi
 }
 

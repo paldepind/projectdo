@@ -9,6 +9,7 @@ all:
 	@echo RUN \'make test\' to run tests for $(BINARY_NAME)
 
 install:
+	@mkdir -p $(DESTDIR)$(PREFIX)/bin
 	@install -Dm755 $(BINARY_NAME) $(DESTDIR)$(PREFIX)/bin/$(BINARY_NAME)
 	@mkdir -p $(DESTDIR)$(MANDIR)/man1
 	@cp -p man/$(BINARY_NAME).1 $(DESTDIR)$(MANDIR)/man1

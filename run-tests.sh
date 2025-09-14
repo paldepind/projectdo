@@ -542,6 +542,33 @@ if describe "dune"; then
   fi
 fi
 
+if describe "lake"; then
+  if it "can run build"; then
+    do_build_in "lake"
+    assert
+    assertEqual "$RUN_RESULT" "lake build"
+  fi
+  if it "can run run"; then
+    do_run_in "lake"
+    assert
+    assertEqual "$RUN_RESULT" "lake run"
+  fi
+  if it "can run test"; then
+    do_test_in "lake"
+    assert
+    assertEqual "$RUN_RESULT" "lake test"
+  fi
+  if it "can print tool"; then
+    do_print_tool_in "lake"
+    assert
+    assertEqual "$RUN_RESULT" "lake"
+  fi
+  if it "passes additional arguments to the tool"; then
+    RUN_RESULT=$(cd tests/lake && ../../projectdo -n build --release)
+    assertEqual "$RUN_RESULT" "lake build --release"
+  fi
+fi
+
 if describe "build script"; then
   if it "can build with build script"; then
     do_build_in "build_script"

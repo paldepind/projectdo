@@ -420,6 +420,15 @@ try_dune() {
   fi
 }
 
+# Lean + Lake
+
+try_lake() {
+  if [ -f lakefile.lean ] || [ -f lakefile.toml ]; then
+    has_command_or_error lake lakefile.lean
+    execute_command lake "$ACTION"
+  fi
+}
+
 # Any / Generic
 
 try_build_script() {
@@ -452,6 +461,7 @@ detect_and_run() {
   try_latex
   try_dotnet
   try_dune
+  try_lake
   try_build_script
 }
 

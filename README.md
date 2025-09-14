@@ -17,8 +17,8 @@ Context-aware single-letter project commands to speed up your command-line workf
 
 https://user-images.githubusercontent.com/521604/231857437-12c14aff-585d-4817-8f44-59b40ecc32e0.mov
 
-* **Supports 20+ build and project tools** – Bun, Cabal, Cargo, CMake, .NET,
-  Dune, Go, Gradle, Leiningen, Mage, Maven, Meson, Poetry, Stack, Tectonic,
+* **Supports over 20 build and project tools** – Bun, Cabal, Cargo, CMake, .NET,
+  Dune, Go, Gradle, Lake, Leiningen, Mage, Maven, Meson, Poetry, Stack, Tectonic,
   just, make, nix, npm, pnpm, and yarn. [More
   details](#supported-tools-and-languages).
 * **Portable** – Dependency free portable POSIX shell script. Supports Linux,
@@ -181,6 +181,7 @@ request.
 | Go              | Go               | `go.mod`                                   | `go test`                                              |
 | Gradle          | Java, etc.       | `build.gradle` or `build.gradle.kts`       | `gradle compile` <br/> `gradle run` <br/> `gradle test`     |
 | just            | Any              | `justfile`                                 | `just build` <br /> `just run` <br /> `just test`      |
+| Lake            | Lean             | `lakefile.lean` or `lake-manifest.json`   | `lake build` <br/> `lake run` <br/> `lake test`        |
 | Leiningen       | Clojure          | `project.clj`                              | `lein test`                                            |
 | Mage            | Go               | `magefile.go` with a `test`/`check` target | `mage test/check`                                      |
 | make            | Any              | `Makefile`                                 | `make` <br/> `make test/check`                         |

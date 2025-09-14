@@ -65,6 +65,9 @@ printf "Check that everything looks ok, then push with:\n"
 printf "  git push origin\n"
 printf "  git push origin tag v%s\n" "$ver_choice"
 
+printf "and create a new release on GitHub:\n"
+printf "  https://github.com/paldepind/projectdo/releases/new?title=%s&tag=v%s\n" "$ver_choice" "$ver_choice"
+
 # Go back to the dir where user was before
 cd "$old_dir"
 

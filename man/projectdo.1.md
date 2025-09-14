@@ -2,7 +2,7 @@
 title: projectdo
 section: 1
 header: User Manual
-footer: projectdo 1.0.0
+footer: projectdo 1.0.1
 date: September 14, 2025
 ---
 

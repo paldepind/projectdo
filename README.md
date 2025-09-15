@@ -21,24 +21,31 @@ https://user-images.githubusercontent.com/521604/231857437-12c14aff-585d-4817-8f
   Dune, Go, Gradle, Lake, Leiningen, Mage, Maven, Meson, Poetry, Stack, Tectonic,
   just, make, nix, npm, pnpm, and yarn. [More
   details](#supported-tools-and-languages).
-* **Portable** – Dependency free portable POSIX shell script. Supports Linux,
+* **Portable** – Dependency-free portable POSIX shell script. Supports Linux,
   macOS, WSL, etc.
 * **Shell Integration** – Works with aliases in any shell and for the Fish
   shell through a [Fish plugin](#fish-plugin).
 * **Simple** – Easy to extend with support for new tools.
 
-## What
+## Why & What
 
-`projectdo` is a command-line program that executes project actions (such as
-build, run, test, etc.) with the appropriate tool for current project in the
-working directory. The appropriate tool and the current project root is
-intelligently detected based on the context where `projectdo` is executed. For
-instance, `projectdo test` runs `cargo test` if a `Cargo.toml` is found and
-`npm test` if a `package.json` file is found.
+If you're a developer and command line user, you're probably constantly using
+commands like `make`, `cargo run`, `npm test`, etc. The common approach of
+using shell aliases to provide shorthand forms for frequently used commands does
+not work well in these cases. For example, creating an alias like `b` for `cargo
+build` one day is completely useless the next day when working in a project
+that uses a different build tool.
 
-By combining `projectdo` with shell aliases or shell abbreviations project
-commands can be run in any project with less typing. As an example, with the
-alias `alias b='projectdo build'` one can build any project simply by typing
+`projectdo` solves that problem. It executes project actions (such as build,
+run, test, etc.) with the appropriate tool for the project in the current
+working directory. The appropriate tool is intelligently detected based on the
+context where `projectdo` is executed. For instance, `projectdo test` runs
+`cargo test` if a `Cargo.toml` is found and `npm test` if a `package.json` file
+is found.
+
+By combining `projectdo` with shell aliases, project commands can be run in any
+project with minimal typing. As an example, with the alias `alias b='projectdo
+build'`, you can build any project simply by typing
 <kbd>b</kbd>+<kbd>enter</kbd>.
 
 ## Install
@@ -67,7 +74,6 @@ yay -S projectdo
 `projectdo` is not related to Node.js or JavaScript, but npm works perfectly
 fine for distributing shell scripts and can be a handy installation method if
 you're already using npm:
-
 
 ```sh
 npm i -g projectdo
@@ -127,7 +133,7 @@ abbr -a t --function projectdo_test
 abbr -a p --function projectdo_tool
 ```
 
-With the above `t` will expand to `cargo test`, `p` will expand to `cargo`,
+With the above configuration, `t` will expand to `cargo test`, `p` will expand to `cargo`,
 etc. depending on the project.
 
 _Note that you need to have the script in your path in order for the Fish plugin to work!_
@@ -145,7 +151,7 @@ alias p='projectdo tool'
 
 ## Usage
 
-**Note**: When executed with the `-d` flag `projectdo` performs a dry run and
+**Note**: When executed with the `-d` flag, `projectdo` performs a dry run and
 only prints information about what it would do without actually doing anything.
 It is a good idea to do a dry run when using `projectdo` in a project for the
 first time to verify that it does the right thing.
@@ -168,32 +174,32 @@ Tool arguments:
 
 ## Supported tools and languages
 
-**Note:** If a tool you are interested in is not supported please open an issue or a pull
+**Note:** If a tool you're interested in is not supported, please open an issue or a pull
 request.
 
-| Tool            | Language         | Detected by                                | Commands                                               |
-|-----------------|------------------|--------------------------------------------|--------------------------------------------------------|
-| bun             | JavaScript, etc  | `package.json` and `bun.lock`/`bun.lockb`  | `bun build` <br/> `bun start` <br/> `bun test`         |
-| Cabal           | Haskell          | `*.cabal`                                  | `cabal build` <br/> `cabal run` <br/> `cabal test`     |
-| Cargo           | Rust             | `Cargo.toml`                               | `cargo build` <br/> `cargo run` <br/> `cargo test`     |
-| CMake           | C, C++ and Obj-C | `CMakeLists.txt`                           | `cmake --build . --target test`                        |
-| Dune            | OCaml            | `dune-project`                             | `dune build` <br/> `dune exec` <br/> `dune runtest`    |
-| Go              | Go               | `go.mod`                                   | `go test`                                              |
-| Gradle          | Java, etc.       | `build.gradle` or `build.gradle.kts`       | `gradle compile` <br/> `gradle run` <br/> `gradle test`     |
-| just            | Any              | `justfile`                                 | `just build` <br /> `just run` <br /> `just test`      |
-| Lake            | Lean             | `lakefile.lean` or `lake-manifest.json`   | `lake build` <br/> `lake run` <br/> `lake test`        |
-| Leiningen       | Clojure          | `project.clj`                              | `lein test`                                            |
-| Mage            | Go               | `magefile.go` with a `test`/`check` target | `mage test/check`                                      |
-| make            | Any              | `Makefile`                                 | `make` <br/> `make test/check`                         |
-| Maven           | Java, etc.       | `pom.xml`                                  | `mvn compile` <br/> run n/a <br/> `mvn test`           |
-| Meson           | C, C++, etc.     | `meson.build`                              | `meson compile` <br/> run n/a <br/> `meson test`       |
-| .NET            | C# and F#        | `*.csproj`, `*.fsproj` or `*.sln`          | `dotnet build` <br/> `dotnet run` <br/> `dotnet test`  |
-| nix (flake)     | nix              | `flake.nix`                                | `nix build` <br/> `nix run` <br/> `nix flake check`    |
-| nix (non-flake) | nix              | `default.nix`                              | `nix-build`                                            |
-| npm             | JavaScript, etc. | `package.json`                             | `npm build` <br/> `npm start` <br/> `npm test`         |
-| pnpm            | JavaScript, etc  | `package.json` and `pnpm-lock.yaml`        | `pnpm build` <br/> `pnpm start` <br/> `pnpm test`      |
-| Poetry          | Python           | `pyproject.toml` with `[tool.poetry]`      | `poetry build` <br/> run n/a <br/> `poetry run pytest` |
-| Shell script    | Any              | `build.sh`                                 | `sh -c build.sh`                                       |
-| Stack           | Haskell          | `stack.yaml`                               | `stack build` <br/> `stack run` <br/> `stack test`     |
-| Tectonic        | LaTeX            | `Tectonic.toml`                            | `tectonic -X build`                                    |
-| yarn            | JavaScript, etc. | `package.json` and `yarn.lock`             | `yarn build` <br/> `yarn start` <br/> `yarn test`      |
+| Tool            | Language         | Detected by                                | Commands                                                |
+|-----------------|------------------|--------------------------------------------|---------------------------------------------------------|
+| bun             | JavaScript, etc  | `package.json` and `bun.lock`/`bun.lockb`  | `bun build` <br/> `bun start` <br/> `bun test`          |
+| Cabal           | Haskell          | `*.cabal`                                  | `cabal build` <br/> `cabal run` <br/> `cabal test`      |
+| Cargo           | Rust             | `Cargo.toml`                               | `cargo build` <br/> `cargo run` <br/> `cargo test`      |
+| CMake           | C, C++ and Obj-C | `CMakeLists.txt`                           | `cmake --build . --target test`                         |
+| Dune            | OCaml            | `dune-project`                             | `dune build` <br/> `dune exec` <br/> `dune runtest`     |
+| Go              | Go               | `go.mod`                                   | `go test`                                               |
+| Gradle          | Java, etc.       | `build.gradle` or `build.gradle.kts`       | `gradle compile` <br/> `gradle run` <br/> `gradle test` |
+| just            | Any              | `justfile`                                 | `just build` <br /> `just run` <br /> `just test`       |
+| Lake            | Lean             | `lakefile.lean` or `lake-manifest.json`    | `lake build` <br/> `lake run` <br/> `lake test`         |
+| Leiningen       | Clojure          | `project.clj`                              | `lein test`                                             |
+| Mage            | Go               | `magefile.go` with a `test`/`check` target | `mage test/check`                                       |
+| make            | Any              | `Makefile`                                 | `make` <br/> `make test/check`                          |
+| Maven           | Java, etc.       | `pom.xml`                                  | `mvn compile` <br/> run n/a <br/> `mvn test`            |
+| Meson           | C, C++, etc.     | `meson.build`                              | `meson compile` <br/> run n/a <br/> `meson test`        |
+| .NET            | C# and F#        | `*.csproj`, `*.fsproj` or `*.sln`          | `dotnet build` <br/> `dotnet run` <br/> `dotnet test`   |
+| nix (flake)     | nix              | `flake.nix`                                | `nix build` <br/> `nix run` <br/> `nix flake check`     |
+| nix (non-flake) | nix              | `default.nix`                              | `nix-build`                                             |
+| npm             | JavaScript, etc. | `package.json`                             | `npm build` <br/> `npm start` <br/> `npm test`          |
+| pnpm            | JavaScript, etc  | `package.json` and `pnpm-lock.yaml`        | `pnpm build` <br/> `pnpm start` <br/> `pnpm test`       |
+| Poetry          | Python           | `pyproject.toml` with `[tool.poetry]`      | `poetry build` <br/> run n/a <br/> `poetry run pytest`  |
+| Shell script    | Any              | `build.sh`                                 | `sh -c build.sh`                                        |
+| Stack           | Haskell          | `stack.yaml`                               | `stack build` <br/> `stack run` <br/> `stack test`      |
+| Tectonic        | LaTeX            | `Tectonic.toml`                            | `tectonic -X build`                                     |
+| yarn            | JavaScript, etc. | `package.json` and `yarn.lock`             | `yarn build` <br/> `yarn start` <br/> `yarn test`       |

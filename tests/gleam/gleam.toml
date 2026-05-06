@@ -1,0 +1,6 @@
+name = "projectdo_gleam_test"
+version = "1.0.0"
+
+[dependencies]
+
+[dev_dependencies]

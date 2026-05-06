@@ -362,6 +362,14 @@ try_python() {
   fi
 }
 
+# Gleam
+try_gleam() {
+  if [ -f gleam.toml ]; then
+    execute "gleam $ACTION"
+    exit
+  fi
+}
+
 # Go
 
 try_go() {
@@ -457,6 +465,7 @@ detect_and_run() {
   try_nix_flake
   try_nix_package
   try_python
+  try_gleam
   try_go
   try_latex
   try_dotnet

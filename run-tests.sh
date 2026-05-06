@@ -306,6 +306,29 @@ if describe "nix"; then
   fi
 fi
 
+if describe "gleam"; then
+  if it "can build with gleam"; then
+    do_build_in "gleam"
+    assert
+    assertEqual "$RUN_RESULT" "gleam build"
+  fi
+  if it "can run with gleam"; then
+    do_run_in "gleam"
+    assert
+    assertEqual "$RUN_RESULT" "gleam run"
+  fi
+  if it "can test with gleam"; then
+    do_test_in "gleam"
+    assert
+    assertEqual "$RUN_RESULT" "gleam test"
+  fi
+  if "can print tool"; then
+    do_print_tool_in "gleam"
+    assert
+    assertEqual "$RUN_RESULT" "gleam"
+  fi
+fi
+
 if describe "go"; then
   if it "finds check target in magefile"; then
     do_test_in "mage"

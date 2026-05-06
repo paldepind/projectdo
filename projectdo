@@ -55,7 +55,7 @@ translate_action() {
   fi
   for arg in "$@"; do
     case "$arg" in
-    $ACTION)
+    "$ACTION")
       echo "$arg"
       return 0
       ;;
@@ -187,8 +187,7 @@ try_cargo() {
 try_meson() {
   if [ -f meson.build ]; then
     has_command_or_error meson meson.build
-    action=$(translate_action test build=compile)
-    if [ $? -eq 0 ]; then
+    if action=$(translate_action test build=compile); then
       execute_command meson "$action"
     fi
   fi
@@ -234,8 +233,7 @@ try_cabal() {
 
 try_maven() {
   if [ -f pom.xml ]; then
-    action=$(translate_action test build=compile)
-    if [ $? -eq 0 ]; then
+    if action=$(translate_action test build=compile); then
       has_command_or_error mvn pom.xml maven
       execute_command mvn "$action"
     fi
@@ -340,8 +338,7 @@ try_nix_package() {
 try_python() {
   if [ -f pyproject.toml ]; then
     if grep -q -m 1 "^\[tool.poetry\]$" pyproject.toml; then
-      action=$(translate_action build "test=run pytest")
-      if [ $? -eq 0 ]; then
+      if action=$(translate_action build "test=run pytest"); then
         execute_command poetry "$action"
       fi
     else

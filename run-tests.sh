@@ -17,6 +17,9 @@ script_directory=$(CDPATH="$(cd -- "$(dirname -- "$0")")" && pwd -P)
 
 # Set this variable to ensure top level Makefile doesn't affect the results.
 export PROJECT_ROOT="${script_directory}/tests"
+export PROJECTDO_CONFIG_DIR="${script_directory}/tests/.projectdo"
+rm -rf "$PROJECTDO_CONFIG_DIR"
+trap 'rm -rf "$PROJECTDO_CONFIG_DIR"' EXIT HUP INT TERM
 
 describe() {
   printf "\n%s%s%s" "$BOLD" "$1" "$RESET"
@@ -199,6 +202,26 @@ if describe "npm / yarn / pnpm / bun"; then
     do_test_in "npm-without-test"
     assert
     assertEqual "$RUN_RESULT" "make test"
+  fi
+  if it "offers to assign package scripts if no matching npm script is found"; then
+    rm -rf "$PROJECTDO_CONFIG_DIR"
+    RUN_RESULT=$(cd tests/npm-without-start && printf 'y\n2\n' | "$script_directory"/projectdo -n run)
+    RUN_EXIT=$?
+    assert
+    assertEqual "$RUN_RESULT" "No way to run found :'(
+
+Assign a package script to 'run' for this project? [y/N]:
+Available package scripts:
+  1) build
+  2) dev
+  3) test
+Select a script to run: npm run dev"
+  fi
+  if it "uses an assigned package script for the project action"; then
+    RUN_RESULT=$(cd tests/npm-without-start && "$script_directory"/projectdo -n run)
+    RUN_EXIT=$?
+    assert
+    assertEqual "$RUN_RESULT" "npm run dev"
   fi
   if it "can print tool"; then
     do_print_tool_in "npm"
